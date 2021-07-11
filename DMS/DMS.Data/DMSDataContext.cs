@@ -10,10 +10,12 @@ namespace DMS.Data
     {
         public DbSet<Age_Bracket> Age_Bracket { get; set; }
         public DbSet<Activity_Type> Activity_Type { get; set; }
+        public DbSet<Contact_Type> Contact_Type { get; set; }
+        public DbSet<Person_Type> Person_Type { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlite("Data Source=MyDb.db", b=>b.MigrationsAssembly("DMS"));
+            options.UseSqlite("Data Source=MyDb.db", b => b.MigrationsAssembly("DMS"));
         }
     }
 }

@@ -10,7 +10,7 @@ namespace DMS.Models
     {
         [Key]
         public int Contact_Type_Id { get; set; }
-        [Required, StringLength(50)]
+        [Required, StringLength(50), Display(Name="Contact Type name")]
         public string Name { get; set; }
     }
 }

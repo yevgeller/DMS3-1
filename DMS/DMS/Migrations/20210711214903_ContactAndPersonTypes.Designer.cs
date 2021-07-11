@@ -2,14 +2,16 @@
 using DMS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DMS.Migrations
 {
     [DbContext(typeof(DMSDataContext))]
-    partial class DMSDataContextModelSnapshot : ModelSnapshot
+    [Migration("20210711214903_ContactAndPersonTypes")]
+    partial class ContactAndPersonTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -11,7 +11,7 @@ namespace DMS.Models
         //Parent, teacher, admin, Teacher Assisstant, Other
         [Key]
         public int Person_Type_Id { get; set; }
-        [Required, StringLength(50)]
+        [Required, StringLength(50), Display(Name="Person Type name")]
         public string Name { get; set; }
     }
 }
