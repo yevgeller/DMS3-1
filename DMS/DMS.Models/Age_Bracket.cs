@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace DMS.Models
 {
+    [Display (Name = "Age Bracket")]
     public class Age_Bracket
     {
         [Key]
         public int Age_Bracket_Id { get; set; }
-        [StringLength(50)]
+        [StringLength(50), Display(Name = "Bracket Name")]
         public string Name { get; set; }
     }
 }
