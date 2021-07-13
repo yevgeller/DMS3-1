@@ -11,6 +11,9 @@ namespace DMS.Models
     {
         [Key]
         public int Contact_Id { get; set; }
+        [ForeignKey("Person")]
+        public int Person_Id { get; set; }
+        public Person Person { get; set; }
         public string Value { get; set; }
         public string Password { get; set; }
         [ForeignKey("Contact_Type")]
