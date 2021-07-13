@@ -18,4 +18,8 @@
     <ProjectReference Include="..\DMS.Data\DMS.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Contact\" />
+  </ItemGroup>
+
 </Project>
