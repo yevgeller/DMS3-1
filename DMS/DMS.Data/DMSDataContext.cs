@@ -13,6 +13,11 @@ namespace DMS.Data
         public DbSet<Contact_Type> Contact_Type { get; set; }
         public DbSet<Person_Type> Person_Type { get; set; }
 
+        public DbSet<Person> Person { get; set; }
+        public DbSet<Room> Room { get; set; }
+        public DbSet<Student> Student { get; set; }
+        public DbSet<Contact> Contact { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             options.UseSqlite("Data Source=MyDb.db", b => b.MigrationsAssembly("DMS"));
