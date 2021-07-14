@@ -5,8 +5,9 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Activity Types</h1>
 
+<h4>Activity types is something that is recorded about a student or a group of students. It may or may not be reported to parents.</h4>
 <p>
     <a asp-page="Create">Create New</a>
 </p>
@@ -20,17 +21,17 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Activity_Type) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Activity_Type_Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Activity_Type_Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Activity_Type_Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Activity_Type)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Activity_Type_Id">Edit</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Activity_Type_Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

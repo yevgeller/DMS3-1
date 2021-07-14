@@ -2,11 +2,12 @@
 @model DMS.Pages.Lookups.Age_Bracket.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Age Brackets";
 }
 
-<h1>Index</h1>
+<h1>Age Brackets</h1>
 
+<h4>Age Brackets are used to categorize rooms.</h4>
 <p>
     <a asp-page="Create">Create New</a>
 </p>
@@ -20,17 +21,17 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Age_Bracket) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Age_Bracket_Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Age_Bracket_Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Age_Bracket_Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Age_Bracket)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Age_Bracket_Id">Edit</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Age_Bracket_Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

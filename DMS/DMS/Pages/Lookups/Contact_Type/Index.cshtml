@@ -5,10 +5,11 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Contact Types</h1>
 
+<h4>Contact Type is something that describes a way to connect with a system user</h4>
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create">Create New Contact Type</a>
 </p>
 <table class="table">
     <thead>
@@ -20,17 +21,17 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Contact_Type) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Contact_Type_Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Contact_Type_Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Contact_Type_Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Contact_Type)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Contact_Type_Id">Edit</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Contact_Type_Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

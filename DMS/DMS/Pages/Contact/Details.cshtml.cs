@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DMS.Data;
 using DMS.Models;
 
-namespace DMS.Pages.Lookups.Person_Type
+namespace DMS.Pages.Contact
 {
     public class DetailsModel : PageModel
     {
@@ -19,7 +19,7 @@ namespace DMS.Pages.Lookups.Person_Type
             _context = context;
         }
 
-        public Models.Person_Type Person_Type { get; set; }
+        public Models.Contact Contact { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,9 +28,11 @@ namespace DMS.Pages.Lookups.Person_Type
                 return NotFound();
             }
 
-            Person_Type = await _context.Person_Type.FirstOrDefaultAsync(m => m.Person_Type_Id == id);
+            Contact = await _context.Contact
+                .Include(c => c.Contact_Type)
+                .Include(c => c.Person).FirstOrDefaultAsync(m => m.Contact_Id == id);
 
-            if (Person_Type == null)
+            if (Contact == null)
             {
                 return NotFound();
             }
