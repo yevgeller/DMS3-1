@@ -16,32 +16,15 @@ namespace DMS.Models
         [Required]
         [StringLength(250, ErrorMessage = "User Name may not be longer than 250 characters")]
         public string Name { get; set; }
-        //[Required]
-        //[DataType(DataType.Date)]
-        //public DateTime BirthDate { get; set; }
+        [Display(Name = "Active?")]
         public bool Is_Active { get; set; }
-        [ForeignKey("Person_Type")]
+        [ForeignKey("Person_Type"), Display(Name = "Person Type")]
         public int Person_Type_Id { get; set; }
-        public Person_Type Person_Type {get;set;}
+        public Person_Type Person_Type { get; set; }
+        public string Password { get; set; }
         public virtual string ForDisplay()
         {
             return $"{Id}-{Name}";
         }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is null) return false;
-            Person p = obj as Person;
-
-            if (p == null) return false;
-
-            return Id == p.Id && Name == p.Name;
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
     }
 }

@@ -11,10 +11,10 @@ namespace DMS.Models
     {
         [Key]
         public int Person_Student_Id { get; set; }
-        [ForeignKey("Person")]
+        [ForeignKey("Person"), Display(Name = "Person")]
         public int Person_Id { get; set; }
         public Person Person { get; set; }
-        [ForeignKey("Student")]
+        [ForeignKey("Student"), Display(Name = "Student")]
         public int Student_Id { get; set; }
         public Student Student { get; set; }
     }

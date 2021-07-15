@@ -11,12 +11,12 @@ namespace DMS.Models
     {
         [Key]
         public int Announcement_Addressee_Id { get; set; }
-        [ForeignKey("Person")]
+        [ForeignKey("Person"), Display(Name = "Addressee")]
         public int Addressee_Id { get; set; }
         public Person Addressee { get; set; }
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.DateTime), Display(Name = "Sent on")]
         public DateTime Sent_On { get; set; }
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.DateTime), Display(Name = "Acknowledged on (optional)")]
         public DateTime Acknowledged_On { get; set; }
     }
 }

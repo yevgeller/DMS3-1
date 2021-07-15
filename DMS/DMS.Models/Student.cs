@@ -12,8 +12,9 @@ namespace DMS.Models
         public int Student_Id { get; set; }
         [StringLength(100)]
         public string Name { get; set; }
-        [Required, DataType(DataType.Date)]
+        [Required, DataType(DataType.Date), Display(Name = "Birth date")]
         public DateTime Birthdate { get; set; }
+        [Display(Name = "Active?")]
         public bool Is_Active { get; set; }
     }
 }

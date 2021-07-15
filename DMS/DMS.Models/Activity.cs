@@ -12,14 +12,15 @@ namespace DMS.Models
         [Key]
         public int Activity_Id { get; set; }
 
-        [ForeignKey("Student")]
+        [ForeignKey("Student"), Display(Name ="STudent")]
         public int Student_Id { get; set; }
         public Student Student { get; set; }
-        [ForeignKey("Activity_Type")]
+        [ForeignKey("Activity_Type"), Display(Name = "Activity Type")]
         public int Activity_Type_Id { get; set; }
         public Activity_Type Activity_Type { get; set; }
+        [Display(Name = "Created On")]
         public DateTime Created_On { get; set; }
-        [ForeignKey("Person")]
+        [ForeignKey("Person"), Display(Name = "Created by")]
         public int Created_By_Id { get; set; }
         public Person Created_By { get; set; }
         [Required, StringLength(2500)]

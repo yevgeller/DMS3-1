@@ -11,9 +11,9 @@ namespace DMS.Models
     {
         [Key]
         public int Announcement_Id { get; set; }
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.DateTime), Display(Name = "Created on")]
         public DateTime Created_On { get; set; }
-        [ForeignKey("Person")]
+        [ForeignKey("Person"), Display(Name = "Created by")]
         public int Created_By_Id { get; set; }
         public Person Created_By { get; set; }
         [Required, StringLength(2500)]

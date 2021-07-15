@@ -12,12 +12,13 @@ namespace DMS.Models
         public int Room_Id { get; set; }
         [Required, StringLength(50)]
         public string Name { get; set; }
-        [Required]
+        [Required, Display(Name = "Maximum student capacity")]
         [Range(1, 20, ErrorMessage = "Max Capacity must be a number between 1 and 20")]
         public int MaxCapacity { get; set; }
-        [ForeignKey("Age_Bracket")]
+        [ForeignKey("Age_Bracket"), Display(Name = "Age Bracket")]
         public int Age_Bracket_Id { get; set; }
         public Age_Bracket Age_Bracket { get; set; }
+        [Display(Name = "Active?")]
         public bool Is_Active { get; set; }
         public string Description { get; set; }
         public string ForDisplay()
