@@ -14,25 +14,25 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Room[0].Name)
+                @Html.DisplayNameFor(model => model.Rooms[0].Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Room[0].MaxCapacity)
+                @Html.DisplayNameFor(model => model.Rooms[0].MaxCapacity)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Room[0].Age_Bracket)
+                @Html.DisplayNameFor(model => model.Rooms[0].Age_Bracket)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Room[0].Is_Active)
+                @Html.DisplayNameFor(model => model.Rooms[0].Is_Active)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Room[0].Description)
+                @Html.DisplayNameFor(model => model.Rooms[0].Description)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Room) {
+@foreach (var item in Model.Rooms) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -41,7 +41,7 @@
                 @Html.DisplayFor(modelItem => item.MaxCapacity)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Age_Bracket.Age_Bracket_Id)
+                @Html.DisplayFor(modelItem => item.Age_Bracket.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Is_Active)

@@ -21,7 +21,7 @@ namespace DMS.Pages.Room
 
         public IActionResult OnGet()
         {
-        ViewData["Age_Bracket_Id"] = new SelectList(_context.Age_Bracket, "Age_Bracket_Id", "Age_Bracket_Id");
+            ViewData["Age_Bracket_Id"] = new SelectList(_context.Age_Bracket, "Age_Bracket_Id", "Name");
             return Page();
         }
 

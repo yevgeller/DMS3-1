@@ -35,7 +35,7 @@ namespace DMS.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
-                    Is_Active = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Is_Active = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: 1),
                     Person_Type_Id = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -58,7 +58,7 @@ namespace DMS.Migrations
                     Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     MaxCapacity = table.Column<int>(type: "INTEGER", nullable: false),
                     Age_Bracket_Id = table.Column<int>(type: "INTEGER", nullable: false),
-                    Is_Active = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Is_Active = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: 1),
                     Description = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -80,7 +80,7 @@ namespace DMS.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
                     Birthdate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Is_Active = table.Column<bool>(type: "INTEGER", nullable: false)
+                    Is_Active = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: 1)
                 },
                 constraints: table =>
                 {
