@@ -61,7 +61,7 @@ namespace DMS
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
-                //endpoints.MapControllers(); //for webapi project
+                endpoints.MapControllers(); //for webapi project
             });
         }
     }
