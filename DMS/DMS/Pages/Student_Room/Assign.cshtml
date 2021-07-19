@@ -1,0 +1,100 @@
+﻿@page
+@model DMS.Pages.Student_Room.AssignModel
+@{
+    ViewData["Title"] = "Assign Students";
+}
+
+<h1>Assign Students to Rooms</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Students[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Students[0].Birthdate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Students[0].Is_Active)
+            </th>
+            <th>Rooms</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Students)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Birthdate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Is_Active)
+                </td>
+                <td>
+                    @foreach (var r in Model.Rooms.OrderBy(x => x.Name))
+                    {
+                        <div class="form-check" id="@("div-" + item.Student_Id.ToString() + "-" + r.Room_Id.ToString())">
+                            <input type="checkbox" class="form-check-input" id="@("chb-" + item.Student_Id.ToString()+ "-" + r.Room_Id.ToString())" onclick="callMe('@(item.Student_Id.ToString()+ "-" + r.Room_Id.ToString())')" value="@r.Name" checked="@Model.IsInRoom(item.Student_Id, r.Room_Id)" />
+                            <label class="form-check-label" for="@("chb-" + item.Student_Id.ToString()+"-" + r.Room_Id.ToString())">@r.Name</label>
+                        </div>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script>
+    let added = [];
+    let removed = [];
+
+
+    function callMe(a, b, c) {
+        console.log(event.target.id);
+        console.log(a);
+        let chb = document.getElementById(event.target.id);
+        if (chb != null) {
+            let checkd = chb.checked == false;
+            let div = document.getElementById('div-' + a);
+            if (checkd) console.log('checked');
+            else console.log('unchecked');
+
+            if (added.indexOf(a) >= 0) {
+                added.splice(added.indexOf(a), 1);
+                div.classList.remove("bg-success");
+            } else if (removed.indexOf(a) >= 0) {
+                removed.splice(added.indexOf(a), 1)
+                div.classList.remove("bg-danger");
+            } else if (!checkd) {
+                added.push(a);
+                div.classList.add("bg-success");
+            } else if (checkd) {
+                removed.push(a);
+                div.classList.add("bg-danger");
+            }
+        }
+    }
+
+    function dosmth() {
+        let url = 'api/UpdateMany';
+        let data = { Removed: removed, Added: added };
+        $.post(url, data, function (result) {
+            console.log(result);
+        });
+
+
+        //$.ajax({
+        //    url: '/api/UpdateMany',
+        //    method: 'GET',
+        //    success: function (data) {
+        //        console.log(data);
+        //    }
+        //});
+    }
+</script>
