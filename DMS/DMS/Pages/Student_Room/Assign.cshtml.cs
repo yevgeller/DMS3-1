@@ -15,7 +15,6 @@ namespace DMS.Pages.Student_Room
         public AssignModel(DMSDataContext _db)
         {
             this.db = _db;
-            this.Student_Rooms = new List<Models.Student_Room>();
         }
 
         public IList<Models.Student> Students { get; set; }
@@ -31,6 +30,7 @@ namespace DMS.Pages.Student_Room
         {
             Students = await db.Student.ToListAsync();
             Rooms = await db.Room.ToListAsync();
+            Student_Rooms = await db.Student_Rooms.ToListAsync();
         }
     }
 }
