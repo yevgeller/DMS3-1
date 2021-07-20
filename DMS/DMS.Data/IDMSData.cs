@@ -6,5 +6,6 @@ namespace DMS.Data
 {
     public interface IDMSData
     {
+        void AssignStudentToRoom(int studentId, int roomId);
     }
 }

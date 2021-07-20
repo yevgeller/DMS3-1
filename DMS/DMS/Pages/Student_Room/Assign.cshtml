@@ -6,7 +6,7 @@
 
 <h1>Assign Students to Rooms</h1>
 
-
+<button class="btn btn-primary float-right" onclick="save()" id="saveChangesButton" disabled>Save changes</button>
 <table class="table">
     <thead>
         <tr>
@@ -54,7 +54,6 @@
     let added = [];
     let removed = [];
 
-
     function callMe(a, b, c) {
         console.log(event.target.id);
         console.log(a);
@@ -79,11 +78,13 @@
                 div.classList.add("bg-danger");
             }
         }
-    }
 
-    function dosmth() {
-        let url = 'api/UpdateMany';
-        let data = { Removed: removed, Added: added };
+        document.getElementById("saveChangesButton").disabled = !(added.length + removed.length);
+     }
+
+    function save() {
+        let url = '/api/Students/ChangeStudentRoomAssignments';
+        let data = { arrayOne: added, arrayTwo: added };
         $.post(url, data, function (result) {
             console.log(result);
         });

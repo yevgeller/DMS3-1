@@ -31,14 +31,15 @@ namespace DMS.Api
         //POST: https://localhost:44334/api/Test/PostTest,
         //Body, raw: { "added": [1,2,3], "removed": [4,5,6]}
         [HttpPost]
-        [Route("PostTest")]
-        public ActionResult PostTest(TwoIntArraysDTO dto)
+        [Route("ChangeStudentRoomAssignments")]
+        public ActionResult PostTest([FromForm]TwoStringArraysDTO dto)
         {
             try
             {
+                db.AssignStudentToRoom(2, 2);
                 //do something with db
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
             }
