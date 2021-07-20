@@ -14,10 +14,12 @@ namespace DMS.Api
     public class StudentsController : ControllerBase
     {
         private readonly IDMSData db;
+        private readonly DMSDataContext ef;
 
-        public StudentsController(IDMSData _db)
+        public StudentsController(IDMSData _db, DMSDataContext _ef)
         {
             this.db = _db;
+            this.ef = _ef;
         }
 
         [HttpGet, Route("shmabadoo")]
@@ -37,6 +39,8 @@ namespace DMS.Api
             try
             {
                 db.AssignStudentToRoom(2, 2);
+                var j = ef.Student_Rooms.ToList();
+                var ii = 1;
                 //do something with db
             }
             catch (Exception ex)
