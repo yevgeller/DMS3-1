@@ -29,7 +29,7 @@ namespace DMS.Pages.Student_Room
         public async Task OnGet()
         {
             Students = await db.Student.ToListAsync();
-            Rooms = await db.Room.ToListAsync();
+            Rooms = await db.Room.Include(x=>x.Age_Bracket).ToListAsync();
             Student_Rooms = await db.Student_Rooms.ToListAsync();
         }
     }

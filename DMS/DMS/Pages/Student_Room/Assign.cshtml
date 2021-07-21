@@ -30,7 +30,7 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Birthdate)
+                    @item.Birthdate.ToShortDateString() (@item.Age())
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Is_Active)
@@ -40,7 +40,7 @@
                     {
                         <div class="form-check" id="@("div-" + item.Student_Id.ToString() + "-" + r.Room_Id.ToString())">
                             <input type="checkbox" class="form-check-input" id="@("chb-" + item.Student_Id.ToString()+ "-" + r.Room_Id.ToString())" onclick="callMe('@(item.Student_Id.ToString()+ "-" + r.Room_Id.ToString())')" value="@r.Name" checked="@Model.IsInRoom(item.Student_Id, r.Room_Id)" />
-                            <label class="form-check-label" for="@("chb-" + item.Student_Id.ToString()+"-" + r.Room_Id.ToString())">@r.Name</label>
+                            <label class="form-check-label" for="@("chb-" + item.Student_Id.ToString()+"-" + r.Room_Id.ToString())">@r.Name (@r.Age_Bracket.Name)</label>
                         </div>
                     }
                 </td>
