@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace DMS.Models
 {
+    [DebuggerDisplay("{Student_Id}/{Name}/{Birthdate.ToShortDateString()}")]
     public class Student
     {
         [Key]
@@ -47,7 +49,7 @@ namespace DMS.Models
             if(days > 0)
                 results.Add(days.ToString() + " day" + (days > 1 ? "s" : ""));
 
-            return String.Join(", ", results);
+            return String.Join(", ", results) + " old";
         }
     }
 }
