@@ -35,12 +35,13 @@ namespace DMS.Api
                     {
                         Person_Room pr = ConvertStringIntoPersonRoom(item);
 
-                        //List<Person_Room> remove = await ef.Person_Room
-                        //    .Where(x => x.Room_Id == pr.Room_Id && x.Person== pr.Student_Id).ToListAsync();
-                        //foreach (Student_Room pr_rem in remove)
-                        //{
-                        //    ef.Entry(pr_rem).State = EntityState.Deleted;
-                        //}
+                        List<Person_Room> remove = await ef.Person_Room
+                            .Where(x => x.Room_Id == pr.Room_Id && x.Person_Id == pr.Person_Id)
+                            .ToListAsync();
+                        foreach (Person_Room pr_rem in remove)
+                        {
+                            ef.Entry(pr_rem).State = EntityState.Deleted;
+                        }
                     }
                 }
 
@@ -48,8 +49,8 @@ namespace DMS.Api
                 {
                     foreach (string item in dto.ArrayOne)
                     {
-                        //Person_Room sr = ConvertStringIntoPersonRoom(item);
-                        //ef.Student_Rooms.Add(sr);
+                        Person_Room pr = ConvertStringIntoPersonRoom(item);
+                        ef.Person_Room.Add(pr);
                     }
                 }
                 await ef.SaveChangesAsync();
