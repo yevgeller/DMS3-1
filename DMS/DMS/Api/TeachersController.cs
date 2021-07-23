@@ -15,10 +15,10 @@ namespace DMS.Api
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TeacherController : ControllerBase
+    public class TeachersController : ControllerBase
     {
         private readonly DMSDataContext ef;
-        public TeacherController(DMSDataContext _ef)
+        public TeachersController(DMSDataContext _ef)
         {
             this.ef = _ef;
         }

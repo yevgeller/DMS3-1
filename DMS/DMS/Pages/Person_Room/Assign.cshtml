@@ -1,22 +1,26 @@
 ﻿@page
 @model DMS.Pages.Person_Room.AssignModel
 @{
+    ViewData["Title"] = "Assign Teachers to Rooms";
 }
+
+make sure they're teachers
+check why all rooms are selected by default
 
 <h1>Assign Teachers to Rooms</h1>
 
-<button class="btn btn-primary float-right" onclick="save()" id="saveChangesButton" disabled>Save changes</button>
+<button class="btn btn-primary float-right" onclick="saveToServer()" id="saveChangesButton" disabled>Save changes</button>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Persons[0].Name)
+                @Html.DisplayNameFor(model => model.Teachers[0].Name)
             </th>
             <th>Rooms</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Persons)
+        @foreach (var item in Model.Teachers)
         {
             <tr>
                 <td>
@@ -25,7 +29,7 @@
                 <td>
                     @foreach (var r in Model.Rooms.OrderBy(x => x.Name))
                     {
-                        <div class="form-check" id="@("div-" + item.Id.ToString() + "-" + r.Room_Id.ToString())" onclick="callMe('@(item.Id.ToString()+ "-" + r.Room_Id.ToString())')">
+                        <div class="form-check" id="@("div-" + item.Id.ToString() + "-" + r.Room_Id.ToString())" onclick="save('@(item.Id.ToString()+ "-" + r.Room_Id.ToString())')">
                             <input type="checkbox" class="form-check-input" id="@("chb-" + item.Id.ToString()+ "-" + r.Room_Id.ToString())" value="@r.Name" checked="@Model.IsInRoomAsync(item.Id, r.Room_Id)" />
                             <label class="form-check-label" for="@("chb-" + item.Id.ToString()+"-" + r.Room_Id.ToString())">@r.Name</label>
                         </div>
@@ -41,27 +45,23 @@
     let added = [];
     let removed = [];
 
-    function callMe(a, b, c) {
-        console.log(event.target.id);
-        console.log(a);
+    function save(arg) {       
         let chb = document.getElementById(event.target.id);
         if (chb != null) {
             let checkd = chb.checked == false;
-            let div = document.getElementById('div-' + a);
-            if (checkd) console.log('checked');
-            else console.log('unchecked');
+            let div = document.getElementById('div-' + arg);
 
-            if (added.indexOf(a) >= 0) {
-                added.splice(added.indexOf(a), 1);
+            if (added.indexOf(arg) >= 0) {
+                added.splice(added.indexOf(arg), 1);
                 div.classList.remove("bg-success");
-            } else if (removed.indexOf(a) >= 0) {
-                removed.splice(added.indexOf(a), 1)
+            } else if (removed.indexOf(arg) >= 0) {
+                removed.splice(added.indexOf(arg), 1)
                 div.classList.remove("bg-danger");
             } else if (!checkd) {
-                added.push(a);
+                added.push(arg);
                 div.classList.add("bg-success");
             } else if (checkd) {
-                removed.push(a);
+                removed.push(arg);
                 div.classList.add("bg-danger");
             }
         }
@@ -69,13 +69,25 @@
         document.getElementById("saveChangesButton").disabled = !(added.length + removed.length);
     }
 
-    function save() {
-        let url = '/api/Students/ChangeStudentRoomAssignments';
+    function saveToServer() {
+        let url = '/api/Teachers/ChangeTeacherRoomAssignments';
         let data = { arrayOne: added, arrayTwo: removed };
         $.post(url, data, function (result) {
             console.log(result);
         }).done(function () {
+            removed.forEach(function (item) {
+                let div = document.getElementById('div-' + item);
+                div.classList.remove("bg-danger");
+            });
+            added.forEach(function (item) {
+                let div = document.getElementById('div-' + item);
+                div.classList.remove("bg-success");
+            });
+            added = [];
+            removed = [];
+            document.getElementById("saveChangesButton").disabled = !(added.length + removed.length);
             alert('success');
+
             //$.gritter.add({ title: 'success', text: 'Saved successfully!' })
         }).fail(function (ajqXHR) {
             alert(ajqXHR.responseText);

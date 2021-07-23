@@ -6,7 +6,7 @@
 
 <h1>Assign Students to Rooms</h1>
 
-<button class="btn btn-primary float-right" onclick="save()" id="saveChangesButton" disabled>Save changes</button>
+<button class="btn btn-primary float-right" onclick="saveToServer()" id="saveChangesButton" disabled>Save changes</button>
 <table class="table">
     <thead>
         <tr>
@@ -38,7 +38,7 @@
                 <td>
                     @foreach (var r in Model.Rooms.OrderBy(x => x.Name))
                     {
-                        <div class="form-check" id="@("div-" + item.Student_Id.ToString() + "-" + r.Room_Id.ToString())" onclick="callMe('@(item.Student_Id.ToString()+ "-" + r.Room_Id.ToString())')">
+                        <div class="form-check" id="@("div-" + item.Student_Id.ToString() + "-" + r.Room_Id.ToString())" onclick="save('@(item.Student_Id.ToString()+ "-" + r.Room_Id.ToString())')">
                             <input type="checkbox" class="form-check-input" id="@("chb-" + item.Student_Id.ToString()+ "-" + r.Room_Id.ToString())" value="@r.Name" checked="@Model.IsInRoom(item.Student_Id, r.Room_Id)" />
                             <label class="form-check-label" for="@("chb-" + item.Student_Id.ToString()+"-" + r.Room_Id.ToString())">@r.Name (@r.Age_Bracket.Name)</label>
                         </div>
@@ -54,27 +54,23 @@
     let added = [];
     let removed = [];
 
-    function callMe(a, b, c) {
-        console.log(event.target.id);
-        console.log(a);
+    function save(arg) {
         let chb = document.getElementById(event.target.id);
         if (chb != null) {
             let checkd = chb.checked == false;
-            let div = document.getElementById('div-' + a);
-            if (checkd) console.log('checked');
-            else console.log('unchecked');
-
-            if (added.indexOf(a) >= 0) {
-                added.splice(added.indexOf(a), 1);
+            let div = document.getElementById('div-' + arg);
+           
+            if (added.indexOf(arg) >= 0) {
+                added.splice(added.indexOf(arg), 1);
                 div.classList.remove("bg-success");
-            } else if (removed.indexOf(a) >= 0) {
-                removed.splice(added.indexOf(a), 1)
+            } else if (removed.indexOf(arg) >= 0) {
+                removed.splice(added.indexOf(arg), 1)
                 div.classList.remove("bg-danger");
             } else if (!checkd) {
-                added.push(a);
+                added.push(arg);
                 div.classList.add("bg-success");
             } else if (checkd) {
-                removed.push(a);
+                removed.push(arg);
                 div.classList.add("bg-danger");
             }
         }
@@ -82,17 +78,28 @@
         document.getElementById("saveChangesButton").disabled = !(added.length + removed.length);
     }
 
-    function save() {
+    function saveToServer() {
         let url = '/api/Students/ChangeStudentRoomAssignments';
         let data = { arrayOne: added, arrayTwo: removed };
         $.post(url, data, function (result) {
             console.log(result);
         }).done(function () {
+            removed.forEach(function (item) {
+                let div = document.getElementById('div-' + item);
+                div.classList.remove("bg-danger");
+            });
+            added.forEach(function (item) {
+                let div = document.getElementById('div-' + item);
+                div.classList.remove("bg-success");
+            });
+            added = [];
+            removed = [];
+            document.getElementById("saveChangesButton").disabled = !(added.length + removed.length);
             alert('success');
+
             //$.gritter.add({ title: 'success', text: 'Saved successfully!' })
         }).fail(function (ajqXHR) {
             alert(ajqXHR.responseText);
         });
-
     }
 </script>

@@ -12,21 +12,35 @@ namespace DMS.Pages.Person_Room
     public class AssignModel : PageModel
     {
         private readonly DMSDataContext ef;
-        public List<Models.Person> Persons;
+        public List<Models.Person> Teachers;
         public List<Models.Room> Rooms;
+        public List<Models.Person_Room> Teacher_Rooms;
         public AssignModel(DMSDataContext _ef)
         {
             this.ef = _ef;
         }
         public async void OnGetAsync()
         {
-            Persons = await ef.Person.ToListAsync();
+            List<Models.Person_Type> types = await ef.Person_Type.ToListAsync();
+            List<int> teacherTypes = await ef.Person_Type
+                .Where(x => x.Name.Contains("Teacher"))
+                .Select(x => x.Person_Type_Id)
+                .ToListAsync();
+            Teachers = await ef.Person
+                .Where(x=>teacherTypes.Contains(x.Person_Type_Id))
+                .ToListAsync();
+            List<int> teacherIds = Teachers.Select(x => x.Id).ToList();
+            Teacher_Rooms = await ef.Person_Room
+                .Where(x => teacherIds.Contains(x.Person_Id)).ToListAsync();
+
             Rooms = await ef.Room.ToListAsync();
         }
 
-        public async Task<bool> IsInRoomAsync(int personId, int roomId)
+        public bool IsInRoomAsync(int personId, int roomId)
         {
-            return await ef.Person_Room.AnyAsync(x => x.Person_Id == personId && x.Room_Id == roomId);
+            return Teacher_Rooms
+                .Where(x => x.Person_Id == personId && x.Room_Id == roomId)
+                .Any();
         }
     }
 }
