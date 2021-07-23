@@ -12,7 +12,7 @@ namespace DMS.Models
     public class Person
     {
         [Key]
-        public int Id { get; set; }
+        public int Person_Id { get; set; }
         [Required]
         [StringLength(250, ErrorMessage = "User Name may not be longer than 250 characters")]
         public string Name { get; set; }
@@ -24,7 +24,7 @@ namespace DMS.Models
         public string Password { get; set; }
         public virtual string ForDisplay()
         {
-            return $"{Id}-{Name}";
+            return $"{Person_Id}-{Name}";
         }
     }
 }

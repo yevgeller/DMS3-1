@@ -31,7 +31,7 @@ namespace DMS.Pages.Person
             }
 
             Person = await _context.Person
-                .Include(p => p.Person_Type).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.Person_Type).FirstOrDefaultAsync(m => m.Person_Id == id);
 
             if (Person == null)
             {
@@ -58,7 +58,7 @@ namespace DMS.Pages.Person
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PersonExists(Person.Id))
+                if (!PersonExists(Person.Person_Id))
                 {
                     return NotFound();
                 }
@@ -73,7 +73,7 @@ namespace DMS.Pages.Person
 
         private bool PersonExists(int id)
         {
-            return _context.Person.Any(e => e.Id == id);
+            return _context.Person.Any(e => e.Person_Id == id);
         }
     }
 }

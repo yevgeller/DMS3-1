@@ -29,9 +29,9 @@ check why all rooms are selected by default
                 <td>
                     @foreach (var r in Model.Rooms.OrderBy(x => x.Name))
                     {
-                        <div class="form-check" id="@("div-" + item.Id.ToString() + "-" + r.Room_Id.ToString())" onclick="save('@(item.Id.ToString()+ "-" + r.Room_Id.ToString())')">
-                            <input type="checkbox" class="form-check-input" id="@("chb-" + item.Id.ToString()+ "-" + r.Room_Id.ToString())" value="@r.Name" checked="@Model.IsInRoomAsync(item.Id, r.Room_Id)" />
-                            <label class="form-check-label" for="@("chb-" + item.Id.ToString()+"-" + r.Room_Id.ToString())">@r.Name</label>
+                        <div class="form-check" id="@("div-" + item.Person_Id.ToString() + "-" + r.Room_Id.ToString())" onclick="save('@(item.Person_Id.ToString()+ "-" + r.Room_Id.ToString())')">
+                            <input type="checkbox" class="form-check-input" id="@("chb-" + item.Person_Id.ToString()+ "-" + r.Room_Id.ToString())" value="@r.Name" checked="@Model.IsInRoomAsync(item.Person_Id, r.Room_Id)" />
+                            <label class="form-check-label" for="@("chb-" + item.Person_Id.ToString()+"-" + r.Room_Id.ToString())">@r.Name</label>
                         </div>
                     }
                 </td>

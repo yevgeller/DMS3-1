@@ -29,7 +29,7 @@ namespace DMS.Pages.Person_Room
             Teachers = await ef.Person
                 .Where(x=>teacherTypes.Contains(x.Person_Type_Id))
                 .ToListAsync();
-            List<int> teacherIds = Teachers.Select(x => x.Id).ToList();
+            List<int> teacherIds = Teachers.Select(x => x.Person_Id).ToList();
             Teacher_Rooms = await ef.Person_Room
                 .Where(x => teacherIds.Contains(x.Person_Id)).ToListAsync();
 
