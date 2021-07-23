@@ -18,6 +18,7 @@ namespace DMS.Data
         public DbSet<Student> Student { get; set; }
         public DbSet<Contact> Contact { get; set; }
         public DbSet<Student_Room> Student_Rooms { get; set; }
+        public DbSet<Person_Room> Person_Room { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
