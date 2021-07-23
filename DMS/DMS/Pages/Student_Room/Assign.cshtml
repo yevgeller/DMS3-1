@@ -38,7 +38,7 @@
                 <td>
                     @foreach (var r in Model.Rooms.OrderBy(x => x.Name))
                     {
-                        <div class="form-check" id="@("div-" + item.Student_Id.ToString() + "-" + r.Room_Id.ToString())"  onclick="callMe('@(item.Student_Id.ToString()+ "-" + r.Room_Id.ToString())')">
+                        <div class="form-check" id="@("div-" + item.Student_Id.ToString() + "-" + r.Room_Id.ToString())" onclick="callMe('@(item.Student_Id.ToString()+ "-" + r.Room_Id.ToString())')">
                             <input type="checkbox" class="form-check-input" id="@("chb-" + item.Student_Id.ToString()+ "-" + r.Room_Id.ToString())" value="@r.Name" checked="@Model.IsInRoom(item.Student_Id, r.Room_Id)" />
                             <label class="form-check-label" for="@("chb-" + item.Student_Id.ToString()+"-" + r.Room_Id.ToString())">@r.Name (@r.Age_Bracket.Name)</label>
                         </div>
@@ -80,22 +80,19 @@
         }
 
         document.getElementById("saveChangesButton").disabled = !(added.length + removed.length);
-     }
+    }
 
     function save() {
         let url = '/api/Students/ChangeStudentRoomAssignments';
         let data = { arrayOne: added, arrayTwo: removed };
         $.post(url, data, function (result) {
             console.log(result);
-        }).then(() => alert('success'));
+        }).done(function () {
+            alert('success');
+            //$.gritter.add({ title: 'success', text: 'Saved successfully!' })
+        }).fail(function (ajqXHR) {
+            alert(ajqXHR.responseText);
+        });
 
-
-        //$.ajax({
-        //    url: '/api/UpdateMany',
-        //    method: 'GET',
-        //    success: function (data) {
-        //        console.log(data);
-        //    }
-        //});
     }
 </script>

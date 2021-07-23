@@ -36,13 +36,10 @@ namespace DMS.Api
         //Body, raw: { "added": [1,2,3], "removed": [4,5,6]}
         [HttpPost]
         [Route("ChangeStudentRoomAssignments")]
-        public async Task<ActionResult> PostTest([FromForm]TwoStringArraysDTO dto)
+        public async Task<ActionResult> ChangeStudentRoomAssignmentsAsync([FromForm]TwoStringArraysDTO dto)
         {
             try
             {
-
-                //db.AssignStudentToRoom(2, 2);
-                //var j = ef.Student_Rooms.ToList();
                 if (dto.ArrayTwo != null)
                 {
                     foreach (string item in dto.ArrayTwo)
@@ -66,16 +63,13 @@ namespace DMS.Api
                     }
                 }
                 await ef.SaveChangesAsync();
-                var ii = 1;
-                //do something with db
             }
             catch (Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-            var i = dto;
 
-            return Ok(dto);
+            return Ok();
         }
 
         private Models.Student_Room ConvertStringIntoStudentRoom(string input)
