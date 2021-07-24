@@ -19,6 +19,7 @@ namespace DMS.Models
         [Display(Name = "Active?")]
         public bool Is_Active { get; set; }
 
+        public int BornDaysAfterJan12000 { get; set; }
         public string Age()
         {
             if (this.Birthdate == null)

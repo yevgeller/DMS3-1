@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DMS.Data\DMS.Data.csproj" />
+    <ProjectReference Include="..\DMS.Models\DMS.Models.csproj" />
+  </ItemGroup>
+
+</Project>
