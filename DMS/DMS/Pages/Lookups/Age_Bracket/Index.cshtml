@@ -7,7 +7,6 @@
 
 <h1>Age Brackets</h1>
 
-<h4>Age Brackets are used to categorize rooms.</h4>
 <p>
     <a asp-page="Create">Create New</a>
 </p>
@@ -17,21 +16,32 @@
             <th>
                 @Html.DisplayNameFor(model => model.Age_Bracket[0].Name)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Age_Bracket[0].MinDays)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Age_Bracket[0].MaxDays)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Age_Bracket)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.Age_Bracket_Id">Edit</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.Age_Bracket_Id">Delete</a>
-                </td>
-            </tr>
-        }
+@foreach (var item in Model.Age_Bracket) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MinDays)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxDays)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Age_Bracket_Id">Edit</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Age_Bracket_Id">Delete</a>
+            </td>
+        </tr>
+}
     </tbody>
 </table>

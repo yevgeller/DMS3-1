@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DMS.Migrations
 {
     [DbContext(typeof(DMSDataContext))]
-    [Migration("20210725162745_AddingMinMaxStudentAgeInDaysPerRoom")]
-    partial class AddingMinMaxStudentAgeInDaysPerRoom
+    [Migration("20210725213920_AddingMinMaxDaysToAgeBrackets")]
+    partial class AddingMinMaxDaysToAgeBrackets
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,6 +38,12 @@ namespace DMS.Migrations
                 {
                     b.Property<int>("Age_Bracket_Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MaxDays")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MinDays")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")

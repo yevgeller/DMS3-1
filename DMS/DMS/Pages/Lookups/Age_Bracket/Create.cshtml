@@ -19,6 +19,16 @@
                 <span asp-validation-for="Age_Bracket.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Age_Bracket.MinDays" class="control-label"></label>
+                <input asp-for="Age_Bracket.MinDays" class="form-control" />
+                <span asp-validation-for="Age_Bracket.MinDays" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Age_Bracket.MaxDays" class="control-label"></label>
+                <input asp-for="Age_Bracket.MaxDays" class="form-control" />
+                <span asp-validation-for="Age_Bracket.MaxDays" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

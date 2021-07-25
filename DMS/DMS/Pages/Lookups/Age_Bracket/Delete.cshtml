@@ -15,6 +15,18 @@
         <dd class="col-sm-6">
             @Html.DisplayFor(model => model.Age_Bracket.Name)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Age_Bracket.MinDays)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Age_Bracket.MinDays)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Age_Bracket.MaxDays)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Age_Bracket.MaxDays)
+        </dd>
     </dl>
     
     <form method="post">
