@@ -6,7 +6,9 @@
 
 <h1>Assign Students to Rooms</h1>
 
-<button class="btn btn-primary float-right" onclick="saveToServer()" id="saveChangesButton" disabled>Save changes</button>
+<button class="btn btn-danger float-right" onclick="doAction()">Action</button>
+
+@*<button class="btn btn-primary float-right" onclick="saveToServer()" id="saveChangesButton" disabled>Save changes</button>*@
 <table class="table">
     <thead>
         <tr>
@@ -59,7 +61,7 @@
         if (chb != null) {
             let checkd = chb.checked == false;
             let div = document.getElementById('div-' + arg);
-           
+
             if (added.indexOf(arg) >= 0) {
                 added.splice(added.indexOf(arg), 1);
                 div.classList.remove("bg-success");
@@ -102,4 +104,9 @@
             alert(ajqXHR.responseText);
         });
     }
+
+    //function doAction() {
+    //    let url = '/api/Students/Action';
+    //    $.post(url).done(() => alert('success'));
+    //}
 </script>

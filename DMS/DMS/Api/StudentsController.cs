@@ -32,6 +32,23 @@ namespace DMS.Api
             return Ok(new { Test = "Shmest", Boo = "Schmoo" });
         }
 
+        [HttpPost, Route("Action")]
+        public async Task<IActionResult> Action()
+        {
+            List<Student> students = await ef.Student.ToListAsync();
+            DateTime Jan1_2000 = new DateTime(2000, 1, 1);
+            foreach (Student st in students)
+            {
+                //days between OADate and Julian day 1 is 2415018.5
+                //days between Dec 30, 1899 and Jan 1 2000 is 36526
+                //total is 2,451,544.5
+                st.BornDaysAfterJan12000 = (st.Birthdate - Jan1_2000).Days;
+                var i = 1;
+            }
+            await ef.SaveChangesAsync();
+            return Ok();
+        }
+
         //POST: https://localhost:44334/api/Test/PostTest,
         //Body, raw: { "added": [1,2,3], "removed": [4,5,6]}
         [HttpPost]
