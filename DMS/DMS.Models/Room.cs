@@ -21,6 +21,10 @@ namespace DMS.Models
         [Display(Name = "Active?")]
         public bool Is_Active { get; set; }
         public string Description { get; set; }
+        [Display(Name="Minimum acceptable student age in Days")]
+        public int MinStudentAgeInDays { get; set; }
+        [Display(Name="Maximum acceptable student age in Days", Prompt =("This helps determine aging students"))]
+        public int MaxStudentAgeInDays { get; set; }
         public string ForDisplay()
         {
             return $"{Room_Id}-{Name}-{MaxCapacity}-{Description}";
