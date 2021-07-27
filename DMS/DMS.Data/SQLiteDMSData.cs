@@ -47,4 +47,41 @@ FROM Room R
 LEFT OUTER JOIN StudentsPerRoom StuPRo ON R.Room_Id = StuPRo.Room_Id
 LEFT OUTER JOIN TeachersPerRoom TeaPRo ON R.Room_Id = TeaPRo.Room_Id
 LEFT OUTER JOIN AverageStudentAge ASA ON R.Room_Id = ASA.Room_Id 
+
+
+for students not in Room age range:
+SELECT S.Name, S.Birthdate,
+CASE 
+	WHEN CAST(julianday() - 2451544.5 - S.BornDaysAfterJan12000 AS INTEGER) > AB.MinDays 
+	AND 
+	CAST(julianday() - 2451544.5 - S.BornDaysAfterJan12000 AS INTEGER) < AB.MaxDays
+	THEN 1 ELSE 0 END AS WithinRange,
+CAST(julianday() - 2451544.5 - S.BornDaysAfterJan12000 AS INTEGER) AS DaysOld, AB.MinDays, AB.MaxDays, 
+R.Name, AB.Name, 
+CAST(julianday() - 2451544.5 - S.BornDaysAfterJan12000 AS INTEGER) - AB.MaxDays AS DaysOver,
+AB.MinDays - CAST(julianday() - 2451544.5 - S.BornDaysAfterJan12000 AS INTEGER) AS DaysUnder,
+
+R.Room_Id, S.Student_Id, AB.Age_Bracket_Id
+FROM Student S
+JOIN Student_Rooms SR ON S.Student_Id = SR.Student_Id
+JOIN Room R ON SR.Room_Id = R.Room_Id 
+JOIN Age_Bracket AB ON R.Age_Bracket_Id = AB.Age_Bracket_Id
+WHERE S.Is_Active = 1 AND R.Is_Active = 1 AND WithinRange = 0
+Order By R.Room_Id, DaysOld
+
+--Min Age Per Room 
+SELECT S.Student_Id, S.Name, S.Birthdate, S.BornDaysAfterJan12000,
+R.Room_Id, R.Name, MinAgePerRoomCalc.MinDaysOld AS DaysOld 
+FROM Student S JOIN Student_Rooms SR ON S.Student_Id = SR.Student_Id 
+JOIN Room R ON SR.Room_Id = R.Room_Id 
+JOIN (
+	SELECT R.Room_Id, 
+	MIN(CAST(julianday() - 2451544.5 - BornDaysAfterJan12000 AS INTEGER)) AS MinDaysOld
+	FROM Student S
+	JOIN Student_Rooms SR ON S.Student_Id = SR.Student_Id
+	JOIN Room R ON SR.Room_Id = R.Room_Id 
+	WHERE S.Is_Active = 1
+	GROUP BY R.Room_ID) AS MinAgePerRoomCalc
+ON R.Room_id = MinAgePerRoomCalc.Room_Id AND 
+(CAST(julianday() - 2451544.5 - S.BornDaysAfterJan12000 AS INTEGER)) = MinAgePerRoomCalc.MinDaysOld
 */
