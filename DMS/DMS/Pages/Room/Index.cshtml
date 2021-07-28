@@ -32,33 +32,87 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Rooms) {
+        @foreach (var item in Model.Rooms)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaxCapacity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Age_Bracket.Name)
+                </td>
+                <td>
+                    @if (item.Is_Active)
+                    {<span>Yes</span> }
+                    else
+                    { <span>No</span>}
+                    @*@Html.DisplayFor(modelItem => item.Is_Active)*@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Room_Id">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Room_Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Room_Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<hr />
+
+<table class="table">
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaxCapacity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Age_Bracket.Name)
-            </td>
-            <td>
-                @if (item.Is_Active)
-                {<span>Yes</span> }
-                else
-                { <span>No</span>}
-                @*@Html.DisplayFor(modelItem => item.Is_Active)*@
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Room_Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Room_Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Room_Id">Delete</a>
-            </td>
+            <th>
+                Room Link
+            </th>
+            <th>
+                Room
+            </th>
+            <th>
+               Teachers
+            </th>
+            <th>
+                TAs
+            </th>
+            <th>
+                Students
+            </th>
+            <th></th>
         </tr>
-}
+    </thead>
+    <tbody>
+        @foreach (var item in Model.RoomGeneralInfo_List)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Room_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Room_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TeachersInRoom)
+                </td>
+                <td>
+                    @Html.DisplayFor(x=>item.TAsInRoom)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => item.StudentsInRoom)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Room_Id">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Room_Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Room_Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

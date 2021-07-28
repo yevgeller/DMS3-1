@@ -20,11 +20,12 @@ namespace DMS.Pages.Room
         }
 
         public IList<Models.Room> Rooms { get;set; }
+        public IList<Models.RoomGeneralInfo_List> RoomGeneralInfo_List { get; set; }
 
         public async Task OnGetAsync()
         {
-            Rooms = await _context.Room
-                .Include(r => r.Age_Bracket).ToListAsync();
+            Rooms = await _context.Room.Include(r => r.Age_Bracket).ToListAsync();
+            RoomGeneralInfo_List = await _context.RoomGeneralInfo_List.ToListAsync();
             var i = 1;
         }
     }

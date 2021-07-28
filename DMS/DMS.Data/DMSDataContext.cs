@@ -19,10 +19,17 @@ namespace DMS.Data
         public DbSet<Contact> Contact { get; set; }
         public DbSet<Student_Room> Student_Rooms { get; set; }
         public DbSet<Person_Room> Person_Room { get; set; }
+        public DbSet<RoomGeneralInfo_List> RoomGeneralInfo_List { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             options.UseSqlite("Data Source=MyDb.db", b => b.MigrationsAssembly("DMS"));
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<RoomGeneralInfo_List>(eb => { eb.ToView("RoomGeneralInfo_List"); eb.HasKey("Room_Id"); });
+            modelBuilder.Entity<Students_OutOfRoomAgeBracket_List>(x => { x.ToView("Students_OutOfRoomAgeBracket_List"); x.HasKey("Room_Id"); });
         }
     }
 }
