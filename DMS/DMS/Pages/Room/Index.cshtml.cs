@@ -26,7 +26,6 @@ namespace DMS.Pages.Room
         {
             Rooms = await _context.Room.Include(r => r.Age_Bracket).ToListAsync();
             RoomGeneralInfo_List = await _context.RoomGeneralInfo_List.ToListAsync();
-            var i = 1;
         }
     }
 }

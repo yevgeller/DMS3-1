@@ -10,80 +10,30 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Rooms[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rooms[0].MaxCapacity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rooms[0].Age_Bracket)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rooms[0].Is_Active)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rooms[0].Description)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Rooms)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaxCapacity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Age_Bracket.Name)
-                </td>
-                <td>
-                    @if (item.Is_Active)
-                    {<span>Yes</span> }
-                    else
-                    { <span>No</span>}
-                    @*@Html.DisplayFor(modelItem => item.Is_Active)*@
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.Room_Id">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.Room_Id">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.Room_Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-
-<hr />
 
 <table class="table">
     <thead>
         <tr>
-            <th>
-                Room Link
-            </th>
             <th>
                 Room
             </th>
             <th>
-               Teachers
+                # Teachers+TAs
             </th>
             <th>
-                TAs
+                # Students
             </th>
             <th>
-                Students
+                #Students out of<br />Age Bracket
+            </th>
+            <th>
+                Avg Student Age
+            </th>
+            <th>
+                Youngest Student
+            </th>
+            <th>
+                Oldest Student
             </th>
             <th></th>
         </tr>
@@ -93,24 +43,51 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Room_Name)
+                    <a asp-page="./Details" asp-route-id="@item.Room_Id">@item.Room_Name</a>
+                    <br />
+                    (@(item.Room_Is_Active ? "Open" : "Closed"), Max cap: @item.Room_MaxCapacity)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Room_Name)
+                    @item.TeachersInRoom + @item.TAsInRoom
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TeachersInRoom)
+                    @item.StudentsInRoom
                 </td>
                 <td>
-                    @Html.DisplayFor(x=>item.TAsInRoom)
+                    @item.StudentsOutOfAgeBracket
                 </td>
                 <td>
-                    @Html.DisplayFor(x => item.StudentsInRoom)
+                    @item.AvgStudentAgeInDays
                 </td>
                 <td>
-                    <a asp-page="./Edit" asp-route-id="@item.Room_Id">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.Room_Id">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.Room_Id">Delete</a>
+                    @if (item.Youngest_Student_Id > 0)
+                    {
+                        <span>
+                            <a asp-page="../Student/Details" asp-route-id="@item.Youngest_Student_Id">@item.Youngest_Student_Name</a>
+                            &nbsp; (@item.Youngest_Student_DaysOld)
+                        </span>
+                    }
+                    else
+                    {
+                        <span>N/A</span>
+                    }
+
+                </td>
+                <td>
+                    @if (item.Oldest_Student_Id > 0)
+                    {
+                        <span>
+                            <a asp-page="../Student/Details" asp-route-id="@item.Oldest_Student_Id">@item.Oldest_Student_Name</a>
+                            &nbsp;(@item.Oldest_Student_DaysOld)
+                        </span>
+                    }
+                    else
+                    { <span>N/A</span>}
+                </td>
+                <td>
+
+                    <a asp-page="./Edit" asp-route-id="@item.Room_Id"><i class="fas fa-pencil-alt"></i></a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Room_Id"><i class="fas fa-trash"></i></a>
                 </td>
             </tr>
         }
