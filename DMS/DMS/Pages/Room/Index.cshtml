@@ -5,10 +5,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>List of rooms</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create">Create a new Room</a>
 </p>
 
 <table class="table">
@@ -44,7 +44,11 @@
             <tr>
                 <td>
                     <a asp-page="./Details" asp-route-id="@item.Room_Id">@item.Room_Name</a>
-                    (Max cap: @item.Room_MaxCapacity)
+                    <br />
+                    <small>
+                        Max: @item.Room_MaxCapacity,
+                        <br />Age: @item.Room_Bracket_Name
+                    </small>
                     @if (item.Room_Is_Active == false)
                     {
                         <div><strong>Closed</strong></div>
@@ -73,7 +77,7 @@
                     {
                         <span>
                             <a asp-page="../Student/Details" asp-route-id="@item.Youngest_Student_Id">@item.Youngest_Student_Name</a>
-                            &nbsp; (@item.Youngest_Student_Age_String())
+                            <br /><small>(@item.Youngest_Student_Age_String())</small>
                         </span>
                     }
                     else
@@ -87,16 +91,22 @@
                     {
                         <span>
                             <a asp-page="../Student/Details" asp-route-id="@item.Oldest_Student_Id">@item.Oldest_Student_Name</a>
-                            &nbsp;(@item.Oldest_Student_Age_String())
+                            <br /><small>(@item.Oldest_Student_Age_String())</small>
                         </span>
                     }
                     else
                     { <span>N/A</span>}
                 </td>
                 <td>
-
                     <a asp-page="./Edit" asp-route-id="@item.Room_Id"><i class="fas fa-pencil-alt"></i></a> |
-                    <a asp-page="./Delete" asp-route-id="@item.Room_Id"><i class="fas fa-trash"></i></a>
+                    @if (item.StudentsInRoom == 0)
+                    {
+                        <a asp-page="./Delete" asp-route-id="@item.Room_Id"><i class="fas fa-trash"></i></a>
+                    }
+                    else
+                    {
+                        <span><i class="fas fa-trash"></i></span>
+                    }
                 </td>
             </tr>
         }

@@ -14,6 +14,7 @@ namespace DMS.Models
         public bool Room_Is_Active { get; set; }
         public int Room_MaxCapacity { get; set; }
         public string Room_Name { get; set; }
+        public string Room_Bracket_Name { get; set; }
         public int Youngest_Student_Id { get; set; }
         public string Youngest_Student_Name { get; set; }
         public int Youngest_Student_DaysOld { get; set; }
@@ -28,17 +29,17 @@ namespace DMS.Models
 
         public string Youngest_Student_Age_String()
         {
-            return Youngest_Student_DaysOld.ToAgeString();
+            return Youngest_Student_DaysOld.ToShortAgeString();
         }
 
         public string Oldest_Student_Age_String()
         {
-            return Oldest_Student_DaysOld.ToAgeString();
+            return Oldest_Student_DaysOld.ToShortAgeString();
         }
 
         public string Average_Student_Age_String()
         {
-            return AvgStudentAgeInDays.ToAgeString();
+            return AvgStudentAgeInDays.ToShortAgeString();
         }
     }
 }

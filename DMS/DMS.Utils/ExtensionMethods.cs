@@ -55,9 +55,11 @@ namespace DMS.Utils
             return string.Join(", ", resultParts);
         }
 
-        public static string ToAgeString(this DateTime dob)
+        public static string ToShortAgeString(this int daysOld)
         {
             DateTime today = DateTime.Today;
+
+            DateTime dob = DateTime.Today.AddDays(daysOld * -1);
 
             int months = today.Month - dob.Month;
             int years = today.Year - dob.Year;
@@ -75,10 +77,13 @@ namespace DMS.Utils
 
             int days = (today - dob.AddMonths((years * 12) + months)).Days;
 
-            return string.Format("{0} year{1}, {2} month{3} and {4} day{5}",
-                                 years, (years == 1) ? "" : "s",
-                                 months, (months == 1) ? "" : "s",
-                                 days, (days == 1) ? "" : "s");
+            List<string> resultParts = new List<string>();
+
+            if (years > 0) resultParts.Add(years.ToString() + "y");
+            if (months > 0) resultParts.Add(months.ToString() + "mo");
+            if (days > 0) resultParts.Add(days.ToString() + "d");
+
+            return string.Join(", ", resultParts);
         }
     }
 }
