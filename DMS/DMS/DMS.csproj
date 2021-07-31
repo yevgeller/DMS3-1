@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DMS.Data\DMS.Data.csproj" />
+    <ProjectReference Include="..\DMS.Utils\DMS.Utils.csproj" />
   </ItemGroup>
 
 </Project>

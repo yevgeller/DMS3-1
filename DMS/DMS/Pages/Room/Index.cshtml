@@ -44,8 +44,12 @@
             <tr>
                 <td>
                     <a asp-page="./Details" asp-route-id="@item.Room_Id">@item.Room_Name</a>
-                    <br />
-                    (@(item.Room_Is_Active ? "Open" : "Closed"), Max cap: @item.Room_MaxCapacity)
+                    (Max cap: @item.Room_MaxCapacity)
+                    @if (item.Room_Is_Active == false)
+                    {
+                        <div><strong>Closed</strong></div>
+                    }
+
                 </td>
                 <td>
                     @item.TeachersInRoom + @item.TAsInRoom
@@ -54,17 +58,22 @@
                     @item.StudentsInRoom
                 </td>
                 <td>
-                    @item.StudentsOutOfAgeBracket
+                    @if (@item.StudentsOutOfAgeBracket > 0)
+                    {
+                        <div class="p-3 mb-2 bg-danger text-white">@item.StudentsOutOfAgeBracket</div>
+                    }
+                    else
+                    { <span>@item.StudentsOutOfAgeBracket</span>}
                 </td>
                 <td>
-                    @item.AvgStudentAgeInDays
+                    @item.Average_Student_Age_String()
                 </td>
                 <td>
                     @if (item.Youngest_Student_Id > 0)
                     {
                         <span>
                             <a asp-page="../Student/Details" asp-route-id="@item.Youngest_Student_Id">@item.Youngest_Student_Name</a>
-                            &nbsp; (@item.Youngest_Student_DaysOld)
+                            &nbsp; (@item.Youngest_Student_Age_String())
                         </span>
                     }
                     else
@@ -78,7 +87,7 @@
                     {
                         <span>
                             <a asp-page="../Student/Details" asp-route-id="@item.Oldest_Student_Id">@item.Oldest_Student_Name</a>
-                            &nbsp;(@item.Oldest_Student_DaysOld)
+                            &nbsp;(@item.Oldest_Student_Age_String())
                         </span>
                     }
                     else

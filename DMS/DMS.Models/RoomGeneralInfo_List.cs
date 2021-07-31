@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DMS.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -24,5 +25,20 @@ namespace DMS.Models
         public int TAsInRoom { get; set; }
         public int StudentsInRoom { get; set; }
         public int StudentsOutOfAgeBracket { get; set; }
+
+        public string Youngest_Student_Age_String()
+        {
+            return Youngest_Student_DaysOld.ToAgeString();
+        }
+
+        public string Oldest_Student_Age_String()
+        {
+            return Oldest_Student_DaysOld.ToAgeString();
+        }
+
+        public string Average_Student_Age_String()
+        {
+            return AvgStudentAgeInDays.ToAgeString();
+        }
     }
 }
