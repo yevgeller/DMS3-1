@@ -20,6 +20,7 @@ namespace DMS.Data
         public DbSet<Student_Room> Student_Rooms { get; set; }
         public DbSet<Person_Room> Person_Room { get; set; }
         public DbSet<RoomGeneralInfo_List> RoomGeneralInfo_List { get; set; }
+        public DbSet<Students_List> Students_List { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

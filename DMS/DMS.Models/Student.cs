@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DMS.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
@@ -22,35 +23,7 @@ namespace DMS.Models
         public int BornDaysAfterJan12000 { get; set; }
         public string Age()
         {
-            if (this.Birthdate == null)
-                return "N/A";
-
-            if (DateTime.Now < this.Birthdate)
-                return "N/A";
-
-            string result = string.Empty;
-            int years =  (DateTime.Now - this.Birthdate).Days / 365;
-            int months = DateTime.Now.Month - this.Birthdate.Month;
-            if (months < 0) months += 12;
-
-            int days = 0;
-            if(DateTime.Now.Day > this.Birthdate.Day)
-            {
-                days = DateTime.Now.Day - this.Birthdate.Day;
-            }
-
-            List<string> results = new List<string>();
-
-            if (years > 0)
-                results.Add(years.ToString() + " year" + (years > 1 ? "s" : ""));
-
-            if (months > 0)
-                results.Add(months.ToString() + " month" + (months > 1 ? "s" : ""));
-
-            if(days > 0)
-                results.Add(days.ToString() + " day" + (days > 1 ? "s" : ""));
-
-            return String.Join(", ", results) + " old";
+            return BornDaysAfterJan12000.ToAgeString();
         }
     }
 }

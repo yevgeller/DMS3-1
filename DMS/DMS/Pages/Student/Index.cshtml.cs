@@ -19,11 +19,11 @@ namespace DMS.Pages.Student
             _context = context;
         }
 
-        public IList<Models.Student> Student { get;set; }
+        public IList<Models.Students_List> Students_List { get; set; }
 
         public async Task OnGetAsync()
         {
-            Student = await _context.Student.ToListAsync();
+            Students_List = await _context.Students_List.ToListAsync();
         }
     }
 }
