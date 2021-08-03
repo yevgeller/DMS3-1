@@ -19,11 +19,27 @@ namespace DMS.Pages.Student
             _context = context;
         }
 
+        [BindProperty(SupportsGet = true)]
+        public int CurrentPage { get; set; } = 1;
+        public int Count { get; set; }
+        public int PageSize { get; set; } = 10;
+        public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
+        public List<Models.Person> Data { get; set; }
+        public bool ShowPrevious => CurrentPage > 1;
+        public bool ShowNext => CurrentPage < TotalPages;
+        public bool ShowFirst => CurrentPage != 1;
+        public bool ShowLast => CurrentPage != TotalPages;
+
         public IList<Models.Students_List> Students_List { get; set; }
 
         public async Task OnGetAsync()
         {
-            Students_List = await _context.Students_List.ToListAsync();
+            this.Count = await _context.Students_List.CountAsync();
+            Students_List = await _context.Students_List
+                .OrderBy(d => d.Student_Id)
+                .Skip((CurrentPage - 1) * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
         }
     }
 }
