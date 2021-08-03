@@ -22,7 +22,9 @@ namespace DMS.Pages.Student
         [BindProperty(SupportsGet = true)]
         public int CurrentPage { get; set; } = 1;
         public int Count { get; set; }
-        public int PageSize { get; set; } = 10;
+
+        [BindProperty(SupportsGet = true)]
+        public int PageSize { get; set; }
         public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
         public List<Models.Person> Data { get; set; }
         public bool ShowPrevious => CurrentPage > 1;
