@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DMS.Data
 {
-    public class SQLiteDMSData :  SqLiteBaseRepository, IDMSData
+    public class SQLiteDMSData :  SqLiteBaseRepository, IStudentData
     {
         public void AssignStudentToRoom(int studentId, int roomId)
         {
@@ -19,6 +20,16 @@ namespace DMS.Data
                     new { Student_Id = studentId }).First();
                 var j = 1;
             }
+        }
+
+        Task<List<Students_List>> IStudentData.GetPaginatedStudentListAsync(int currentPage, int pageSize)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<List<Students_List>> IStudentData.GetPaginatedStudentListAsync(int currentPage, int pageSize, string sortBy)
+        {
+            throw new NotImplementedException();
         }
     }
 }

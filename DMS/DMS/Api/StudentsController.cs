@@ -15,10 +15,10 @@ namespace DMS.Api
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        private readonly IDMSData db;
+        private readonly IStudentData db;
         private readonly DMSDataContext ef;
 
-        public StudentsController(IDMSData _db, DMSDataContext _ef)
+        public StudentsController(IStudentData _db, DMSDataContext _ef)
         {
             this.db = _db;
             this.ef = _ef;

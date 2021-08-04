@@ -32,7 +32,7 @@ namespace DMS
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddScoped<IDMSData, SQLiteDMSData>();
+            services.AddScoped<IStudentData, StudentService>();
             services.AddEntityFrameworkSqlite().AddDbContext<DMSDataContext>();
             services.AddControllers();
         }

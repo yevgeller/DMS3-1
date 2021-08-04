@@ -1,4 +1,4 @@
-﻿@page "{pageSize:int=10}/{currentPage:int?}"
+﻿@page "{pageSize:int=10}/{currentPage=1}/{sortBy=Student_Name}"
 @model DMS.Pages.Student.IndexModel
 
 @{
@@ -15,16 +15,16 @@ Page size: @Model.PageSize
     <thead>
         <tr>
             <th>
-                Name
+                <a asp-page="./Index" class="sort-link" asp-route-sortby="Student_Name">Name</a>
             </th>
             <th>
-                Birthdate
+                <a asp-page="./Index" class="sort-link" asp-route-sortby="Birthdate">Birthdate</a>
             </th>
             <th>
-                Active?
+                <a asp-page="./Index" class="sort-link" asp-route-sortby="Is_Active">Active?</a>
             </th>
             <th>
-                In Rooms
+                <a asp-page="./Index" class="sort-link" asp-route-sortby="AssignedToRooms">In Rooms</a>
             </th>
             <th></th>
         </tr>
@@ -75,7 +75,8 @@ Page size: @Model.PageSize
         </li>
 
         <li class="page-item @(!Model.ShowPrevious? "disabled":"")">
-            <a asp-page="./Index" asp-route-CurrentPage="@(Model.CurrentPage -1)" class="page-link"><i class="fas fa-step-backward"></i>
+            <a asp-page="./Index" asp-route-CurrentPage="@(Model.CurrentPage -1)" class="page-link">
+                <i class="fas fa-step-backward"></i>
             </a>
         </li>
         <li class="page-item disabled">

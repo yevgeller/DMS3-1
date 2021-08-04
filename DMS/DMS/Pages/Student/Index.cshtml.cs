@@ -13,14 +13,19 @@ namespace DMS.Pages.Student
     public class IndexModel : PageModel
     {
         private readonly DMS.Data.DMSDataContext _context;
+        private readonly IStudentData studentService;
 
-        public IndexModel(DMS.Data.DMSDataContext context)
+        public IndexModel(DMS.Data.DMSDataContext context, IStudentData _studentService)
         {
             _context = context;
+            studentService = _studentService;
         }
 
         [BindProperty(SupportsGet = true)]
         public int CurrentPage { get; set; } = 1;
+        
+        [BindProperty(SupportsGet = true)]
+        public string SortBy { get; set; }
         public int Count { get; set; }
 
         [BindProperty(SupportsGet = true)]
@@ -36,12 +41,14 @@ namespace DMS.Pages.Student
 
         public async Task OnGetAsync()
         {
+
             this.Count = await _context.Students_List.CountAsync();
-            Students_List = await _context.Students_List
-                .OrderBy(d => d.Student_Id)
-                .Skip((CurrentPage - 1) * PageSize)
-                .Take(PageSize)
-                .ToListAsync();
+            Students_List = await studentService.GetPaginatedStudentListAsync(CurrentPage, PageSize, SortBy);
+            //Students_List = await _context.Students_List
+            //    .OrderBy(d => d.Student_Id)
+            //    .Skip((CurrentPage - 1) * PageSize)
+            //    .Take(PageSize)
+            //    .ToListAsync();
         }
     }
 }
