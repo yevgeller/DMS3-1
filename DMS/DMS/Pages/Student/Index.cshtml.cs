@@ -26,6 +26,11 @@ namespace DMS.Pages.Student
         
         [BindProperty(SupportsGet = true)]
         public string SortBy { get; set; }
+
+        public string NameSort { get; set; }
+        public string RoomSort { get; set; }
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
         public int Count { get; set; }
 
         [BindProperty(SupportsGet = true)]
@@ -39,16 +44,48 @@ namespace DMS.Pages.Student
 
         public IList<Models.Students_List> Students_List { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string sortOrder, string searchString)
         {
+            NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            RoomSort = sortOrder == "Room" ? "room_desc" : "Room";
 
-            this.Count = await _context.Students_List.CountAsync();
-            Students_List = await studentService.GetPaginatedStudentListAsync(CurrentPage, PageSize, SortBy);
-            //Students_List = await _context.Students_List
-            //    .OrderBy(d => d.Student_Id)
-            //    .Skip((CurrentPage - 1) * PageSize)
-            //    .Take(PageSize)
-            //    .ToListAsync();
+            //this.Count = await _context.Students_List.CountAsync();
+            IQueryable<Students_List> list = from s in _context.Students_List
+                                             select s;
+
+            CurrentFilter = searchString;
+            
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(s => s.Student_Name.ToLower().Contains(searchString.ToLower()) || 
+                                        s.AssignedToRooms.ToLower().Contains(searchString.ToLower()));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    list = list.OrderByDescending(s => s.Student_Name);
+                    break;
+                case "Room":
+                    list = list.OrderBy(s => s.AssignedToRooms);
+                    break;
+                case "rooms_desc":
+                    list = list.OrderByDescending(s => s.AssignedToRooms);
+                    break;
+                default:
+                    list = list.OrderBy(s => s.Student_Name);
+                    break;
+            }
+
+            Students_List = await list
+                .AsNoTracking()
+                .Skip((CurrentPage -1) * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
+
+            this.Count = await list.CountAsync();
+            
+            //Students_List = await studentService.GetPaginatedStudentListAsync(CurrentPage, PageSize, SortBy);
         }
     }
 }

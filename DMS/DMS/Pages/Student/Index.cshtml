@@ -11,11 +11,23 @@
     <a asp-page="Create">Create New Student Record</a>
 </p>
 Page size: @Model.PageSize
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name or room:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./Index">Back to full List</a>
+        </p>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
                 <a asp-page="./Index" class="sort-link" asp-route-sortby="Student_Name">Name</a>
+                <a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.NameSort">Name2</a>
             </th>
             <th>
                 <a asp-page="./Index" class="sort-link" asp-route-sortby="Birthdate">Birthdate</a>
@@ -25,6 +37,8 @@ Page size: @Model.PageSize
             </th>
             <th>
                 <a asp-page="./Index" class="sort-link" asp-route-sortby="AssignedToRooms">In Rooms</a>
+                <a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.RoomSort">In Rooms 2</a>
+
             </th>
             <th></th>
         </tr>
