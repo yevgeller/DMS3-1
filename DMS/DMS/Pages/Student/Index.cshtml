@@ -1,8 +1,15 @@
-﻿@page "{pageSize:int=10}/{currentPage=1}/{sortBy=Student_Name}"
+﻿@page "{pageSize:int=10}"
+@*@page "{pageSize:int=10}/{currentPage=1}/{sortBy=Student_Name}"*@
+
 @model DMS.Pages.Student.IndexModel
 
 @{
     ViewData["Title"] = "Index";
+    var prevDisabled = !Model.Students_List.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Students_List.HasNextPage ? "disabled" : "";
+    var allPaginationDisabled = Model.Students_List.TotalPages < 2 ? "disabled" : "";
+    var tenDisabled = Model.PageSize == 10 ? "disabled" : "";
+    var twentyDisabled = Model.PageSize == 20 ? "disabled" : "";
 }
 
 <h3>Students</h3>
@@ -10,7 +17,7 @@
 <p>
     <a asp-page="Create">Create New Student Record</a>
 </p>
-Page size: @Model.PageSize
+Sort: @Model.CurrentSort
 
 <form asp-page="./Index" method="get">
     <div class="form-actions no-color">
@@ -22,23 +29,65 @@ Page size: @Model.PageSize
         </p>
     </div>
 </form>
+<div>
+    <ul class="pagination">
+        <li class="page-item @allPaginationDisabled">
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-pageIndex="1"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               class="page-link"><i class="fas fa-fast-backward"></i></a>
+        </li>
+        <li class="page-item @prevDisabled">
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-pageIndex="@(Model.Students_List.PageIndex - 1)"
+               asp-route-currentFilter="@Model.CurrentFilter" class="page-link">
+                <i class="fas fa-step-backward"></i>
+            </a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" disabled>@Model.PagerInfo</a>
+        </li>
+        <li class="page-item @nextDisabled">
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-pageIndex="@(Model.Students_List.PageIndex + 1)"
+               asp-route-currentFilter="@Model.CurrentFilter" class="page-link"><i class="fas fa-step-forward"></i></a>
+        </li>
+        <li class="page-item @allPaginationDisabled">
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-pageIndex="@Model.TotalPages"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               class="page-link"><i class="fas fa-fast-forward"></i></a>
+        </li>
+        <li>
+            <a asp-page="./Index" class="btn btn-primary ml-1 @tenDisabled" asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               asp-route-pageSize="10">10 per page</a>
+        </li>
+        <li>
+            <a asp-page="./Index" class="btn btn-primary ml-1 @twentyDisabled" asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               asp-route-pageSize="20">20 per page</a>
+        </li>
+    </ul>
+</div>
 <table class="table">
     <thead>
         <tr>
             <th>
-                <a asp-page="./Index" class="sort-link" asp-route-sortby="Student_Name">Name</a>
-                <a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.NameSort">Name2</a>
+                <a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.CurrentFilter">Name</a>
             </th>
             <th>
-                <a asp-page="./Index" class="sort-link" asp-route-sortby="Birthdate">Birthdate</a>
+                <a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.BirthdateSort" asp-route-currentFilter="@Model.CurrentFilter">Birthdate</a>
             </th>
             <th>
-                <a asp-page="./Index" class="sort-link" asp-route-sortby="Is_Active">Active?</a>
+                <a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.IsActiveSort" asp-route-currentFilter="@Model.CurrentFilter">Active?</a>
             </th>
             <th>
-                <a asp-page="./Index" class="sort-link" asp-route-sortby="AssignedToRooms">In Rooms</a>
-                <a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.RoomSort">In Rooms 2</a>
-
+                <a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.RoomSort" asp-route-currentFilter="@Model.CurrentFilter">In Rooms</a>
             </th>
             <th></th>
         </tr>
@@ -82,26 +131,49 @@ Page size: @Model.PageSize
         }
     </tbody>
 </table>
+
 <div>
     <ul class="pagination">
-        <li class="page-item @(!Model.ShowFirst? "disabled":"")">
-            <a asp-page="./Index" asp-route-CurrentPage="1" class="page-link"><i class="fas fa-fast-backward"></i></a>
+        <li class="page-item @allPaginationDisabled">
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-pageIndex="1"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               class="page-link"><i class="fas fa-fast-backward"></i></a>
         </li>
-
-        <li class="page-item @(!Model.ShowPrevious? "disabled":"")">
-            <a asp-page="./Index" asp-route-CurrentPage="@(Model.CurrentPage -1)" class="page-link">
+        <li class="page-item @prevDisabled">
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-pageIndex="@(Model.Students_List.PageIndex - 1)"
+               asp-route-currentFilter="@Model.CurrentFilter" class="page-link">
                 <i class="fas fa-step-backward"></i>
             </a>
         </li>
         <li class="page-item disabled">
-            <a class="page-link" disabled>@Model.CurrentPage of @Model.TotalPages (@Model.Count records)</a>
+            <a class="page-link" disabled>@Model.PagerInfo</a>
         </li>
-        <li class="page-item  @(!Model.ShowNext? "disabled":"")">
-            <a asp-page="./Index" asp-route-CurrentPage="@(Model.CurrentPage + 1)" class="page-link"><i class="fas fa-step-forward"></i></a>
+        <li class="page-item @nextDisabled">
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-pageIndex="@(Model.Students_List.PageIndex + 1)"
+               asp-route-currentFilter="@Model.CurrentFilter" class="page-link"><i class="fas fa-step-forward"></i></a>
         </li>
-
-        <li class="page-item  @(!Model.ShowLast? "disabled":"")">
-            <a asp-page="./Index" asp-route-CurrentPage="@Model.TotalPages" class="page-link"><i class="fas fa-fast-forward"></i></a>
+        <li class="page-item @allPaginationDisabled">
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-pageIndex="@Model.TotalPages"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               class="page-link"><i class="fas fa-fast-forward"></i></a>
+        </li>
+        <li>
+            <a asp-page="./Index" class="btn btn-primary ml-1 @tenDisabled" asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               asp-route-pageSize="10">10 per page</a>
+        </li>
+        <li>
+            <a asp-page="./Index" class="btn btn-primary ml-1 @twentyDisabled" asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               asp-route-pageSize="20">20 per page</a>
         </li>
     </ul>
 </div>
