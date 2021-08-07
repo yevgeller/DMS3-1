@@ -21,7 +21,7 @@ namespace DMS
 
             using (var db = new DMSDataContext())
             {
-                db.Database.EnsureCreated();
+                //db.Database.EnsureCreated();
                 db.Database.Migrate();
             }
         }

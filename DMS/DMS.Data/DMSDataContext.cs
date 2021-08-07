@@ -12,7 +12,6 @@ namespace DMS.Data
         public DbSet<Activity_Type> Activity_Type { get; set; }
         public DbSet<Contact_Type> Contact_Type { get; set; }
         public DbSet<Person_Type> Person_Type { get; set; }
-
         public DbSet<Person> Person { get; set; }
         public DbSet<Room> Room { get; set; }
         public DbSet<Student> Student { get; set; }
@@ -21,6 +20,7 @@ namespace DMS.Data
         public DbSet<Person_Room> Person_Room { get; set; }
         public DbSet<RoomGeneralInfo_List> RoomGeneralInfo_List { get; set; }
         public DbSet<Students_List> Students_List { get; set; }
+        public DbSet<Person_Student> Parent_Student { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
