@@ -15,121 +15,131 @@
 
 <h4>Person_Student</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Person_Student.Person_Student_Id" />
-            <div class="form-group">
-                <label asp-for="Person_Student.Person_Id" class="control-label"></label>
-                <select asp-for="Person_Student.Person_Id" class="form-control" asp-items="ViewBag.Person_Id"></select>
-                <span asp-validation-for="Person_Student.Person_Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Person_Student.Student_Id" class="control-label"></label>
-                <select asp-for="Person_Student.Student_Id" class="form-control" asp-items="ViewBag.Student_Id"></select>
-                <span asp-validation-for="Person_Student.Student_Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
 
+            <div class="row">
+                <div class="col-md-4">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Person_Student.Person_Student_Id" />
+                        <div class="form-group">
+                            <label asp-for="Person_Student.Person_Id" class="control-label"></label>
+                            <select asp-for="Person_Student.Person_Id" class="form-control" asp-items="ViewBag.Person_Id"></select>
+                            <span asp-validation-for="Person_Student.Person_Id" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Person_Student.Student_Id" class="control-label"></label>
+                            <select asp-for="Person_Student.Student_Id" class="form-control" asp-items="ViewBag.Student_Id"></select>
+                            <span asp-validation-for="Person_Student.Student_Id" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm">
 
-<form asp-page="./Index" method="get">
-    <div class="form-actions no-color">
-        <p>
-            Find by name or room:
-            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
-            <input type="submit" value="Search" class="btn btn-primary" /> |
-            <a asp-page="./Assign">Back to full List</a>
-        </p>
-    </div>
-</form>
-<div>
-    <ul class="pagination">
-        <li class="page-item @allPaginationDisabled">
-            <a asp-page="./Index"
-               asp-route-pageIndex="1"
-               asp-route-currentFilter="@Model.CurrentFilter"
-               class="page-link"><i class="fas fa-fast-backward"></i></a>
-        </li>
-        <li class="page-item @prevDisabled">
-            <a asp-page="./Index"
-               asp-route-pageIndex="@(Model.Students_List.PageIndex - 1)"
-               asp-route-currentFilter="@Model.CurrentFilter" class="page-link">
-                <i class="fas fa-step-backward"></i>
-            </a>
-        </li>
-        <li class="page-item disabled">
-            <a class="page-link" disabled>@Model.PagerInfo</a>
-        </li>
-        <li class="page-item @nextDisabled">
-            <a asp-page="./Index"
-               asp-route-pageIndex="@(Model.Students_List.PageIndex + 1)"
-               asp-route-currentFilter="@Model.CurrentFilter" class="page-link"><i class="fas fa-step-forward"></i></a>
-        </li>
-        <li class="page-item @allPaginationDisabled">
-            <a asp-page="./Index"
-               asp-route-pageIndex="@Model.TotalPages"
-               asp-route-currentFilter="@Model.CurrentFilter"
-               class="page-link"><i class="fas fa-fast-forward"></i></a>
-        </li>
-    </ul>
-</div>
-selected student id: @Model.SelectedStudent
-
-<table class="table">
-    <thead>
-        <tr>
-            <th></th>
-            <th>
-                @*<a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.CurrentFilter">Name</a>*@
-                Name
-            </th>
-            <th>
-                Birthdate
-                @*<a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.BirthdateSort" asp-route-currentFilter="@Model.CurrentFilter">Birthdate</a>*@
-            </th>
-            <th>
-                In Rooms
-                @*<a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.RoomSort" asp-route-currentFilter="@Model.CurrentFilter">In Rooms</a>*@
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Students_List)
-        {
-            <tr>
-                <td>
-                    @if (Model.SelectedStudent == item.Student_Id)
-                    {
-                        <a class="btn btn-primary disabled">Select</a>
-                    }
-                    else
-                    {
-                        <a asp-page="./Assign" asp-route-id="@item.Student_Id"
-                           asp-route-pageIndex="@(Model.Students_List.PageIndex - 1)"
+            <form asp-page="./Assign" method="get">
+                <div class="form-actions no-color">
+                    <p>
+                        Find by name or room:
+                        <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+                        <input type="submit" value="Search" class="btn btn-primary" /> |
+                        <a asp-page="./Assign">Back to full List</a>
+                    </p>
+                </div>
+            </form>
+            <div>
+                <ul class="pagination">
+                    <li class="page-item @allPaginationDisabled">
+                        <a asp-page="./Index"
+                           asp-route-pageIndex="1"
                            asp-route-currentFilter="@Model.CurrentFilter"
-                           asp-route-selectedStudent="@item.Student_Id"
-                           class="btn btn-primary">Select</a>
+                           class="page-link"><i class="fas fa-fast-backward"></i></a>
+                    </li>
+                    <li class="page-item @prevDisabled">
+                        <a asp-page="./Index"
+                           asp-route-pageIndex="@(Model.Students_List.PageIndex - 1)"
+                           asp-route-currentFilter="@Model.CurrentFilter" class="page-link">
+                            <i class="fas fa-step-backward"></i>
+                        </a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" disabled>@Model.PagerInfo</a>
+                    </li>
+                    <li class="page-item @nextDisabled">
+                        <a asp-page="./Index"
+                           asp-route-pageIndex="@(Model.Students_List.PageIndex + 1)"
+                           asp-route-currentFilter="@Model.CurrentFilter" class="page-link"><i class="fas fa-step-forward"></i></a>
+                    </li>
+                    <li class="page-item @allPaginationDisabled">
+                        <a asp-page="./Index"
+                           asp-route-pageIndex="@Model.TotalPages"
+                           asp-route-currentFilter="@Model.CurrentFilter"
+                           class="page-link"><i class="fas fa-fast-forward"></i></a>
+                    </li>
+                </ul>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>
+                            @*<a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.CurrentFilter">Name</a>*@
+                            Name
+                        </th>
+                        <th>
+                            Birthdate
+                            @*<a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.BirthdateSort" asp-route-currentFilter="@Model.CurrentFilter">Birthdate</a>*@
+                        </th>
+                        <th>
+                            In Rooms
+                            @*<a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.RoomSort" asp-route-currentFilter="@Model.CurrentFilter">In Rooms</a>*@
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Students_List)
+                    {
+                        <tr>
+                            <td>
+                                @if (Model.SelectedStudent == item.Student_Id)
+                                {
+                                    <a class="btn btn-primary disabled">Select</a>
+                                }
+                                else
+                                {
+                                    <a asp-page="./Assign" asp-route-id="@item.Student_Id"
+                                       asp-route-pageIndex="@(Model.Students_List.PageIndex - 1)"
+                                       asp-route-currentFilter="@Model.CurrentFilter"
+                                       asp-route-selectedStudent="@item.Student_Id"
+                                       class="btn btn-primary">Select</a>
+                                }
+                            </td>
+                            <td>
+                                <a asp-page="./Details" asp-route-id="@item.Student_Id">@item.Student_Name</a>
+                            </td>
+                            <td>
+                                @item.Birthdate.ToShortDateString()
+                            </td>
+                            <td>
+                                @item.AssignedToRooms
+                            </td>
+                        </tr>
                     }
-                </td>
-                <td>
-                    <a asp-page="./Details" asp-route-id="@item.Student_Id">@item.Student_Name</a>
-                </td>
-                <td>
-                    @item.Birthdate.ToShortDateString()
-                </td>
-                <td>
-                    @item.AssignedToRooms
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
 
 @*<div>
         <a asp-page="./Index">Back to List</a>
