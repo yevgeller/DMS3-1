@@ -22,24 +22,60 @@ namespace DMS.Pages.Student_Parent
 
         [BindProperty]
         public Person_Student Person_Student { get; set; }
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public PaginatedList<Students_List> Students_List { get; set; }
+        public int PageSize { get; set; } = 10;
+        public int Count { get; set; }
+        public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
+        public string CurrentFilter { get; set; }
+        public int SelectedStudent { get; set; }
+        public string PagerInfo
         {
-            if (id == null)
+            get
             {
-                return NotFound();
+                return $"Page {Students_List.PageIndex} of {TotalPages} ({this.Count} record{(this.Count > 1 ? "s" : "")})";
             }
+        }
+        public async Task<IActionResult> OnGetAsync(string currentFilter, string searchString, int? selectedStudent, int? pageIndex, int? id = 1)
+        {
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
+            if (searchString != null)
+            {
+                pageIndex = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            if (selectedStudent.HasValue)
+            {
+                SelectedStudent = selectedStudent.Value;
+            }
+
+            CurrentFilter = searchString;
+            IQueryable<Students_List> list = from s in _context.Students_List
+                                             select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(s => s.Student_Name.ToLower().Contains(searchString.ToLower()) ||
+                                        s.AssignedToRooms.ToLower().Contains(searchString.ToLower()));
+            }
+            Students_List = await PaginatedList<Students_List>.CreateAsync(
+                list.AsNoTracking(), pageIndex ?? 1, PageSize);
 
             Person_Student = await _context.Parent_Student
                 .Include(p => p.Person)
                 .Include(p => p.Student).FirstOrDefaultAsync(m => m.Person_Student_Id == id);
 
-            if (Person_Student == null)
-            {
-                return NotFound();
-            }
-           ViewData["Person_Id"] = new SelectList(_context.Person, "Person_Id", "Name");
-           ViewData["Student_Id"] = new SelectList(_context.Student, "Student_Id", "Student_Id");
+
+            //if (Person_Student == null)
+            //{
+            //    return NotFound();
+            //}
+            ViewData["Person_Id"] = new SelectList(_context.Person, "Person_Id", "Name");
+            ViewData["Student_Id"] = new SelectList(_context.Student, "Student_Id", "Name");
             return Page();
         }
 
