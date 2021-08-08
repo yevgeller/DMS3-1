@@ -30,6 +30,7 @@ namespace DMS.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<RoomGeneralInfo_List>(eb => { eb.ToView("RoomGeneralInfo_List"); eb.HasKey("Room_Id"); });
+            modelBuilder.Entity<Students_List>().ToView(nameof(Students_List)).HasKey(v => v.Student_Id);
             modelBuilder.Entity<Students_OutOfRoomAgeBracket_List>(x => { x.ToView("Students_OutOfRoomAgeBracket_List"); x.HasKey("Room_Id"); });
         }
     }

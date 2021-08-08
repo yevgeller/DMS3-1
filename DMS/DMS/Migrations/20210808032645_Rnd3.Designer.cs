@@ -3,14 +3,16 @@ using System;
 using DMS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DMS.Migrations
 {
     [DbContext(typeof(DMSDataContext))]
-    partial class DMSDataContextModelSnapshot : ModelSnapshot
+    [Migration("20210808032645_Rnd3")]
+    partial class Rnd3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
