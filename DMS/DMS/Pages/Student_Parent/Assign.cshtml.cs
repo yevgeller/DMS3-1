@@ -27,12 +27,14 @@ namespace DMS.Pages.Student_Parent
         public int Count { get; set; }
         public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
         public string CurrentFilter { get; set; }
-        public int SelectedStudent { get; set; }
+        public Models.Student SelectedStudent { get; set; }
+        public List<Models.Person_Student> Students_Parents { get; set; }
+        public string SelectedStudentName { get; set; }
         public string PagerInfo
         {
             get
             {
-                return $"Page {Students_List.PageIndex} of {TotalPages} ({this.Count} record{(this.Count > 1 ? "s" : "")})";
+                return $"Page {Students_List.PageIndex} of {Students_List.TotalPages} ({Students_List.TotalRecordsCount} record{(Students_List.TotalRecordsCount > 1 ? "s" : "")})";
             }
         }
         public async Task<IActionResult> OnGetAsync(string currentFilter, string searchString, int? selectedStudent, int? pageIndex, int? id = 1)
@@ -51,7 +53,14 @@ namespace DMS.Pages.Student_Parent
             }
             if (selectedStudent.HasValue)
             {
-                SelectedStudent = selectedStudent.Value;
+                SelectedStudent = await _context.Student
+                    .Where(x => x.Student_Id == selectedStudent.Value)
+                    .FirstOrDefaultAsync();
+
+                Students_Parents = await _context.Parent_Student
+                    .Where(x => x.Student_Id == selectedStudent.Value)
+                    .Include(x => x.Person)
+                    .ToListAsync();
             }
 
             CurrentFilter = searchString;
@@ -60,10 +69,12 @@ namespace DMS.Pages.Student_Parent
             if (!String.IsNullOrEmpty(searchString))
             {
                 list = list.Where(s => s.Student_Name.ToLower().Contains(searchString.ToLower()) ||
-                                        s.AssignedToRooms.ToLower().Contains(searchString.ToLower()));
+                                        s.AssignedToRooms.ToLower().Contains(searchString.ToLower()))
+                    .OrderBy(x=>x.Student_Name);
             }
             Students_List = await PaginatedList<Students_List>.CreateAsync(
                 list.AsNoTracking(), pageIndex ?? 1, PageSize);
+            Count = Students_List.TotalRecordsCount;
 
             Person_Student = await _context.Parent_Student
                 .Include(p => p.Person)
