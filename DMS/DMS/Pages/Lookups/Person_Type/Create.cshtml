@@ -15,8 +15,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Person_Type.Name" class="control-label"></label>
-                <input asp-for="Person_Type.Name" class="form-control" />
+                <input asp-for="Person_Type.Name" class="form-control js-hook-input" />
                 <span asp-validation-for="Person_Type.Name" class="text-danger"></span>
+                <span class="js-hook-error">already exists</span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -32,3 +33,44 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<style type="text/css">
+    .js-hook-error {
+        display: none;
+        color: red;
+    }
+</style>
+
+
+<script type="text/javascript">
+    var existing = [];
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', registerListener);
+    } else {
+        registerListener();
+    }
+
+    function registerListener() {
+        debugger;
+
+        var jqxhr = $.get("/api/Resources/GetPersonTypes", function () {
+            alert("success");
+        })
+            .done(function (data) {
+                debugger;
+                existing = data;
+            })
+            .fail(function () {
+                alert("error");
+            })
+            .always(function () {
+                alert("finished");
+            });
+
+        document.querySelector('.js-hook-input')
+            .addEventListener('input', e => {
+                document.querySelector('.js-hook-error').style.display = existing.includes(e.target.value) ? 'inline' : 'none';
+            });
+    }
+</script>
