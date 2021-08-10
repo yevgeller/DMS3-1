@@ -20,19 +20,49 @@
         <div class="col-sm">
             <div class="row">
                 <div class="col-md-11">
-                    <form method="post">
-                        @if (Model.SelectedStudent != null)
+
+                    @if (Model.SelectedStudent != null)
+                    {
+                        <div>
+                            <strong>Parent Information for: @Model.SelectedStudent.Name</strong>
+                        </div>
+                        @foreach (var p in Model.Assigned_Parents)
                         {
                             <div>
-                                Parent Information for: @Model.SelectedStudent.Name
+                                @p.Person.Name
                             </div>
-                            @foreach (var p in Model.Students_Parents)
-                            {
-                                <div>
-                                    @p.Person.Name
-                                </div>
-                            }
                         }
+                    }
+                    <form asp-page="./Assign" method="get">
+                        <div class="form-actions no-color">
+                            <p>
+                                Find parent by name:
+                                <input type="text" name="ParentSearchString" width="75" value="@Model.CurrentParentFilter" />
+                                <input type="submit" value="Search" class="btn btn-primary" /> |
+                                <a asp-page="./Assign"
+                                   asp-route-selectedStudent="@Model.SelectedStudent"
+                                   asp-route-currentParentFilter="@Model.CurrentParentFilter">Full List</a>
+                            </p>
+                        </div>
+                    </form>
+                    @if (Model.SelectedStudent != null)
+                    {
+                        <table>
+                            <tr>
+                                <th>Parent</th>
+                            </tr>
+                            @foreach (var pa in Model.AllParents)
+                            {
+                                <tr>
+                                    <span class="form-check" id="@("parentDiv-" + pa.Person_Id.ToString() )" onclick="save(@(pa.Person_Id))">
+                                        <input type="checkbox" class="form-check-input" id="@("chb-" + pa.Person_Id.ToString() )" value="@pa.Name" />
+                                        <label class="form-check-label" for="@("chb-" + pa.Person_Id.ToString() )">@pa.Name</label>
+                                    </span>
+                                </tr>
+                            }
+                        </table>
+                    }
+                    <form method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" asp-for="Person_Student.Person_Student_Id" />
                         <div class="form-group">
@@ -164,3 +194,10 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+
+<script type="text/javascript">
+    function save(arg) {
+        alert(arg);
+    }
+</script>

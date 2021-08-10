@@ -25,11 +25,14 @@ namespace DMS.Pages.Student_Parent
         public PaginatedList<Students_List> Students_List { get; set; }
         public int PageSize { get; set; } = 10;
         public int Count { get; set; }
-        public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
+        public int TotalPages => (int)Math.Ceiling(decimal.Divide(Students_List.TotalRecordsCount, PageSize));
         public string CurrentFilter { get; set; }
+        public string CurrentParentFilter { get; set; }
         public Models.Student SelectedStudent { get; set; }
-        public List<Models.Person_Student> Students_Parents { get; set; }
-        public string SelectedStudentName { get; set; }
+        public List<Models.Person_Student> Unselected_Parents { get; set; }
+        public List<Models.Person_Student> Assigned_Parents { get; set; }
+        public List<Models.Person> AllParents { get; set; }
+        //public string SelectedStudentName { get; set; }
         public string PagerInfo
         {
             get
@@ -39,10 +42,6 @@ namespace DMS.Pages.Student_Parent
         }
         public async Task<IActionResult> OnGetAsync(string currentFilter, string searchString, int? selectedStudent, int? pageIndex, int? id = 1)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
             if (searchString != null)
             {
                 pageIndex = 1;
@@ -57,9 +56,19 @@ namespace DMS.Pages.Student_Parent
                     .Where(x => x.Student_Id == selectedStudent.Value)
                     .FirstOrDefaultAsync();
 
-                Students_Parents = await _context.Parent_Student
-                    .Where(x => x.Student_Id == selectedStudent.Value)
+                Assigned_Parents = await _context.Parent_Student
+                    .Where(x=>x.Student_Id == SelectedStudent.Student_Id)
+                    .Include(x=>x.Person)
+                    .ToListAsync();
+
+                Unselected_Parents = await _context.Parent_Student
+                    .Where(x => x.Student_Id != selectedStudent.Value)
                     .Include(x => x.Person)
+                    .ToListAsync();
+
+                AllParents = await _context.Person
+                    .Include(x => x.Person_Type)
+                    .Where(x => x.Person_Type.Name.ToLower() == "parent")
                     .ToListAsync();
             }
 
@@ -74,7 +83,7 @@ namespace DMS.Pages.Student_Parent
             }
             Students_List = await PaginatedList<Students_List>.CreateAsync(
                 list.AsNoTracking(), pageIndex ?? 1, PageSize);
-            Count = Students_List.TotalRecordsCount;
+            //Count = Students_List.TotalRecordsCount;
 
             Person_Student = await _context.Parent_Student
                 .Include(p => p.Person)
