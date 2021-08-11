@@ -29,7 +29,7 @@ namespace DMS.Pages.Student_Parent
         public string CurrentFilter { get; set; }
         public string CurrentParentFilter { get; set; }
         public Models.Student SelectedStudent { get; set; }
-        public List<Models.Person_Student> Unselected_Parents { get; set; }
+        //public List<Models.Person> Unselected_Parents { get; set; }
         public List<Models.Person_Student> Assigned_Parents { get; set; }
         public List<Models.Person> AllParents { get; set; }
         //public string SelectedStudentName { get; set; }
@@ -57,19 +57,17 @@ namespace DMS.Pages.Student_Parent
                     .FirstOrDefaultAsync();
 
                 Assigned_Parents = await _context.Parent_Student
-                    .Where(x=>x.Student_Id == SelectedStudent.Student_Id)
-                    .Include(x=>x.Person)
-                    .ToListAsync();
-
-                Unselected_Parents = await _context.Parent_Student
-                    .Where(x => x.Student_Id != selectedStudent.Value)
+                    .Where(x => x.Student_Id == SelectedStudent.Student_Id)
                     .Include(x => x.Person)
                     .ToListAsync();
 
-                AllParents = await _context.Person
-                    .Include(x => x.Person_Type)
-                    .Where(x => x.Person_Type.Name.ToLower() == "parent")
-                    .ToListAsync();
+                //this should have all people who are not assigned to this student
+                AllParents = await (from p in _context.Person
+                                    join pt in _context.Person_Type
+                                        on p.Person_Type_Id equals pt.Person_Type_Id
+                                    where pt.Name.ToLower() == "parent" &&
+                                        !(_context.Parent_Student.Any(x => x.Person_Id == p.Person_Id && x.Student_Id == SelectedStudent.Student_Id))
+                                    select p).ToListAsync();
             }
 
             CurrentFilter = searchString;
@@ -79,21 +77,15 @@ namespace DMS.Pages.Student_Parent
             {
                 list = list.Where(s => s.Student_Name.ToLower().Contains(searchString.ToLower()) ||
                                         s.AssignedToRooms.ToLower().Contains(searchString.ToLower()))
-                    .OrderBy(x=>x.Student_Name);
+                    .OrderBy(x => x.Student_Name);
             }
             Students_List = await PaginatedList<Students_List>.CreateAsync(
                 list.AsNoTracking(), pageIndex ?? 1, PageSize);
-            //Count = Students_List.TotalRecordsCount;
 
             Person_Student = await _context.Parent_Student
                 .Include(p => p.Person)
                 .Include(p => p.Student).FirstOrDefaultAsync(m => m.Person_Student_Id == id);
 
-
-            //if (Person_Student == null)
-            //{
-            //    return NotFound();
-            //}
             ViewData["Person_Id"] = new SelectList(_context.Person, "Person_Id", "Name");
             ViewData["Student_Id"] = new SelectList(_context.Student, "Student_Id", "Name");
             return Page();
