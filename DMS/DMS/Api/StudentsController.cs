@@ -43,7 +43,7 @@ namespace DMS.Api
                 //days between Dec 30, 1899 and Jan 1 2000 is 36526
                 //total is 2,451,544.5
                 st.BornDaysAfterJan12000 = (st.Birthdate - Jan1_2000).Days;
-                var i = 1;
+                //var i = 1;
             }
             await ef.SaveChangesAsync();
             return Ok();

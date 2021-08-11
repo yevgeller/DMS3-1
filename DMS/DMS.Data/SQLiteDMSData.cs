@@ -18,7 +18,7 @@ namespace DMS.Data
                 Student student = cnn.Query<Student>(
                     @"SELECT * FROM Student WHERE Student_Id = @Student_Id", 
                     new { Student_Id = studentId }).First();
-                var j = 1;
+                //var j = 1;
             }
         }
 

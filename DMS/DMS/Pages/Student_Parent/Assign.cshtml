@@ -32,19 +32,25 @@
                                 @p.Person.Name
                             </div>
                         }
-                    }
-                    <form asp-page="./Assign" method="get">
+                    }asp-page="./Assign"
+                    <form method="post">
                         <div class="form-actions no-color">
                             <p>
+                                @Model.SelectedStudent?.Student_Id ;
                                 Find parent by name:
-                                <input type="text" name="ParentSearchString" width="75" value="@Model.CurrentParentFilter" />
-                                <input type="submit" value="Search" class="btn btn-primary" /> |
+                                <input type="text" asp-for="CurrentParentFilter"
+                                       asp-page-handler="Lalala"
+                                       name="ParentFilter" width="75" value="@Model.CurrentParentFilter" />
+                                <input type="submit" value="Filter" asp-page-handler="ChangedParentFilter"
+                                       asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
+                                       asp-route-parentFilter="@Model.CurrentParentFilter" class="btn btn-primary" /> |
                                 <a asp-page="./Assign"
-                                   asp-route-selectedStudent="@Model.SelectedStudent"
-                                   asp-route-currentParentFilter="@Model.CurrentParentFilter">Full List</a>
+                                   asp-route-currentFilter="@Model.CurrentFilter"
+                                   asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id">X</a>
                             </p>
                         </div>
                     </form>
+                    <hr />
                     @if (Model.SelectedStudent != null)
                     {
                         <table>
@@ -54,31 +60,33 @@
                             @foreach (var pa in Model.AllParents)
                             {
                                 <tr>
-                                    <span class="form-check" id="@("parentSpan-" + pa.Person_Id.ToString() )" onclick="save(@(pa.Person_Id))">
-                                        <input type="checkbox" class="form-check-input" id="@("chb-" + pa.Person_Id.ToString() )" value="@pa.Name" />
+                                    <td>
+                                        @*<span class="form-check" id="@("parentSpan-" + pa.Person_Id.ToString() )" onclick="save(@(pa.Person_Id))"> *@
+                                        <input type="checkbox" class="form-check-input" id="@("chb-" + pa.Person_Id.ToString() )" value="@pa.Name" onclick="save(@(pa.Person_Id))" />
                                         <label class="form-check-label" for="@("chb-" + pa.Person_Id.ToString() )">@pa.Name</label>
-                                    </span>
+                                        @*</span>*@
+                                    </td>
                                 </tr>
                             }
                         </table>
                     }
-                    <form method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <input type="hidden" asp-for="Person_Student.Person_Student_Id" />
-                        <div class="form-group">
-                            <label asp-for="Person_Student.Person_Id" class="control-label"></label>
-                            <select asp-for="Person_Student.Person_Id" class="form-control" asp-items="ViewBag.Person_Id"></select>
-                            <span asp-validation-for="Person_Student.Person_Id" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Person_Student.Student_Id" class="control-label"></label>
-                            <select asp-for="Person_Student.Student_Id" class="form-control" asp-items="ViewBag.Student_Id"></select>
-                            <span asp-validation-for="Person_Student.Student_Id" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="Save" class="btn btn-primary" />
-                        </div>
-                    </form>
+                    @*<form method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="Person_Student.Person_Student_Id" />
+                            <div class="form-group">
+                                <label asp-for="Person_Student.Person_Id" class="control-label"></label>
+                                <select asp-for="Person_Student.Person_Id" class="form-control" asp-items="ViewBag.Person_Id"></select>
+                                <span asp-validation-for="Person_Student.Person_Id" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Person_Student.Student_Id" class="control-label"></label>
+                                <select asp-for="Person_Student.Student_Id" class="form-control" asp-items="ViewBag.Student_Id"></select>
+                                <span asp-validation-for="Person_Student.Student_Id" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Save" class="btn btn-primary" />
+                            </div>
+                        </form>*@
                 </div>
             </div>
         </div>
@@ -209,15 +217,9 @@
             if (added.indexOf(arg) >= 0) {
                 added.splice(added.indexOf(arg), 1);
                 div.classList.remove("bg-success");
-            //} else if (removed.indexOf(arg) >= 0) {
-            //    removed.splice(added.indexOf(arg), 1)
-            //    div.classList.remove("bg-danger");
             } else if (!checkd) {
                 added.push(arg);
                 div.classList.add("bg-success");
-            //} else if (checkd) {
-            //    removed.push(arg);
-            //    div.classList.add("bg-danger");
             }
         }
         console.log(added);

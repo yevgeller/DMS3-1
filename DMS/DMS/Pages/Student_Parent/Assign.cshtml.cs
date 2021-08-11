@@ -32,7 +32,6 @@ namespace DMS.Pages.Student_Parent
         //public List<Models.Person> Unselected_Parents { get; set; }
         public List<Models.Person_Student> Assigned_Parents { get; set; }
         public List<Models.Person> AllParents { get; set; }
-        //public string SelectedStudentName { get; set; }
         public string PagerInfo
         {
             get
@@ -40,7 +39,15 @@ namespace DMS.Pages.Student_Parent
                 return $"Page {Students_List.PageIndex} of {Students_List.TotalPages} ({Students_List.TotalRecordsCount} record{(Students_List.TotalRecordsCount > 1 ? "s" : "")})";
             }
         }
-        public async Task<IActionResult> OnGetAsync(string currentFilter, string searchString, int? selectedStudent, int? pageIndex, int? id = 1)
+        public async Task<IActionResult> OnGetAsync(string currentFilter, string searchString, int? selectedStudent, int? pageIndex, string? parentFilter, int? id = 1)
+        {
+            await ResetPagePropertiesAsync(currentFilter, searchString, selectedStudent, 
+                pageIndex, parentFilter, id);
+            return Page();
+        }
+
+        public async Task ResetPagePropertiesAsync(string currentFilter, string searchString, 
+            int? selectedStudent, int? pageIndex, string? parentFilter, int? id = 1)
         {
             if (searchString != null)
             {
@@ -61,13 +68,19 @@ namespace DMS.Pages.Student_Parent
                     .Include(x => x.Person)
                     .ToListAsync();
 
-                //this should have all people who are not assigned to this student
-                AllParents = await (from p in _context.Person
-                                    join pt in _context.Person_Type
-                                        on p.Person_Type_Id equals pt.Person_Type_Id
-                                    where pt.Name.ToLower() == "parent" &&
-                                        !(_context.Parent_Student.Any(x => x.Person_Id == p.Person_Id && x.Student_Id == SelectedStudent.Student_Id))
-                                    select p).ToListAsync();
+
+                AllParents = await(from p in _context.Person
+                                   join pt in _context.Person_Type
+                                       on p.Person_Type_Id equals pt.Person_Type_Id
+                                   where pt.Name.ToLower() == "parent" &&
+                                       !(_context.Parent_Student.Any(x => x.Person_Id == p.Person_Id && x.Student_Id == SelectedStudent.Student_Id)) &&
+                                       (String.IsNullOrWhiteSpace(parentFilter) || p.Name.Contains(parentFilter))
+                                   select p).ToListAsync();
+
+                if (!String.IsNullOrWhiteSpace(parentFilter))
+                {
+                    CurrentParentFilter = parentFilter;
+                }
             }
 
             CurrentFilter = searchString;
@@ -88,9 +101,20 @@ namespace DMS.Pages.Student_Parent
 
             ViewData["Person_Id"] = new SelectList(_context.Person, "Person_Id", "Name");
             ViewData["Student_Id"] = new SelectList(_context.Student, "Student_Id", "Name");
+        }
+
+        public async Task<IActionResult> OnPostChangedParentFilterAsync(string currentFilter, string searchString, int? selectedStudent, int? pageIndex, string? parentFilter, int? id = 1)
+        {
+            await ResetPagePropertiesAsync(currentFilter, searchString, selectedStudent, 
+                pageIndex, parentFilter, id);
             return Page();
         }
 
+        public void OnGetLalala()
+        {
+            var i = 1;
+            i++;
+        }
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
