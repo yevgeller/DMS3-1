@@ -52,20 +52,12 @@
     }
 
     function registerListener() {
-        debugger;
-
-        var jqxhr = $.get("/api/Resources/GetPersonTypes", function () {
-            alert("success");
-        })
+        $.get("/api/Resources/GetPersonTypes")
             .done(function (data) {
-                debugger;
                 existing = data;
-            })
-            .fail(function () {
-                alert("error");
-            })
-            .always(function () {
-                alert("finished");
+            }).fail(function () {
+                existing = [];
+                console.log("No client-side item checking.")
             });
 
         document.querySelector('.js-hook-input')
