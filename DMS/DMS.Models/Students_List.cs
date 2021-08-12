@@ -16,5 +16,6 @@ namespace DMS.Models
         public bool Is_Active { get; set; }
         public int BornDaysAfterJan12000 { get; set; }
         public string AssignedToRooms { get; set; }
+        public string AssignedToParents { get; set; }
     }
 }

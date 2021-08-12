@@ -13,46 +13,48 @@
 
 <h1>Assign</h1>
 
-<h4>Person_Student</h4>
+<h4>Mass assignment of Parents to Students</h4>
 <hr />
 <div class="container">
     <div class="row">
-        <div class="col-sm">
+        <div class="col-sm-4">
             <div class="row">
                 <div class="col-md-11">
-
                     @if (Model.SelectedStudent != null)
                     {
-                        <div>
-                            <strong>Parent Information for: @Model.SelectedStudent.Name</strong>
-                        </div>
-                        @foreach (var p in Model.Assigned_Parents)
+                        @if (Model.Assigned_Parents.Any())
                         {
-                            <div>
-                                @p.Person.Name
+                            <div class="bg-warning p-3 mb-2">
+                                <div><strong>@Model.SelectedStudent.Name</strong> has these guardans assigned:</div>
+                                <ul>
+                                    @foreach (var p in Model.Assigned_Parents)
+                                    {
+                                        <li>@p.Person.Name</li>
+                                    }
+                                </ul>
                             </div>
                         }
-                    }asp-page="./Assign"
-                    <form method="post">
-                        <div class="form-actions no-color">
-                            <p>
-                                @Model.SelectedStudent?.Student_Id ;
-                                Find parent by name:
-                                <input type="text" asp-for="CurrentParentFilter"
-                                       asp-page-handler="Lalala"
-                                       name="ParentFilter" width="75" value="@Model.CurrentParentFilter" />
-                                <input type="submit" value="Filter" asp-page-handler="ChangedParentFilter"
-                                       asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
-                                       asp-route-parentFilter="@Model.CurrentParentFilter" class="btn btn-primary" /> |
-                                <a asp-page="./Assign"
-                                   asp-route-currentFilter="@Model.CurrentFilter"
-                                   asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id">X</a>
-                            </p>
-                        </div>
-                    </form>
-                    <hr />
-                    @if (Model.SelectedStudent != null)
-                    {
+                        else
+                        {
+                            <div class="bg-info p-3 mb-2"><strong>@Model.SelectedStudent.Name</strong> has no guardians assigned</div>
+                        }
+                        <hr />
+                        <form method="post">
+                            <div class="form-actions no-color">
+                                <p>
+                                    Find parent by name:
+                                    <input type="text" asp-for="CurrentParentFilter"
+                                           asp-page-handler="Lalala"
+                                           name="ParentFilter" width="75" value="@Model.CurrentParentFilter" />
+                                    <button type="submit" asp-page-handler="ChangedParentFilter"
+                                           asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
+                                           asp-route-parentFilter="@Model.CurrentParentFilter" class="btn btn-primary"><i class="fas fa-filter"></i></button> |
+                                    <a class="btn btn-info" asp-page="./Assign"
+                                       asp-route-currentFilter="@Model.CurrentFilter"
+                                       asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"><i class="far fa-list-alt"></i></a>
+                                </p>
+                            </div>
+                        </form>
                         <table>
                             <tr>
                                 <th>Parent</th>
@@ -91,7 +93,7 @@
             </div>
         </div>
         <!-- Students list/selection -->
-        <div class="col-sm">
+        <div class="col-sm-8">
             <table class="table">
                 <thead>
                     <tr>
@@ -107,6 +109,9 @@
                         <th>
                             In Rooms
                             @*<a asp-page="./Assign" class="sort-link" asp-route-sortOrder="@Model.RoomSort" asp-route-currentFilter="@Model.CurrentFilter">In Rooms</a>*@
+                        </th>
+                        <th>
+                            Assigned to Parents
                         </th>
                     </tr>
                 </thead>
@@ -136,6 +141,9 @@
                             </td>
                             <td>
                                 @item.AssignedToRooms
+                            </td>
+                            <td>
+                                @item.AssignedToParents
                             </td>
                         </tr>
                     }
@@ -251,14 +259,14 @@
         });
     }
 
-    //----------------
-    //let arr = [];
+                            //----------------
+                            //let arr = [];
 
-    //function save(arg) {
-    //    //event.preventDefault();
-    //    //debugger;
-    //    alert(arg);
-    //    if (arr.indexOf(arg) < 0) { arr.push(arg); }
-    //    console.table(arr);
-    //}
+                            //function save(arg) {
+                            //    //event.preventDefault();
+                            //    //debugger;
+                            //    alert(arg);
+                            //    if (arr.indexOf(arg) < 0) { arr.push(arg); }
+                            //    console.table(arr);
+                            //}
 </script>
