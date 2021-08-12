@@ -63,10 +63,10 @@
                             {
                                 <tr>
                                     <td>
-                                        @*<span class="form-check" id="@("parentSpan-" + pa.Person_Id.ToString() )" onclick="save(@(pa.Person_Id))"> *@
+                                        <span class="form-check" id="@("parentSpan-" + pa.Person_Id.ToString() )"> 
                                         <input type="checkbox" class="form-check-input" id="@("chb-" + pa.Person_Id.ToString() )" value="@pa.Name" onclick="save(@(pa.Person_Id))" />
                                         <label class="form-check-label" for="@("chb-" + pa.Person_Id.ToString() )">@pa.Name</label>
-                                        @*</span>*@
+                                        </span>
                                     </td>
                                 </tr>
                             }
