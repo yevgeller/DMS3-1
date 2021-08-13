@@ -31,7 +31,7 @@ namespace DMS.Pages.Student_Parent
         public Models.Student SelectedStudent { get; set; }
         //public List<Models.Person> Unselected_Parents { get; set; }
         public List<Models.Person_Student> Assigned_Parents { get; set; }
-        public List<Models.Person> AllParents { get; set; }
+        public List<Models.Guardians_List> AllGuardians { get; set; }
         public string PagerInfo
         {
             get
@@ -69,7 +69,7 @@ namespace DMS.Pages.Student_Parent
                     .ToListAsync();
 
 
-                AllParents = await (from p in _context.Person
+                AllGuardians = await (from p in _context.Guardians_List
                                     join pt in _context.Person_Type
                                         on p.Person_Type_Id equals pt.Person_Type_Id
                                     where pt.Name.ToLower() == "parent" &&
@@ -112,11 +112,6 @@ namespace DMS.Pages.Student_Parent
             return Page();
         }
 
-        public void OnGetLalala()
-        {
-            var i = 1;
-            i++;
-        }
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()

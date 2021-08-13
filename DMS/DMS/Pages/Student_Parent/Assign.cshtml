@@ -38,9 +38,10 @@
                             <div class="form-actions no-color">
                                 <p>
                                     Filter by name:
-                                    <input type="text" asp-for="CurrentParentFilter"
-                                           asp-page-handler="Lalala"
-                                           name="ParentFilter" width="75" value="@Model.CurrentParentFilter" />
+                                    <input type="text" 
+                                           asp-for="CurrentParentFilter"
+                                           name="ParentFilter" style="width:100px;" 
+                                           value="@Model.CurrentParentFilter" />
                                     <button type="submit" asp-page-handler="ChangedParentFilter"
                                            asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
                                            asp-route-parentFilter="@Model.CurrentParentFilter" class="btn btn-primary"><i class="fas fa-filter"></i></button> |
@@ -54,13 +55,13 @@
                             <tr>
                                 <th>Parent</th>
                             </tr>
-                            @foreach (var pa in Model.AllParents)
+                            @foreach (var pa in Model.AllGuardians)
                             {
                                 <tr>
                                     <td>
                                         <span class="form-check" id="@("parentSpan-" + pa.Person_Id.ToString() )"> 
                                         <input type="checkbox" class="form-check-input" id="@("chb-" + pa.Person_Id.ToString() )" value="@pa.Name" onclick="save(@(pa.Person_Id))" />
-                                        <label class="form-check-label" for="@("chb-" + pa.Person_Id.ToString() )">@pa.Name</label>
+                                        <label class="form-check-label" for="@("chb-" + pa.Person_Id.ToString() )">@pa.Name @(pa.AssignedStudents == "None" ? "" : "(" + pa.AssignedStudents + ")")</label>
                                         </span>
                                     </td>
                                 </tr>
