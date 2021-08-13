@@ -7,13 +7,8 @@
     var nextDisabled = !Model.Students_List.HasNextPage ? "disabled" : "";
     var allPaginationDisabled = Model.Students_List.TotalPages < 2 ? "disabled" : "";
 
-    //var tenDisabled = Model.PageSize == 10 ? "disabled" : "";
-    //var twentyDisabled = Model.PageSize == 20 ? "disabled" : "";
 }
-
-<h1>Assign</h1>
-
-<h4>Mass assignment of Parents to Students</h4>
+<h4>Assignment of Guardians to Students</h4>
 <hr />
 <div class="container">
     <div class="row">
@@ -42,7 +37,7 @@
                         <form method="post">
                             <div class="form-actions no-color">
                                 <p>
-                                    Find parent by name:
+                                    Filter by name:
                                     <input type="text" asp-for="CurrentParentFilter"
                                            asp-page-handler="Lalala"
                                            name="ParentFilter" width="75" value="@Model.CurrentParentFilter" />
@@ -165,14 +160,14 @@
                         <a asp-page="./Assign"
                            asp-route-pageIndex="1"
                            asp-route-currentFilter="@Model.CurrentFilter"
-                           asp-route-selectedStudent="@Model.SelectedStudent"
+                           asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
                            class="page-link"><i class="fas fa-fast-backward"></i></a>
                     </li>
                     <li class="page-item @prevDisabled">
                         <a asp-page="./Assign"
                            asp-route-pageIndex="@(Model.Students_List.PageIndex - 1)"
                            asp-route-currentFilter="@Model.CurrentFilter"
-                           asp-route-selectedStudent="@Model.SelectedStudent"
+                           asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
                            class="page-link">
                             <i class="fas fa-step-backward"></i>
                         </a>
@@ -184,14 +179,14 @@
                         <a asp-page="./Assign"
                            asp-route-pageIndex="@(Model.Students_List.PageIndex + 1)"
                            asp-route-currentFilter="@Model.CurrentFilter"
-                           asp-route-selectedStudent="@Model.SelectedStudent"
+                           asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
                            class="page-link"><i class="fas fa-step-forward"></i></a>
                     </li>
                     <li class="page-item @allPaginationDisabled">
                         <a asp-page="./Assign"
                            asp-route-pageIndex="@Model.TotalPages"
                            asp-route-currentFilter="@Model.CurrentFilter"
-                           asp-route-selectedStudent="@Model.SelectedStudent"
+                           asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
                            class="page-link"><i class="fas fa-fast-forward"></i></a>
                     </li>
                 </ul>

@@ -41,12 +41,12 @@ namespace DMS.Pages.Student_Parent
         }
         public async Task<IActionResult> OnGetAsync(string currentFilter, string searchString, int? selectedStudent, int? pageIndex, string? parentFilter, int? id = 1)
         {
-            await ResetPagePropertiesAsync(currentFilter, searchString, selectedStudent, 
+            await ResetPagePropertiesAsync(currentFilter, searchString, selectedStudent,
                 pageIndex, parentFilter, id);
             return Page();
         }
 
-        public async Task ResetPagePropertiesAsync(string currentFilter, string searchString, 
+        public async Task ResetPagePropertiesAsync(string currentFilter, string searchString,
             int? selectedStudent, int? pageIndex, string? parentFilter, int? id = 1)
         {
             if (searchString != null)
@@ -69,13 +69,15 @@ namespace DMS.Pages.Student_Parent
                     .ToListAsync();
 
 
-                AllParents = await(from p in _context.Person
-                                   join pt in _context.Person_Type
-                                       on p.Person_Type_Id equals pt.Person_Type_Id
-                                   where pt.Name.ToLower() == "parent" &&
-                                       !(_context.Parent_Student.Any(x => x.Person_Id == p.Person_Id && x.Student_Id == SelectedStudent.Student_Id)) &&
-                                       (String.IsNullOrWhiteSpace(parentFilter) || p.Name.Contains(parentFilter))
-                                   select p).ToListAsync();
+                AllParents = await (from p in _context.Person
+                                    join pt in _context.Person_Type
+                                        on p.Person_Type_Id equals pt.Person_Type_Id
+                                    where pt.Name.ToLower() == "parent" &&
+                                        !(_context.Parent_Student.Any(x => x.Person_Id == p.Person_Id && x.Student_Id == SelectedStudent.Student_Id)) &&
+                                        (String.IsNullOrWhiteSpace(parentFilter) || p.Name.Contains(parentFilter))
+                                    select p)
+                                   .OrderBy(x => x.Name)
+                                   .ToListAsync();
 
                 if (!String.IsNullOrWhiteSpace(parentFilter))
                 {
@@ -105,7 +107,7 @@ namespace DMS.Pages.Student_Parent
 
         public async Task<IActionResult> OnPostChangedParentFilterAsync(string currentFilter, string searchString, int? selectedStudent, int? pageIndex, string? parentFilter, int? id = 1)
         {
-            await ResetPagePropertiesAsync(currentFilter, searchString, selectedStudent, 
+            await ResetPagePropertiesAsync(currentFilter, searchString, selectedStudent,
                 pageIndex, parentFilter, id);
             return Page();
         }
