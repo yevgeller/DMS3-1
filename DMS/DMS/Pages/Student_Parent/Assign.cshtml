@@ -10,6 +10,7 @@
 }
 <h4>Assignment of Guardians to Students</h4>
 <hr />
+<input type="hidden" id="selectedStudentId" value="@Model.SelectedStudent?.Student_Id" />
 <div class="container">
     <div class="row">
         <div class="col-sm-4">
@@ -38,13 +39,15 @@
                             <div class="form-actions no-color">
                                 <p>
                                     Filter by name:
-                                    <input type="text" 
+                                    <input type="text"
                                            asp-for="CurrentParentFilter"
-                                           name="ParentFilter" style="width:100px;" 
+                                           name="ParentFilter" style="width:100px;"
                                            value="@Model.CurrentParentFilter" />
                                     <button type="submit" asp-page-handler="ChangedParentFilter"
-                                           asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
-                                           asp-route-parentFilter="@Model.CurrentParentFilter" class="btn btn-primary"><i class="fas fa-filter"></i></button> |
+                                            asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
+                                            asp-route-parentFilter="@Model.CurrentParentFilter" class="btn btn-primary">
+                                        <i class="fas fa-filter"></i>
+                                    </button> |
                                     <a class="btn btn-info" asp-page="./Assign"
                                        asp-route-currentFilter="@Model.CurrentFilter"
                                        asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"><i class="far fa-list-alt"></i></a>
@@ -59,14 +62,18 @@
                             {
                                 <tr>
                                     <td>
-                                        <span class="form-check" id="@("parentSpan-" + pa.Person_Id.ToString() )"> 
-                                        <input type="checkbox" class="form-check-input" id="@("chb-" + pa.Person_Id.ToString() )" value="@pa.Name" onclick="save(@(pa.Person_Id))" />
-                                        <label class="form-check-label" for="@("chb-" + pa.Person_Id.ToString() )">@pa.Name @(pa.AssignedStudents == "None" ? "" : "(" + pa.AssignedStudents + ")")</label>
+                                        <span class="form-check" id="@("parentSpan-" + pa.Person_Id.ToString() )">
+                                            <input type="checkbox" class="form-check-input" id="@("chb-" + pa.Person_Id.ToString() )" value="@pa.Name" onclick="save(@(pa.Person_Id))" />
+                                            <label class="form-check-label" for="@("chb-" + pa.Person_Id.ToString() )">@pa.Name @(pa.AssignedStudents == "None" ? "" : "(" + pa.AssignedStudents + ")")</label>
                                         </span>
                                     </td>
                                 </tr>
                             }
                         </table>
+
+                        <div class="row mt-1">
+                            <button id="assignGuardians" disabled class="btn btn-outline-success" onclick="saveToServer()"><i class="fas fa-save"></i>&nbsp;Save Guardians</button>
+                        </div>
                     }
                     @*<form method="post">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -95,19 +102,16 @@
                     <tr>
                         <th></th>
                         <th>
-                            @*<a asp-page="./Assign" class="sort-link" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.CurrentFilter">Name</a>*@
                             Name
                         </th>
                         <th>
                             Birthdate
-                            @*<a asp-page="./Assign" class="sort-link" asp-route-sortOrder="@Model.BirthdateSort" asp-route-currentFilter="@Model.CurrentFilter">Birthdate</a>*@
                         </th>
                         <th>
                             In Rooms
-                            @*<a asp-page="./Assign" class="sort-link" asp-route-sortOrder="@Model.RoomSort" asp-route-currentFilter="@Model.CurrentFilter">In Rooms</a>*@
                         </th>
                         <th>
-                            Assigned to Parents
+                            Assigned Guardians
                         </th>
                     </tr>
                 </thead>
@@ -227,42 +231,35 @@
             }
         }
         console.log(added);
-        //document.getElementById("saveChangesButton").disabled = !(added.length + removed.length);
+        document.getElementById("assignGuardians").disabled = !added.length;
     }
 
     function saveToServer() {
-        let url = '/api/Students/ChangeStudentRoomAssignments';
-        let data = { arrayOne: added, arrayTwo: removed };
-        $.post(url, data, function (result) {
-            console.log(result);
-        }).done(function () {
-            removed.forEach(function (item) {
-                let div = document.getElementById('div-' + item);
-                div.classList.remove("bg-danger");
-            });
-            added.forEach(function (item) {
-                let div = document.getElementById('div-' + item);
-                div.classList.remove("bg-success");
-            });
-            added = [];
-            removed = [];
-            document.getElementById("saveChangesButton").disabled = !(added.length + removed.length);
-            alert('success');
+        let studentId = document.getElementById('selectedStudentId').value;
 
-            //$.gritter.add({ title: 'success', text: 'Saved successfully!' })
-        }).fail(function (ajqXHR) {
-            alert(ajqXHR.responseText);
-        });
+        console.log(added);
+        console.log(studentId);
+        //let url = '/api/Students/ChangeStudentRoomAssignments';
+        //let data = { arrayOne: added, arrayTwo: removed };
+        //$.post(url, data, function (result) {
+        //    console.log(result);
+        //}).done(function () {
+        //    removed.forEach(function (item) {
+        //        let div = document.getElementById('div-' + item);
+        //        div.classList.remove("bg-danger");
+        //    });
+        //    added.forEach(function (item) {
+        //        let div = document.getElementById('div-' + item);
+        //        div.classList.remove("bg-success");
+        //    });
+        //    added = [];
+        //    removed = [];
+        //    document.getElementById("saveChangesButton").disabled = !(added.length + removed.length);
+        //    alert('success');
+
+        //    //$.gritter.add({ title: 'success', text: 'Saved successfully!' })
+        //}).fail(function (ajqXHR) {
+        //    alert(ajqXHR.responseText);
+        //});
     }
-
-                            //----------------
-                            //let arr = [];
-
-                            //function save(arg) {
-                            //    //event.preventDefault();
-                            //    //debugger;
-                            //    alert(arg);
-                            //    if (arr.indexOf(arg) < 0) { arr.push(arg); }
-                            //    console.table(arr);
-                            //}
 </script>
