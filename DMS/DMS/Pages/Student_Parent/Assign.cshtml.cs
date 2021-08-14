@@ -74,8 +74,7 @@ namespace DMS.Pages.Student_Parent
                                         on p.Person_Type_Id equals pt.Person_Type_Id
                                     where pt.Name.ToLower() == "parent" &&
                                         !(_context.Parent_Student.Any(x => x.Person_Id == p.Person_Id && x.Student_Id == SelectedStudent.Student_Id)) &&
-                                        (String.IsNullOrWhiteSpace(parentFilter) || p.Name.Contains(parentFilter)) &&
-                                        p.AssignedStudentsCount == 0
+                                        (String.IsNullOrWhiteSpace(parentFilter) || p.Name.ToLower().Contains(parentFilter.ToLower()))                                         
                                     select p)
                                    .OrderBy(x => x.Name)
                                    .ToListAsync();
