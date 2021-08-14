@@ -23,7 +23,7 @@ namespace DMS.Pages.Student_Parent
         [BindProperty]
         public Person_Student Person_Student { get; set; }
         public PaginatedList<Students_List> Students_List { get; set; }
-        public int PageSize { get; set; } = 10;
+        public int PageSize { get; set; } = 5;
         public int Count { get; set; }
         public int TotalPages => (int)Math.Ceiling(decimal.Divide(Students_List.TotalRecordsCount, PageSize));
         public string CurrentFilter { get; set; }
@@ -74,7 +74,8 @@ namespace DMS.Pages.Student_Parent
                                         on p.Person_Type_Id equals pt.Person_Type_Id
                                     where pt.Name.ToLower() == "parent" &&
                                         !(_context.Parent_Student.Any(x => x.Person_Id == p.Person_Id && x.Student_Id == SelectedStudent.Student_Id)) &&
-                                        (String.IsNullOrWhiteSpace(parentFilter) || p.Name.Contains(parentFilter))
+                                        (String.IsNullOrWhiteSpace(parentFilter) || p.Name.Contains(parentFilter)) &&
+                                        p.AssignedStudentsCount == 0
                                     select p)
                                    .OrderBy(x => x.Name)
                                    .ToListAsync();
@@ -87,6 +88,7 @@ namespace DMS.Pages.Student_Parent
 
             CurrentFilter = searchString;
             IQueryable<Students_List> list = from s in _context.Students_List
+                                             where s.AssignedGuardianCount == 0
                                              select s;
             if (!String.IsNullOrEmpty(searchString))
             {

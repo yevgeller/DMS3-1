@@ -17,5 +17,6 @@ namespace DMS.Models
         public int BornDaysAfterJan12000 { get; set; }
         public string AssignedToRooms { get; set; }
         public string AssignedToParents { get; set; }
+        public int AssignedGuardianCount { get; set; }
     }
 }

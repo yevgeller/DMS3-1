@@ -15,5 +15,6 @@ namespace DMS.Models
         public bool Is_Active { get; set; }
         public int Person_Type_Id { get; set; }
         public string AssignedStudents { get; set; }
+        public int AssignedStudentsCount { get; set; }
     }
 }

@@ -53,7 +53,7 @@ namespace DMS.Api
         //Body, raw: { "added": [1,2,3], "removed": [4,5,6]}
         [HttpPost]
         [Route("ChangeStudentRoomAssignments")]
-        public async Task<ActionResult> ChangeStudentRoomAssignmentsAsync([FromForm]TwoStringArraysDTO dto)
+        public async Task<ActionResult> ChangeStudentRoomAssignmentsAsync([FromForm] TwoStringArraysDTO dto)
         {
             try
             {
@@ -93,9 +93,9 @@ namespace DMS.Api
         {
             if (input == null || String.IsNullOrWhiteSpace(input))
                 throw new ArgumentException("Cannot assign student to a room, empty argument");
-            
+
             string[] prep = input.Split('-').ToArray();
-            
+
             if (prep.Length != 2)
                 throw new ArgumentException("Cannot assign student to a room, argument " + input + " is not in proper format");
 
@@ -112,6 +112,40 @@ namespace DMS.Api
             return new Models.Student_Room { Student_Id = studentId, Room_Id = roomId };
         }
 
+
+        //POST: https://localhost:44334/api/Test/PostTest,
+        //Body, raw: { "added": [1,2,3], "removed": [4,5,6]}
+        [HttpPost]
+        [Route("AssignGuardians")]
+        public async Task<ActionResult> AssignGuardiansAsync([FromForm] TwoIntArraysDTO dto)
+        {
+            if (dto.ArrayOne.Length != 1)
+            {
+                throw new ArgumentException("Student Id was not in a proper format");
+            }
+
+            if (dto.ArrayTwo.Length == 0)
+            {
+                throw new ArgumentException("No guardian ids provided");
+            }
+
+            try
+            {
+                foreach (int item in dto.ArrayTwo)
+                {
+                    Person_Student ps = new Person_Student { Person_Id = item, Student_Id = dto.ArrayOne[0] };
+                    ef.Parent_Student.Add(ps);
+                }
+
+                await ef.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
+            return Ok("done");
+        }
 
     }
 }

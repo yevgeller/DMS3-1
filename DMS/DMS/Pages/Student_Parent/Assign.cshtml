@@ -9,6 +9,7 @@
 
 }
 <h4>Assignment of Guardians to Students</h4>
+<h5>(Only those students who have 0 guardians assigned at the moment)</h5>
 <hr />
 <input type="hidden" id="selectedStudentId" value="@Model.SelectedStudent?.Student_Id" />
 <div class="container">
@@ -239,27 +240,16 @@
 
         console.log(added);
         console.log(studentId);
-        //let url = '/api/Students/ChangeStudentRoomAssignments';
-        //let data = { arrayOne: added, arrayTwo: removed };
-        //$.post(url, data, function (result) {
-        //    console.log(result);
-        //}).done(function () {
-        //    removed.forEach(function (item) {
-        //        let div = document.getElementById('div-' + item);
-        //        div.classList.remove("bg-danger");
-        //    });
-        //    added.forEach(function (item) {
-        //        let div = document.getElementById('div-' + item);
-        //        div.classList.remove("bg-success");
-        //    });
-        //    added = [];
-        //    removed = [];
-        //    document.getElementById("saveChangesButton").disabled = !(added.length + removed.length);
-        //    alert('success');
+        let url = '/api/Students/AssignGuardians';
+        let data = { arrayOne: [studentId], arrayTwo: added };
+        $.post(url, data, function (result) {
+            console.log(result);
+        }).done(function () {
+            window.location = window.location.pathname;
 
-        //    //$.gritter.add({ title: 'success', text: 'Saved successfully!' })
-        //}).fail(function (ajqXHR) {
-        //    alert(ajqXHR.responseText);
-        //});
+            //$.gritter.add({ title: 'success', text: 'Saved successfully!' })
+        }).fail(function (ajqXHR) {
+            alert(ajqXHR.responseText);
+        });
     }
 </script>
