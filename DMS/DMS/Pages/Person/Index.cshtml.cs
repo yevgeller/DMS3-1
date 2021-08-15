@@ -20,11 +20,12 @@ namespace DMS.Pages.Person
         }
 
         public IList<Models.Person> Person { get;set; }
-
+        public IList<Models.Persons_List> Persons_List { get; set; }
         public async Task OnGetAsync()
         {
             Person = await _context.Person
                 .Include(p => p.Person_Type).ToListAsync();
+            Persons_List = await _context.Persons_List.ToListAsync();
         }
     }
 }
