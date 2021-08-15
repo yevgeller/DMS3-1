@@ -89,6 +89,9 @@ Sort: @Model.CurrentSort
             <th>
                 <a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.RoomSort" asp-route-currentFilter="@Model.CurrentFilter">In Rooms</a>
             </th>
+            <th>
+                Guardians
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -115,6 +118,7 @@ Sort: @Model.CurrentSort
                 <td>
                     @item.AssignedToRooms
                 </td>
+                <td>@item.AssignedToParents</td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.Student_Id"><i class="fas fa-pencil-alt"></i></a> |
                     @if (item.Is_Active || item.AssignedToRooms != "N/A")
@@ -125,7 +129,6 @@ Sort: @Model.CurrentSort
                     {
                         <a asp-page="./Delete" asp-route-id="@item.Student_Id"><i class="fas fa-trash-alt"></i></a>
                     }
-
                 </td>
             </tr>
         }
