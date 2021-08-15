@@ -20,6 +20,7 @@ namespace DMS.Pages.Student
         }
 
         public Models.Student Student { get; set; }
+        public List<Models.Person> Guardians { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,6 +30,11 @@ namespace DMS.Pages.Student
             }
 
             Student = await _context.Student.FirstOrDefaultAsync(m => m.Student_Id == id);
+            Guardians = await _context.Parent_Student
+                .Where(x => x.Student_Id == id)
+                .Include(x => x.Person)
+                .Select(x => x.Person)
+                .ToListAsync();
 
             if (Student == null)
             {

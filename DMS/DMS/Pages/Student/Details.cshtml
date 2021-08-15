@@ -30,6 +30,23 @@
             @Html.DisplayFor(model => model.Student.Is_Active)
         </dd>
     </dl>
+
+    @if (!Model.Guardians.Any())
+    {
+        <div class="row d-flex p-2 text-md-center bg-light" style="justify-content:center; align-items:center;">
+            This student has no guardians assigned.
+        </div>
+    }
+    else
+    {
+        <h4>Assigned Guardians:</h4>
+        <ul>
+            @foreach (var p in Model.Guardians)
+            {
+                <li><a asp-page="/Person/Details" asp-route-id="@p.Person_Id">@p.Name</a></li>
+            }
+        </ul>
+    }
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Student.Student_Id">Edit</a> |
