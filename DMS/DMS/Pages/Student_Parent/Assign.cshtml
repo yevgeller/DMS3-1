@@ -13,192 +13,189 @@
 <hr />
 <input type="hidden" id="selectedStudentId" value="@Model.SelectedStudent?.Student_Id" />
 <div class="container">
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="row">
-                <div class="col-md-11">
-                    @if (Model.SelectedStudent != null)
-                    {
-                        @if (Model.Assigned_Parents.Any())
+    @if (!Model.Students_List.Any())
+    {
+        <div class="row d-flex p-2 text-md-center bg-light" style="justify-content:center; align-items:center;">
+            Every student has at least one guardian assigned. Check &nbsp;<a asp-page="/Student/Index">Students</a>&nbsp;or &nbsp;<a asp-page="/Person/Index">Guardians</a>&nbsp; for more details.
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="row">
+                    <div class="col-md-11">
+                        @if (Model.SelectedStudent != null)
                         {
-                            <div class="bg-warning p-3 mb-2">
-                                <div><strong>@Model.SelectedStudent.Name</strong> has these guardans assigned:</div>
-                                <ul>
-                                    @foreach (var p in Model.Assigned_Parents)
-                                    {
-                                        <li>@p.Person.Name</li>
-                                    }
-                                </ul>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="bg-info p-3 mb-2"><strong>@Model.SelectedStudent.Name</strong> has no guardians assigned</div>
-                        }
-                        <hr />
-                        <form method="post">
-                            <div class="form-actions no-color">
-                                <p>
-                                    Filter by name:
-                                    <input type="text"
-                                           asp-for="CurrentParentFilter"
-                                           name="ParentFilter" style="width:100px;"
-                                           value="@Model.CurrentParentFilter" />
-                                    <button type="submit" asp-page-handler="ChangedParentFilter"
-                                            asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
-                                            asp-route-parentFilter="@Model.CurrentParentFilter" class="btn btn-primary">
-                                        <i class="fas fa-filter"></i>
-                                    </button> |
-                                    <a class="btn btn-info" asp-page="./Assign"
-                                       asp-route-currentFilter="@Model.CurrentFilter"
-                                       asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"><i class="far fa-list-alt"></i></a>
-                                </p>
-                            </div>
-                        </form>
-                        <table>
-                            <tr>
-                                <th>Parent</th>
-                            </tr>
-                            @foreach (var pa in Model.AllGuardians)
+                            @if (Model.Assigned_Parents.Any())
                             {
-                                <tr>
-                                    <td>
-                                        <span class="form-check" id="@("parentSpan-" + pa.Person_Id.ToString() )">
-                                            <input type="checkbox" class="form-check-input" id="@("chb-" + pa.Person_Id.ToString() )" value="@pa.Name" onclick="save(@(pa.Person_Id))" />
-                                            <label class="form-check-label" for="@("chb-" + pa.Person_Id.ToString() )">@pa.Name @(pa.AssignedStudents == "None" ? "" : "(" + pa.AssignedStudents + ")")</label>
-                                        </span>
-                                    </td>
-                                </tr>
+                                <div class="bg-warning p-3 mb-2">
+                                    <div><strong>@Model.SelectedStudent.Name</strong> has these guardans assigned:</div>
+                                    <ul>
+                                        @foreach (var p in Model.Assigned_Parents)
+                                        {
+                                            <li>@p.Person.Name</li>
+                                        }
+                                    </ul>
+                                </div>
                             }
-                        </table>
+                            else
+                            {
+                                <div class="bg-info p-3 mb-2"><strong>@Model.SelectedStudent.Name</strong> has no guardians assigned</div>
+                            }
+                            <hr />
+                            <form method="post">
+                                <div class="form-actions no-color">
+                                    <p>
+                                        Filter by name:
+                                        <input type="text"
+                                               asp-for="CurrentParentFilter"
+                                               name="ParentFilter" style="width:100px;"
+                                               value="@Model.CurrentParentFilter" />
+                                        <button type="submit" asp-page-handler="ChangedParentFilter"
+                                                asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
+                                                asp-route-parentFilter="@Model.CurrentParentFilter" class="btn btn-primary">
+                                            <i class="fas fa-filter"></i>
+                                        </button> |
+                                        <a class="btn btn-info" asp-page="./Assign"
+                                           asp-route-currentFilter="@Model.CurrentFilter"
+                                           asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"><i class="far fa-list-alt"></i></a>
+                                    </p>
+                                </div>
+                            </form>
+                            <table>
+                                <tr>
+                                    <th>Parent</th>
+                                </tr>
+                                @foreach (var pa in Model.AllGuardians)
+                                {
+                                    <tr>
+                                        <td>
+                                            <span class="form-check" id="@("parentSpan-" + pa.Person_Id.ToString() )">
+                                                <input type="checkbox" class="form-check-input" id="@("chb-" + pa.Person_Id.ToString() )" value="@pa.Name" onclick="save(@(pa.Person_Id))" />
+                                                <label class="form-check-label" for="@("chb-" + pa.Person_Id.ToString() )">@pa.Name @(pa.AssignedStudents == "None" ? "" : "(" + pa.AssignedStudents + ")")</label>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
 
-                        <div class="row mt-1">
-                            <button id="assignGuardians" disabled class="btn btn-outline-success" onclick="saveToServer()"><i class="fas fa-save"></i>&nbsp;Save Guardians</button>
-                        </div>
-                    }
-                    @*<form method="post">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <input type="hidden" asp-for="Person_Student.Person_Student_Id" />
-                            <div class="form-group">
-                                <label asp-for="Person_Student.Person_Id" class="control-label"></label>
-                                <select asp-for="Person_Student.Person_Id" class="form-control" asp-items="ViewBag.Person_Id"></select>
-                                <span asp-validation-for="Person_Student.Person_Id" class="text-danger"></span>
+                            <div class="row mt-1">
+                                <button id="assignGuardians" disabled class="btn btn-outline-success" onclick="saveToServer()"><i class="fas fa-save"></i>&nbsp;Save Guardians</button>
                             </div>
-                            <div class="form-group">
-                                <label asp-for="Person_Student.Student_Id" class="control-label"></label>
-                                <select asp-for="Person_Student.Student_Id" class="form-control" asp-items="ViewBag.Student_Id"></select>
-                                <span asp-validation-for="Person_Student.Student_Id" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" value="Save" class="btn btn-primary" />
-                            </div>
-                        </form>*@
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- Students list/selection -->
-        <div class="col-sm-8">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            Birthdate
-                        </th>
-                        <th>
-                            In Rooms
-                        </th>
-                        <th>
-                            Assigned Guardians
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Students_List)
-                    {
+            <!-- Students list/selection -->
+            <div class="col-sm-8">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td>
-                                @if (Model.SelectedStudent?.Student_Id == item.Student_Id)
-                                {
-                                    <a class="btn btn-primary disabled">Select</a>
-                                }
-                                else
-                                {
-                                    <a asp-page="./Assign" asp-route-id="@item.Student_Id"
-                                       asp-route-pageIndex="@(Model.Students_List.PageIndex)"
-                                       asp-route-currentFilter="@Model.CurrentFilter"
-                                       asp-route-selectedStudent="@item.Student_Id"
-                                       class="btn btn-primary">Select</a>
-                                }
-                            </td>
-                            <td>
-                                <a asp-page="./Details" asp-route-id="@item.Student_Id">@item.Student_Name</a>
-                            </td>
-                            <td>
-                                @item.Birthdate.ToShortDateString()
-                            </td>
-                            <td>
-                                @item.AssignedToRooms
-                            </td>
-                            <td>
-                                @item.AssignedToParents
-                            </td>
+                            <th></th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Birthdate
+                            </th>
+                            <th>
+                                In Rooms
+                            </th>
+                            <th>
+                                Assigned Guardians
+                            </th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-            <form asp-page="./Assign" method="get">
-                <div class="form-actions no-color">
-                    <p>
-                        Find by name or room:
-                        <input type="text" name="SearchString" value="@Model.CurrentFilter" />
-                        <input type="submit" value="Search" class="btn btn-primary" /> |
-                        <a asp-page="./Assign" asp-route-selectedStudent="@Model.SelectedStudent">Full List</a>
-                    </p>
-                </div>
-            </form>
-            <div>
-                <ul class="pagination">
-                    <li class="page-item @allPaginationDisabled">
-                        <a asp-page="./Assign"
-                           asp-route-pageIndex="1"
-                           asp-route-currentFilter="@Model.CurrentFilter"
-                           asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
-                           class="page-link"><i class="fas fa-fast-backward"></i></a>
-                    </li>
-                    <li class="page-item @prevDisabled">
-                        <a asp-page="./Assign"
-                           asp-route-pageIndex="@(Model.Students_List.PageIndex - 1)"
-                           asp-route-currentFilter="@Model.CurrentFilter"
-                           asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
-                           class="page-link">
-                            <i class="fas fa-step-backward"></i>
-                        </a>
-                    </li>
-                    <li class="page-item disabled">
-                        <a class="page-link" disabled>@Model.PagerInfo</a>
-                    </li>
-                    <li class="page-item @nextDisabled">
-                        <a asp-page="./Assign"
-                           asp-route-pageIndex="@(Model.Students_List.PageIndex + 1)"
-                           asp-route-currentFilter="@Model.CurrentFilter"
-                           asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
-                           class="page-link"><i class="fas fa-step-forward"></i></a>
-                    </li>
-                    <li class="page-item @allPaginationDisabled">
-                        <a asp-page="./Assign"
-                           asp-route-pageIndex="@Model.TotalPages"
-                           asp-route-currentFilter="@Model.CurrentFilter"
-                           asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
-                           class="page-link"><i class="fas fa-fast-forward"></i></a>
-                    </li>
-                </ul>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Students_List)
+                        {
+                            <tr>
+                                <td>
+                                    @if (Model.SelectedStudent?.Student_Id == item.Student_Id)
+                                    {
+                                        <a class="btn btn-primary disabled">Select</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-page="./Assign" asp-route-id="@item.Student_Id"
+                                           asp-route-pageIndex="@(Model.Students_List.PageIndex)"
+                                           asp-route-currentFilter="@Model.CurrentFilter"
+                                           asp-route-selectedStudent="@item.Student_Id"
+                                           class="btn btn-primary">Select</a>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-page="./Details" asp-route-id="@item.Student_Id">@item.Student_Name</a>
+                                </td>
+                                <td>
+                                    @item.Birthdate.ToShortDateString()
+                                </td>
+                                <td>
+                                    @item.AssignedToRooms
+                                </td>
+                                <td>
+                                    @item.AssignedToParents
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @Model.Students_List.TotalRecordsCount ; @Model.PageSize
+
+                @if (Model.Students_List.TotalRecordsCount > Model.PageSize)
+                {
+                    <form asp-page="./Assign" method="get">
+                        <div class="form-actions no-color">
+                            <p>
+                                Find by name or room:
+                                <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+                                <input type="submit" value="Search" class="btn btn-primary" /> |
+                                <a asp-page="./Assign" asp-route-selectedStudent="@Model.SelectedStudent">Full List</a>
+                            </p>
+                        </div>
+                    </form>
+                    <div>
+                        <ul class="pagination">
+                            <li class="page-item @allPaginationDisabled">
+                                <a asp-page="./Assign"
+                                   asp-route-pageIndex="1"
+                                   asp-route-currentFilter="@Model.CurrentFilter"
+                                   asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
+                                   class="page-link"><i class="fas fa-fast-backward"></i></a>
+                            </li>
+                            <li class="page-item @prevDisabled">
+                                <a asp-page="./Assign"
+                                   asp-route-pageIndex="@(Model.Students_List.PageIndex - 1)"
+                                   asp-route-currentFilter="@Model.CurrentFilter"
+                                   asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
+                                   class="page-link">
+                                    <i class="fas fa-step-backward"></i>
+                                </a>
+                            </li>
+                            <li class="page-item disabled">
+                                <a class="page-link" disabled>@Model.PagerInfo</a>
+                            </li>
+                            <li class="page-item @nextDisabled">
+                                <a asp-page="./Assign"
+                                   asp-route-pageIndex="@(Model.Students_List.PageIndex + 1)"
+                                   asp-route-currentFilter="@Model.CurrentFilter"
+                                   asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
+                                   class="page-link"><i class="fas fa-step-forward"></i></a>
+                            </li>
+                            <li class="page-item @allPaginationDisabled">
+                                <a asp-page="./Assign"
+                                   asp-route-pageIndex="@Model.TotalPages"
+                                   asp-route-currentFilter="@Model.CurrentFilter"
+                                   asp-route-selectedStudent="@Model.SelectedStudent?.Student_Id"
+                                   class="page-link"><i class="fas fa-fast-forward"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                }
             </div>
         </div>
-    </div>
+    }
 </div>
 
 

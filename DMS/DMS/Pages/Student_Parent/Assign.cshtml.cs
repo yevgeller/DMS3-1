@@ -24,19 +24,17 @@ namespace DMS.Pages.Student_Parent
         public Person_Student Person_Student { get; set; }
         public PaginatedList<Students_List> Students_List { get; set; }
         public int PageSize { get; set; } = 5;
-        public int Count { get; set; }
         public int TotalPages => (int)Math.Ceiling(decimal.Divide(Students_List.TotalRecordsCount, PageSize));
         public string CurrentFilter { get; set; }
         public string CurrentParentFilter { get; set; }
         public Models.Student SelectedStudent { get; set; }
-        //public List<Models.Person> Unselected_Parents { get; set; }
         public List<Models.Person_Student> Assigned_Parents { get; set; }
         public List<Models.Guardians_List> AllGuardians { get; set; }
         public string PagerInfo
         {
             get
             {
-                return $"Page {Students_List.PageIndex} of {Students_List.TotalPages} ({Students_List.TotalRecordsCount} record{(Students_List.TotalRecordsCount > 1 ? "s" : "")})";
+                return $"Page {Students_List.PageIndex} of {Students_List.TotalPages} ({Students_List.TotalRecordsCount} record{(Students_List.TotalRecordsCount == 1 ? "" : "s")})";
             }
         }
         public async Task<IActionResult> OnGetAsync(string currentFilter, string searchString, int? selectedStudent, int? pageIndex, string? parentFilter, int? id = 1)
@@ -113,39 +111,39 @@ namespace DMS.Pages.Student_Parent
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
+        //// more details, see https://aka.ms/RazorPagesCRUD.
+        //public async Task<IActionResult> OnPostAsync()
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return Page();
+        //    }
 
-            _context.Attach(Person_Student).State = EntityState.Modified;
+        //    _context.Attach(Person_Student).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!Person_StudentExists(Person_Student.Person_Student_Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!Person_StudentExists(Person_Student.Person_Student_Id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return RedirectToPage("./Index");
-        }
+        //    return RedirectToPage("./Index");
+        //}
 
-        private bool Person_StudentExists(int id)
-        {
-            return _context.Parent_Student.Any(e => e.Person_Student_Id == id);
-        }
+        //private bool Person_StudentExists(int id)
+        //{
+        //    return _context.Parent_Student.Any(e => e.Person_Student_Id == id);
+        //}
     }
 }
