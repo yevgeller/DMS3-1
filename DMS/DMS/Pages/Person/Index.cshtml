@@ -14,39 +14,55 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Person[0].Name)
+                <a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.SortByName" asp-route-currentFilter="@Model.CurrentFilter">Name</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Person[0].Is_Active)
+                <a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.SortByActive" asp-route-currentFilter="@Model.CurrentFilter">Active?</a>
+
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Person[0].Person_Type)
+                <a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.SortByPersonType" asp-route-currentFilter="@Model.CurrentFilter">Type</a>
+
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Person[0].Password)
+                <a asp-page="./Index" class="sort-link" asp-route-sortOrder="@Model.SortByAdditionalData" asp-route-currentFilter="@Model.CurrentFilter">Additional Data</a>
+
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Person) {
+@foreach (var item in Model.Persons_List) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                <a asp-page="./Details" asp-route-id="@item.Person_Id">@item.Name</a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Is_Active)
+                @if (item.Is_Active)
+                {
+                    <span>Yes</span>
+                }
+                else
+                {
+                    <span>No</span>
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Person_Type.Name)
+                @item.Person_Type_Name
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Password)
+                @item.Person_Qualifier
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Person_Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Person_Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Person_Id">Delete</a>
+                <a asp-page="./Edit" asp-route-id="@item.Person_Id"><i class="fas fa-pencil-alt"></i></a> |
+                @if (item.Is_Active || item.Person_Qualifier.ToLower() != "none")
+                {
+                    <span title="Set active flag to false and remove this person from any assignments before deleting."><i class="fas fa-trash-alt"></i></span>
+                }
+                else
+                {
+                    <a asp-page="./Delete" asp-route-id="@item.Person_Id"><i class="fas fa-trash-alt"></i></a>
+                }
             </td>
         </tr>
 }
