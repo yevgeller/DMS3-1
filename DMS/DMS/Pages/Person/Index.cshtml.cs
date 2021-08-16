@@ -18,17 +18,27 @@ namespace DMS.Pages.Person
         {
             _context = context;
         }
-
         public IList<Models.Person> Person { get;set; }
-        public IList<Models.Persons_List> Persons_List { get; set; }
+        public PaginatedList<Models.Persons_List> Persons_List { get; set; }
         public string SortByName { get; set; }
         public string SortByActive { get; set; }
         public string SortByPersonType { get; set; }
         public string SortByAdditionalData { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
-        public int PageSize { get; set; } = 200;
-        
+        [BindProperty(SupportsGet = true)]
+        public int PageSize { get; set; }
+        public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
+        public int Count { get; set; }
+        public string PagerInfo
+        {
+            get
+            {
+                return $"Page {Persons_List.PageIndex} of {TotalPages} ({this.Count} record{(this.Count > 1 ? "s" : "")})";
+            }
+        }
+
+
         public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex)
         {
             CurrentSort = sortOrder;
@@ -86,7 +96,8 @@ namespace DMS.Pages.Person
             //    .Include(p => p.Person_Type).ToListAsync();
             Persons_List = await PaginatedList<Persons_List>
                 .CreateAsync(list.AsNoTracking(), pageIndex ?? 1, PageSize);
-            
+
+            this.Count = Persons_List.TotalRecordsCount;
         }
     }
 }

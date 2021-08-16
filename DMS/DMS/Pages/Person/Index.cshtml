@@ -1,8 +1,13 @@
-﻿@page
+﻿@page "{pageSize:int=10}"
 @model DMS.Pages.Person.IndexModel
 
 @{
     ViewData["Title"] = "Index";
+    var prevDisabled = !Model.Persons_List.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Persons_List.HasNextPage ? "disabled" : "";
+    var allPaginationDisabled = Model.Persons_List.TotalPages < 2 ? "disabled" : "";
+    var tenDisabled = Model.PageSize == 10 ? "disabled" : "";
+    var twentyDisabled = Model.PageSize == 20 ? "disabled" : "";
 }
 
 <h1>System Personnel</h1>
@@ -32,39 +37,87 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Persons_List) {
-        <tr>
-            <td>
-                <a asp-page="./Details" asp-route-id="@item.Person_Id">@item.Name</a>
-            </td>
-            <td>
-                @if (item.Is_Active)
-                {
-                    <span>Yes</span>
-                }
-                else
-                {
-                    <span>No</span>
-                }
-            </td>
-            <td>
-                @item.Person_Type_Name
-            </td>
-            <td>
-                @item.Person_Qualifier
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Person_Id"><i class="fas fa-pencil-alt"></i></a> |
-                @if (item.Is_Active || item.Person_Qualifier.ToLower() != "none")
-                {
-                    <span title="Set active flag to false and remove this person from any assignments before deleting."><i class="fas fa-trash-alt"></i></span>
-                }
-                else
-                {
-                    <a asp-page="./Delete" asp-route-id="@item.Person_Id"><i class="fas fa-trash-alt"></i></a>
-                }
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Persons_List)
+        {
+            <tr>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@item.Person_Id">@item.Name</a>
+                </td>
+                <td>
+                    @if (item.Is_Active)
+                    {
+                        <span>Yes</span>
+                    }
+                    else
+                    {
+                        <span>No</span>
+                    }
+                </td>
+                <td>
+                    @item.Person_Type_Name
+                </td>
+                <td>
+                    @item.Person_Qualifier
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Person_Id"><i class="fas fa-pencil-alt"></i></a> |
+                    @if (item.Is_Active || item.Person_Qualifier.ToLower() != "none")
+                    {
+                        <span title="Set active flag to false and remove this person from any assignments before deleting."><i class="fas fa-trash-alt"></i></span>
+                    }
+                    else
+                    {
+                        <a asp-page="./Delete" asp-route-id="@item.Person_Id"><i class="fas fa-trash-alt"></i></a>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+
+<div>
+    <ul class="pagination">
+        <li class="page-item @allPaginationDisabled">
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-pageIndex="1"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               class="page-link"><i class="fas fa-fast-backward"></i></a>
+        </li>
+        <li class="page-item @prevDisabled">
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-pageIndex="@(Model.Persons_List.PageIndex - 1)"
+               asp-route-currentFilter="@Model.CurrentFilter" class="page-link">
+                <i class="fas fa-step-backward"></i>
+            </a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" disabled>@Model.PagerInfo</a>
+        </li>
+        <li class="page-item @nextDisabled">
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-pageIndex="@(Model.Persons_List.PageIndex + 1)"
+               asp-route-currentFilter="@Model.CurrentFilter" class="page-link"><i class="fas fa-step-forward"></i></a>
+        </li>
+        <li class="page-item @allPaginationDisabled">
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-pageIndex="@Model.TotalPages"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               class="page-link"><i class="fas fa-fast-forward"></i></a>
+        </li>
+        <li>
+            <a asp-page="./Index" class="btn btn-primary ml-1 @tenDisabled" asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               asp-route-pageSize="10">10 per page</a>
+        </li>
+        <li>
+            <a asp-page="./Index" class="btn btn-primary ml-1 @twentyDisabled" asp-route-sortOrder="@Model.CurrentSort"
+               asp-route-currentFilter="@Model.CurrentFilter"
+               asp-route-pageSize="20">20 per page</a>
+        </li>
+    </ul>
+</div>

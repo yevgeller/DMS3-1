@@ -48,11 +48,6 @@ namespace DMS.Pages.Student
         [BindProperty(SupportsGet = true)]
         public int PageSize { get; set; }
         public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
-        //public List<Models.Person> Data { get; set; }
-        //public bool ShowPrevious => CurrentPage > 1;
-        //public bool ShowNext => CurrentPage < TotalPages;
-        //public bool ShowFirst => CurrentPage != 1;
-        //public bool ShowLast => CurrentPage != TotalPages;
         public PaginatedList<Students_List> Students_List { get; set; }
         public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex)
         {
