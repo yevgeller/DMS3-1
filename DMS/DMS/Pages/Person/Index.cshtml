@@ -10,11 +10,44 @@
     var twentyDisabled = Model.PageSize == 20 ? "disabled" : "";
 }
 
-<h1>System Personnel</h1>
-
-<p>
+<h1>System Personnel</h1><p>
     <a asp-page="Create">Create New Person Record</a>
 </p>
+<form method="post">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <div class="form-group">
+                    <select asp-for="SelectedFilterPersonTypeId" class="form-control" asp-items="ViewBag.Person_Types">
+                        <option value="0">-- Choose Person Type --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    <input type="checkbox" class="form-check-input" id="filterActiveOnly" checked="@Model.SelectedFilterCheckedActive" />
+                    <label for="filterActiveOnly" class="form-check-label">Active?</label>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    Other filter here
+                </div>
+            </div>
+            <div class="col-sm">
+                <button type="submit" asp-page-handler="Filtered"
+                        asp-route-sortOrder="@Model.CurrentSort"
+                        asp-route-pageIndex="1"
+                        asp-route-currentFilter="@Model.CurrentFilter">
+                    <i class="fas fa-filter"></i>
+                </button>
+            </div>
+
+
+        </div>
+    </div>
+</form>
+
 <form asp-page="./Index" method="get">
     <div class="form-actions no-color">
         <p>
@@ -93,13 +126,16 @@
                asp-route-sortOrder="@Model.CurrentSort"
                asp-route-pageIndex="1"
                asp-route-currentFilter="@Model.CurrentFilter"
+               asp-route-selectedFilterPersonTypeId="@Model.SelectedFilterPersonTypeId"
                class="page-link"><i class="fas fa-fast-backward"></i></a>
         </li>
         <li class="page-item @prevDisabled">
             <a asp-page="./Index"
                asp-route-sortOrder="@Model.CurrentSort"
                asp-route-pageIndex="@(Model.Persons_List.PageIndex - 1)"
-               asp-route-currentFilter="@Model.CurrentFilter" class="page-link">
+               asp-route-currentFilter="@Model.CurrentFilter"
+               asp-route-selectedFilterPersonTypeId="@Model.SelectedFilterPersonTypeId"
+               class="page-link">
                 <i class="fas fa-step-backward"></i>
             </a>
         </li>
@@ -110,6 +146,7 @@
             <a asp-page="./Index"
                asp-route-sortOrder="@Model.CurrentSort"
                asp-route-pageIndex="@(Model.Persons_List.PageIndex + 1)"
+               asp-route-selectedFilterPersonTypeId="@Model.SelectedFilterPersonTypeId"
                asp-route-currentFilter="@Model.CurrentFilter" class="page-link"><i class="fas fa-step-forward"></i></a>
         </li>
         <li class="page-item @allPaginationDisabled">
@@ -117,16 +154,19 @@
                asp-route-sortOrder="@Model.CurrentSort"
                asp-route-pageIndex="@Model.TotalPages"
                asp-route-currentFilter="@Model.CurrentFilter"
+               asp-route-selectedFilterPersonTypeId="@Model.SelectedFilterPersonTypeId"
                class="page-link"><i class="fas fa-fast-forward"></i></a>
         </li>
         <li>
             <a asp-page="./Index" class="btn btn-primary ml-1 @tenDisabled" asp-route-sortOrder="@Model.CurrentSort"
                asp-route-currentFilter="@Model.CurrentFilter"
+               asp-route-selectedFilterPersonTypeId="@Model.SelectedFilterPersonTypeId"
                asp-route-pageSize="10">10 per page</a>
         </li>
         <li>
             <a asp-page="./Index" class="btn btn-primary ml-1 @twentyDisabled" asp-route-sortOrder="@Model.CurrentSort"
                asp-route-currentFilter="@Model.CurrentFilter"
+               asp-route-selectedFilterPersonTypeId="@Model.SelectedFilterPersonTypeId"
                asp-route-pageSize="20">20 per page</a>
         </li>
     </ul>

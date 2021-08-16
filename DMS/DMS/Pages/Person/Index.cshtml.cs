@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using DMS.Data;
 using DMS.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMS.Pages.Person
 {
@@ -37,9 +38,22 @@ namespace DMS.Pages.Person
                 return $"Page {Persons_List.PageIndex} of {TotalPages} ({this.Count} record{(this.Count > 1 ? "s" : "")})";
             }
         }
+        public int SelectedFilterPersonTypeId { get; set; }
+        public bool SelectedFilterCheckedActive { get; set; }
 
+        public async Task OnPostFilteredAsync(string sortOrder, string currentFilter, string searchString, 
+            int selectedFilterPersonTypeId, bool selectedFilterCheckedActive, int? pageIndex)
+        {
+            await ProcessPageAsync(sortOrder, currentFilter, searchString, selectedFilterPersonTypeId, pageIndex);
+        }
+        public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, 
+            int selectedFilterPersonTypeId, int? pageIndex)
+        {
+            await ProcessPageAsync(sortOrder, currentFilter, searchString, selectedFilterPersonTypeId, pageIndex);
+        }
 
-        public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex)
+        private async Task ProcessPageAsync(string sortOrder, string currentFilter, string searchString, 
+            int selectedFilterPersonTypeId, int? pageIndex)
         {
             CurrentSort = sortOrder;
             SortByName = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "Name";
@@ -64,7 +78,13 @@ namespace DMS.Pages.Person
                                         s.Person_Qualifier.ToLower().Contains(searchString.ToLower()));
             }
 
-            switch(sortOrder)
+            if(selectedFilterPersonTypeId > 0)
+            {
+                list = list.Where(p => p.Person_Type_Id == selectedFilterPersonTypeId);
+                SelectedFilterPersonTypeId = selectedFilterPersonTypeId;
+            }
+
+            switch (sortOrder)
             {
                 case "name_desc":
                     list = list.OrderByDescending(p => p.Name);
@@ -92,12 +112,14 @@ namespace DMS.Pages.Person
                     list = list.OrderBy(p => p.Name);
                     break;
             }
-            //Person = await _context.Person
-            //    .Include(p => p.Person_Type).ToListAsync();
-            Persons_List = await PaginatedList<Persons_List>
-                .CreateAsync(list.AsNoTracking(), pageIndex ?? 1, PageSize);
+
+            Persons_List = await PaginatedList<Persons_List>.CreateAsync(list.AsNoTracking(), pageIndex ?? 1, PageSize);
 
             this.Count = Persons_List.TotalRecordsCount;
+
+            ViewData["Person_Types"] = new SelectList(_context.Person_Type.OrderBy(x=>x.Name), 
+                "Person_Type_Id", "Name", selectedValue: selectedFilterPersonTypeId);
+            //ViewData["Student_Id"] = new SelectList(_context.Student, "Student_Id", "Name");
         }
     }
 }
