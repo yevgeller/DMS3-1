@@ -59,7 +59,7 @@ namespace DMS.Pages.Person
         }
 
         private async Task ProcessPageAsync(string sortOrder, string currentFilter, string searchString, 
-            int selectedFilterPersonTypeId, bool selectedFilterCheckedInactive, int selectedFilterPersonnelActiveStatus, int pageIndex = 1)
+            int selectedFilterPersonTypeId, bool selectedFilterCheckedInactive, int selectedFilterPersonnelActiveStatus, int pageIndex)
         {
             CurrentSort = sortOrder;
             SortByName = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "Name";
@@ -70,6 +70,8 @@ namespace DMS.Pages.Person
             SelectedFilterPersonnelActiveStatus = selectedFilterPersonnelActiveStatus;
 
             IQueryable<Persons_List> list = from p in _context.Persons_List select p;
+            if (pageIndex == 0) pageIndex = 1;
+
             if (searchString != null)
             {
                 pageIndex = 1;
