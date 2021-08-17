@@ -9,6 +9,10 @@
     var tenDisabled = Model.PageSize == 10 ? "disabled" : "";
     var twentyDisabled = Model.PageSize == 20 ? "disabled" : "";
 }
+get rid of uneeded arguments
+move search into the filters panel
+make it look nice
+add items per page to filters
 
 <h1>System Personnel</h1><p>
     <a asp-page="Create">Create New Person Record</a>
@@ -25,22 +29,20 @@
             </div>
             <div class="col-sm">
                 <div class="form-group">
-                    <input type="checkbox" class="form-check-input" id="filterInactiveOnly" checked="@Model.SelectedFilterCheckedInactive" asp-for="SelectedFilterCheckedInactive" />
-                    <label for="filterInactiveOnly" class="form-check-label">Include inactive?</label>
+                    <select asp-for="SelectedFilterPersonnelActiveStatus" class="form-control" asp-items="@Model.PersonnelActiveStatusOptions"></select>
                 </div>
             </div>
             <div class="col-sm">
-                <div class="form-group">
-                    Other filter here
-                </div>
-            </div>
-            <div class="col-sm">
-                <button type="submit" asp-page-handler="Filtered"
+                <button class="btn btn-primary" type="submit" 
+                        asp-page-handler="Filtered"
                         asp-route-sortOrder="@Model.CurrentSort"
                         asp-route-pageIndex="1"
                         asp-route-currentFilter="@Model.CurrentFilter">
                     <i class="fas fa-filter"></i>Filter
                 </button>
+            </div>
+            <div class="col-sm">
+                <a class="btn btn-secondary" asp-page="./Index"><i class="fas fa-list-alt"></i>Clear Filters</a>
             </div>
         </div>
     </div>

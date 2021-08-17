@@ -40,20 +40,26 @@ namespace DMS.Pages.Person
         }
         public int SelectedFilterPersonTypeId { get; set; }
         public bool SelectedFilterCheckedInactive { get; set; }
+        public List<SelectListItem> PersonnelActiveStatusOptions { get; set; }
+        public int SelectedFilterPersonnelActiveStatus { get; set; }
 
         public async Task OnPostFilteredAsync(string sortOrder, string currentFilter, string searchString, 
-            int selectedFilterPersonTypeId, bool selectedFilterCheckedInactive, int pageIndex)
+            int selectedFilterPersonTypeId, bool selectedFilterCheckedInactive, int selectedFilterPersonnelActiveStatus,
+            int pageIndex)
         {
-            await ProcessPageAsync(sortOrder, currentFilter, searchString, selectedFilterPersonTypeId, selectedFilterCheckedInactive, pageIndex);
+            await ProcessPageAsync(sortOrder, currentFilter, searchString, selectedFilterPersonTypeId,
+                selectedFilterCheckedInactive, selectedFilterPersonnelActiveStatus, pageIndex);
         }
         public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, 
-            int selectedFilterPersonTypeId, bool selectedFilterCheckedInactive, int pageIndex)
+            int selectedFilterPersonTypeId, bool selectedFilterCheckedInactive, int selectedFilterPersonnelActiveStatus,
+            int pageIndex)
         {
-            await ProcessPageAsync(sortOrder, currentFilter, searchString, selectedFilterPersonTypeId, selectedFilterCheckedInactive, pageIndex);
+            await ProcessPageAsync(sortOrder, currentFilter, searchString, selectedFilterPersonTypeId, 
+                selectedFilterCheckedInactive, selectedFilterPersonnelActiveStatus, pageIndex);
         }
 
         private async Task ProcessPageAsync(string sortOrder, string currentFilter, string searchString, 
-            int selectedFilterPersonTypeId, bool selectedFilterCheckedInactive, int pageIndex = 1)
+            int selectedFilterPersonTypeId, bool selectedFilterCheckedInactive, int selectedFilterPersonnelActiveStatus, int pageIndex = 1)
         {
             CurrentSort = sortOrder;
             SortByName = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "Name";
@@ -61,6 +67,7 @@ namespace DMS.Pages.Person
             SortByPersonType = sortOrder == "Type" ? "type_desc" : "Type";
             SortByAdditionalData = sortOrder == "data" ? "data_desc" : "data";
             SelectedFilterCheckedInactive = selectedFilterCheckedInactive;
+            SelectedFilterPersonnelActiveStatus = selectedFilterPersonnelActiveStatus;
 
             IQueryable<Persons_List> list = from p in _context.Persons_List select p;
             if (searchString != null)
@@ -85,9 +92,17 @@ namespace DMS.Pages.Person
                 SelectedFilterPersonTypeId = selectedFilterPersonTypeId;
             }
 
-            if (selectedFilterCheckedInactive == false)
+            if(selectedFilterPersonnelActiveStatus > 0)
             {
-                list = list.Where(p => p.Is_Active == true);
+                switch (selectedFilterPersonnelActiveStatus)
+                {
+                    case 1:
+                        list = list.Where(p => p.Is_Active == true);
+                        break;
+                    default:
+                        list = list.Where(p => p.Is_Active == false);
+                        break;
+                }
             }
 
             switch (sortOrder)
@@ -126,6 +141,15 @@ namespace DMS.Pages.Person
             ViewData["Person_Types"] = new SelectList(_context.Person_Type.OrderBy(x=>x.Name), 
                 "Person_Type_Id", "Name", selectedValue: selectedFilterPersonTypeId);
             //ViewData["Student_Id"] = new SelectList(_context.Student, "Student_Id", "Name");
+            CreateYesNoOptionsList();
+        }
+
+        private void CreateYesNoOptionsList()
+        {
+            SelectListItem zero = new SelectListItem { Text = "-- Choose Personnel Status --", Value = "0" };
+            SelectListItem one = new SelectListItem { Text = "Active Only", Value = "1" };
+            SelectListItem two = new SelectListItem { Text = "Inactive Only", Value = "2" };
+            PersonnelActiveStatusOptions = new List<SelectListItem> { zero, one, two };
         }
     }
 }
