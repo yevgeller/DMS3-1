@@ -25,8 +25,8 @@
             </div>
             <div class="col-sm">
                 <div class="form-group">
-                    <input type="checkbox" class="form-check-input" id="filterActiveOnly" checked="@Model.SelectedFilterCheckedActive" />
-                    <label for="filterActiveOnly" class="form-check-label">Active?</label>
+                    <input type="checkbox" class="form-check-input" id="filterInactiveOnly" checked="@Model.SelectedFilterCheckedInactive" asp-for="SelectedFilterCheckedInactive" />
+                    <label for="filterInactiveOnly" class="form-check-label">Include inactive?</label>
                 </div>
             </div>
             <div class="col-sm">
@@ -39,11 +39,9 @@
                         asp-route-sortOrder="@Model.CurrentSort"
                         asp-route-pageIndex="1"
                         asp-route-currentFilter="@Model.CurrentFilter">
-                    <i class="fas fa-filter"></i>
+                    <i class="fas fa-filter"></i>Filter
                 </button>
             </div>
-
-
         </div>
     </div>
 </form>

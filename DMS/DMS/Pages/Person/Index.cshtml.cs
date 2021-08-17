@@ -39,27 +39,28 @@ namespace DMS.Pages.Person
             }
         }
         public int SelectedFilterPersonTypeId { get; set; }
-        public bool SelectedFilterCheckedActive { get; set; }
+        public bool SelectedFilterCheckedInactive { get; set; }
 
         public async Task OnPostFilteredAsync(string sortOrder, string currentFilter, string searchString, 
-            int selectedFilterPersonTypeId, bool selectedFilterCheckedActive, int? pageIndex)
+            int selectedFilterPersonTypeId, bool selectedFilterCheckedInactive, int pageIndex)
         {
-            await ProcessPageAsync(sortOrder, currentFilter, searchString, selectedFilterPersonTypeId, pageIndex);
+            await ProcessPageAsync(sortOrder, currentFilter, searchString, selectedFilterPersonTypeId, selectedFilterCheckedInactive, pageIndex);
         }
         public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, 
-            int selectedFilterPersonTypeId, int? pageIndex)
+            int selectedFilterPersonTypeId, bool selectedFilterCheckedInactive, int pageIndex)
         {
-            await ProcessPageAsync(sortOrder, currentFilter, searchString, selectedFilterPersonTypeId, pageIndex);
+            await ProcessPageAsync(sortOrder, currentFilter, searchString, selectedFilterPersonTypeId, selectedFilterCheckedInactive, pageIndex);
         }
 
         private async Task ProcessPageAsync(string sortOrder, string currentFilter, string searchString, 
-            int selectedFilterPersonTypeId, int? pageIndex)
+            int selectedFilterPersonTypeId, bool selectedFilterCheckedInactive, int pageIndex = 1)
         {
             CurrentSort = sortOrder;
             SortByName = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "Name";
             SortByActive = sortOrder == "Is_Active" ? "is_active_desc" : "Is_Active";
             SortByPersonType = sortOrder == "Type" ? "type_desc" : "Type";
             SortByAdditionalData = sortOrder == "data" ? "data_desc" : "data";
+            SelectedFilterCheckedInactive = selectedFilterCheckedInactive;
 
             IQueryable<Persons_List> list = from p in _context.Persons_List select p;
             if (searchString != null)
@@ -82,6 +83,11 @@ namespace DMS.Pages.Person
             {
                 list = list.Where(p => p.Person_Type_Id == selectedFilterPersonTypeId);
                 SelectedFilterPersonTypeId = selectedFilterPersonTypeId;
+            }
+
+            if (selectedFilterCheckedInactive == false)
+            {
+                list = list.Where(p => p.Is_Active == true);
             }
 
             switch (sortOrder)
@@ -113,7 +119,7 @@ namespace DMS.Pages.Person
                     break;
             }
 
-            Persons_List = await PaginatedList<Persons_List>.CreateAsync(list.AsNoTracking(), pageIndex ?? 1, PageSize);
+            Persons_List = await PaginatedList<Persons_List>.CreateAsync(list.AsNoTracking(), pageIndex, PageSize);
 
             this.Count = Persons_List.TotalRecordsCount;
 
