@@ -23,6 +23,7 @@ namespace DMS.Data
         public DbSet<Person_Student> Parent_Student { get; set; }
         public DbSet<Guardians_List> Guardians_List { get; set; }
         public DbSet<Persons_List> Persons_List { get; set; }
+        public DbSet<PersonnelContact_List> PersonnelContact_List { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
@@ -36,6 +37,7 @@ namespace DMS.Data
             modelBuilder.Entity<Guardians_List>().ToView(nameof(Guardians_List)).HasKey(v => v.Person_Id);
             modelBuilder.Entity<Students_OutOfRoomAgeBracket_List>(x => { x.ToView("Students_OutOfRoomAgeBracket_List"); x.HasKey("Room_Id"); });
             modelBuilder.Entity<Persons_List>().ToView(nameof(Persons_List)).HasKey(v => v.Person_Id);
+            modelBuilder.Entity<PersonnelContact_List>(x => { x.ToView(nameof(PersonnelContact_List)); x.HasKey("Contact_Id"); });
         }
     }
 }

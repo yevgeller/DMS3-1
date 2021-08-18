@@ -1,0 +1,14 @@
+﻿--Adding Contact info for Parents
+--Email
+INSERT INTO Contact (Contact_Type_Id, Person_Id, Value)
+SELECT 1, P.Person_Id, replace(replace(replace(replace(p.Name, ',', ''), 'Mr. ', ''), 'Ms. ', ''), ' ', '.') 
+	|| '_' || replace(PT.Name, ' ', '.') || '@dms.com' Email from Person P
+JOIN Person_Type PT ON P.Person_Type_Id = PT.Person_Type_Id 
+
+--Phone (Voice/message)
+INSERT INTO Contact (Contact_Type_Id, Person_Id, Value)
+SELECT 
+	(SELECT Contact_Type_Id FROM Contact_Type WHERE lower(Name) = 'phone (voice/message)') Type, 
+	P.Person_Id, 
+	7035018000 + ROW_NUMBER () OVER (ORDER BY P.Person_Id) RowNum
+FROM Person P
