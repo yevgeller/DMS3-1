@@ -25,6 +25,10 @@ namespace DMS.Pages.Person
         public int SelectedContactTypeId { get; set; }
         public List<SelectListItem> Contact_Types { get; set; }
         public string NewContactValue { get; set; }
+        public string NewEmailValue { get; set; }
+        public string NewPhoneVoiceTextValue { get; set; }
+        public string NewPhoneVoiceValue { get; set; }
+        public string NewPhoneTextValue { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int selectedContactTypeId, string newContactValue, int? id)
         {

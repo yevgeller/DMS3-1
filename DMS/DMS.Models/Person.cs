@@ -20,6 +20,7 @@ namespace DMS.Models
         public bool Is_Active { get; set; }
         [ForeignKey("Person_Type"), Display(Name = "Person Type")]
         public int Person_Type_Id { get; set; }
+        [Display(Name="Person Type")]
         public Person_Type Person_Type { get; set; }
         public string Password { get; set; }
         public virtual string ForDisplay()
