@@ -38,8 +38,8 @@ namespace DMS.Pages.Contact
             {
                 return NotFound();
             }
-           ViewData["Contact_Type_Id"] = new SelectList(_context.Contact_Type, "Contact_Type_Id", "Name");
-           ViewData["Person_Id"] = new SelectList(_context.Person, "Id", "Name");
+            ViewData["Contact_Type_Id"] = new SelectList(_context.Contact_Type, "Contact_Type_Id", "Name");
+            ViewData["Person_Id"] = new SelectList(_context.Person, "Id", "Name");
             return Page();
         }
 
@@ -54,7 +54,7 @@ namespace DMS.Pages.Contact
 
             var c = await _context.Contact.FirstOrDefaultAsync(x => x.Contact_Id == id);
 
-            if(c == null)
+            if (c == null)
             {
                 return NotFound();
             }

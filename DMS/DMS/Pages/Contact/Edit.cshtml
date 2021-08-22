@@ -28,7 +28,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Contact.Contact_Type_Id" class="control-label"></label>
-                <select asp-for="Contact.Contact_Type_Id" class="form-control" asp-items="ViewBag.Contact_Type_Id"></select>
+                <select id="contactTypes" asp-for="Contact.Contact_Type_Id" class="form-control" asp-items="ViewBag.Contact_Type_Id"></select>
                 <span asp-validation-for="Contact.Contact_Type_Id" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -45,3 +45,29 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script type="text/javascript">
+    //if (document.readyState === 'loading') {
+    //    document.addEventListener('DOMContentLoaded', registerListeners);
+    //} else {
+    //    registerListeners();
+    //}
+
+    window.onload = (event) => {
+        registerListeners();
+    };
+    //
+
+    function registerListeners() {
+        let s = document.getElementById('contactTypes');
+        s.addEventListener('change', a);
+        console.log('added change event listener');
+    }
+
+    function a(a, b, c) {
+        let s = document.getElementById('contactTypes');
+        let selected = s.options[s.selectedIndex].text.toLowerCase();
+        alert(selected.indexOf('phone') >= 0);
+    }
+
+</script>
