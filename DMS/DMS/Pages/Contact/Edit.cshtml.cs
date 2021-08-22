@@ -45,14 +45,24 @@ namespace DMS.Pages.Contact
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Attach(Contact).State = EntityState.Modified;
+            var c = await _context.Contact.FirstOrDefaultAsync(x => x.Contact_Id == id);
+
+            if(c == null)
+            {
+                return NotFound();
+            }
+
+            c.Contact_Type_Id = Contact.Contact_Type_Id;
+            c.Value = Contact.Value;
+            _context.Attach(c).State = EntityState.Modified;
+            //_context.Attach(Contact).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +70,7 @@ namespace DMS.Pages.Contact
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ContactExists(Contact.Contact_Id))
+                if (!ContactExists(c.Contact_Id))
                 {
                     return NotFound();
                 }

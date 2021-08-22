@@ -13,9 +13,12 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Contact.Contact_Id" />
+            @*<input type="hidden" asp-for="@Model.Contact" />*@
             <div class="form-group">
                 <label asp-for="Contact.Person_Id" class="control-label"></label>
+                <span>@Model.Contact.Person_Id</span>
+                <span>@Model.Contact</span>
+                <input type="hidden" value="Contact.Person_Id" />
                 <span>@Model.Contact.Person.Name</span>
             </div>
             <div class="form-group">
