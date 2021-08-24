@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DMS.Data;
 using DMS.Models;
+using Microsoft.AspNetCore.Http;
+using System.Text.RegularExpressions;
 
 namespace DMS.Pages.Contact
 {
@@ -47,8 +49,28 @@ namespace DMS.Pages.Contact
         // more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync(int? id)
         {
+            var contactType = await _context.Contact_Type.FirstOrDefaultAsync(x => x.Contact_Type_Id == Contact.Contact_Type_Id);
+            if (contactType != null && contactType.Name.ToLower().StartsWith("email") &&
+                !Regex.IsMatch(Contact.Value,
+                    @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
+                    RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)))
+            {
+                ModelState.AddModelError("Contact.Value", "Invalid e-mail");
+            }
+
+            if (contactType != null && contactType.Name.ToLower().StartsWith("phone") &&
+                !Regex.IsMatch(Contact.Value, @"\(?\d{3}\)?-? *\d{3}-? *-?\d{4}", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)))
+            {
+                ModelState.AddModelError("Contact.Value", "Invalid phone");
+            }
+
             if (!ModelState.IsValid)
             {
+                Contact = await _context.Contact
+                .Include(c => c.Contact_Type)
+                .Include(c => c.Person).FirstOrDefaultAsync(m => m.Contact_Id == id);
+                ViewData["Contact_Type_Id"] = new SelectList(_context.Contact_Type, "Contact_Type_Id", "Name");
+                ViewData["Person_Id"] = new SelectList(_context.Person, "Id", "Name");
                 return Page();
             }
 
