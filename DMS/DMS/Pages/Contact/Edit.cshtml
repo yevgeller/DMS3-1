@@ -7,18 +7,12 @@
 
 <h1>Edit</h1>
 
-<h4>Contact</h4>
+<h4>Editing Contact for @Model.Contact.Person.Name</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Contact.Person_Id" class="control-label"></label>
-                <span>@Model.Contact.Person_Id</span>
-                <span>@Model.Contact</span>
-                <span>@Model.Contact.Person.Name</span>
-            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
             <div class="form-group">
                 <label asp-for="Contact.Value" class="control-label"></label>
                 <input id="contactValue" asp-for="Contact.Value" class="form-control" />
@@ -32,10 +26,10 @@
             <div class="form-group">
                 <input type="submit" id="submitButton" value="Save" class="btn btn-primary" />
                 <div class="alert alert-danger d-none" id="invalidEmailFormatAlert" role="alert">
-                    Email was not in a valid format, please fix input
+                    Email is not in a valid format
                 </div>
                 <div class="alert alert-danger d-none" id="invalidPhoneFormatAlert" role="alert">
-                    Phone was not in a valid format, please fix input
+                    Invalid format for a phone
                 </div>
             </div>
         </form>
@@ -51,28 +45,21 @@
 }
 
 <script type="text/javascript">
-    //if (document.readyState === 'loading') {
-    //    document.addEventListener('DOMContentLoaded', registerListeners);
-    //} else {
-    //    registerListeners();
-    //}
-
     window.onload = (event) => {
         registerListeners();
     };
-    //
 
     function registerListeners() {
         let i = document.getElementById('contactValue');
         i.addEventListener('input', validateInput);
         let s = document.getElementById('contactTypes');
         s.addEventListener('change', validateInput);
-        console.log('added change event listener');
     }
 
-    function validateInput(a, b, c) {
+    function validateInput() {
         let i = document.getElementById('contactValue');
         let s = document.getElementById('contactTypes');
+        let b = document.getElementById('submitButton');
         let selectedContactType = s.options[s.selectedIndex].text.toLowerCase();
         let checkingEmail = false;
         let checkingPhone = false;
@@ -82,18 +69,17 @@
             result = validateEmail(i.value);
             checkingEmail = true;
             console.log('checking email');
-            console.log(result);
         } else if (selectedContactType.startsWith('phone')) {
             result = validatePhone(i.value);
             checkingPhone = true;
             console.log('checking phone');
-            console.log.result;
         }
 
-        document.getElementById('submitButton').disabled = !result;
+        b.classList.remove('d-none');
+
         let phoneAlert = document.getElementById('invalidPhoneFormatAlert');
         let emailAlert = document.getElementById('invalidEmailFormatAlert');
-        //hide both alerts
+
         if (!phoneAlert.classList.contains('d-none')) {
             phoneAlert.classList.add('d-none');
         }
@@ -102,6 +88,8 @@
             emailAlert.classList.add('d-none');
         }
         if (!result) {
+            b.classList.add('d-none');
+
             if (checkingEmail) {
                 emailAlert.classList.remove('d-none');
             }
@@ -120,11 +108,4 @@
     function validatePhone(phone) {
         return phone.match(/\d/g) ? phone.match(/\d/g).length === 10 : false;
     }
-
-    function a(a, b, c) {
-        let s = document.getElementById('contactTypes');
-        let selected = s.options[s.selectedIndex].text.toLowerCase();
-        alert(selected.indexOf('phone') >= 0);
-    }
-
 </script>
