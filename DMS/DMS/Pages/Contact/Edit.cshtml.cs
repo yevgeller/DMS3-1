@@ -64,7 +64,7 @@ namespace DMS.Pages.Contact
                 ModelState.AddModelError("Contact.Value", "Invalid phone");
             }
 
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) //TODO: Figure out model binding
             {
                 Contact = await _context.Contact
                 .Include(c => c.Contact_Type)
@@ -84,7 +84,6 @@ namespace DMS.Pages.Contact
             c.Contact_Type_Id = Contact.Contact_Type_Id;
             c.Value = Contact.Value;
             _context.Attach(c).State = EntityState.Modified;
-            //_context.Attach(Contact).State = EntityState.Modified;
 
             try
             {

@@ -39,8 +39,8 @@
                 Type
             </th>
             <th>Info</th>
-            <th style="width:20px;"></th>
-            <th style="width:20px;"></th>
+            <th style="width:30px;"></th>
+            <th style="width:30px;"></th>
         </tr>
     </thead>
     <tbody>
@@ -74,64 +74,28 @@
 <h3>Add new contact info</h3>
 
 <form method="post">
-    <div class="container">
-        <div class="row">
-            <div class="col-8">
-                <div class="container p-3 mb-2 bg-alert border ml-5 mr-5">
-                    <div class="row ">
-                        <div class="col-sm">
-                            <div class="form-group">
-                                <select asp-for="SelectedContactTypeId" class="form-control" asp-items="@Model.Contact_Types">
-                                    <option value="0">-- Choose New Contact Type --</option>
-                                </select>
-                            </div>
-                        </div>
-                        @*<div class="col-sm">
-                                <div class="form-group">
-                                    <select asp-for="SelectedFilterPersonnelActiveStatus" class="form-control" asp-items="@Model.Contact_Types"></select>
-                                </div>
-                            </div>*@
-                        <div class="col-sm">
-                            <input type="text" class="form-control" placeholder="Search name or room" name="NewContactValue" value="@Model.NewContactValue" />
-                        </div>
-                        <div class="col-sm">
-                            <button class="btn btn-primary" type="submit"
-                                    asp-route-id="@Model.Person.Person_Id"
-                                    asp-page-handler="AddNewContact">
-                                @*asp-route-sortOrder="@Model.CurrentSort"
-                                    asp-route-pageIndex="1"
-                                    asp-route-currentFilter="@Model.CurrentFilter">*@
-                                <i class="fas fa-filter"></i>Filter
-                            </button>
-                            @*<a class="btn btn-secondary" asp-page="./Index"><i class="fas fa-list-alt"></i>&nbsp;Clear Filters</a>*@
-                        </div>
-                    </div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <div class="row ">
-                        <div class="col p-3 ml-1 mr-1">
-                            <input type="text" class="form-control" placeholder="Enter new email" name="NewEmailValue" value="@Model.NewEmailValue" />
-                        </div>
-                    </div>
-
-                    <div class="row ">
-                        <div class="col p-3 ml-1 mr-1">
-                            <input type="text" class="form-control" placeholder="Enter new phone number" name="NewPhoneVoiceTextValue" value="@Model.NewPhoneVoiceTextValue" />
-                        </div>
-                    </div>
-
-                    <div class="row ">
-                        <div class="col p-3 ml-1 mr-1">
-                            <input type="text" class="form-control" placeholder="Enter new phone number" name="NewPhoneVoiceValue" value="@Model.NewPhoneVoiceValue" />
-                        </div>
-                    </div>
-
-                    <div class="row ">
-                        <div class="col p-3 ml-1 mr-1">
-                            <input type="text" class="form-control" placeholder="Enter new phone number" name="NewPhoneTextValue" value="@Model.NewPhoneTextValue" />
-                        </div>
-                    </div>
+    <div class="container p-3 mb-2 bg-alert border">
+        <div class="row ">
+            <div class="col-sm">
+                <div class="form-group">
+                    <select asp-for="SelectedContactTypeId" class="form-control" asp-items="@Model.Contact_Types">
+                        <option value="0">-- Choose New Contact Type --</option>
+                    </select>
                 </div>
             </div>
-        </div>
+            <div class="col-sm">
+                <input type="text" class="form-control" placeholder="Enter new contact info" name="NewContactValue" value="@Model.NewContactValue" />
+                <span asp-validation-for="NewContactValue" class="text-danger"></span>
+            </div>
+            <div class="col-sm">
+                <button class="btn btn-primary" type="submit"
+                        asp-route-id="@Model.Person.Person_Id"
+                        asp-page-handler="AddNewContact">
+                    <i class="fas fa-plus"></i>Add
+                </button>
+            </div>
+        </div>       
     </div>
 </form>
