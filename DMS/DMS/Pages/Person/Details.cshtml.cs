@@ -90,7 +90,6 @@ namespace DMS.Pages.Person
             Person = await _context.Person
                 .Include(p => p.Person_Type).FirstOrDefaultAsync(m => m.Person_Id == id);
 
-
             if (Person == null)
             {
                 return NotFound();

@@ -80,22 +80,94 @@
         <div class="row ">
             <div class="col-sm">
                 <div class="form-group">
-                    <select asp-for="SelectedContactTypeId" class="form-control" asp-items="@Model.Contact_Types">
+                    <select id="contactTypes" asp-for="SelectedContactTypeId" class="form-control" asp-items="@Model.Contact_Types">
                         <option value="0">-- Choose New Contact Type --</option>
                     </select>
                 </div>
             </div>
             <div class="col-sm">
-                <input type="text" class="form-control" placeholder="Enter new contact info" name="NewContactValue" value="@Model.NewContactValue" />
+                <input type="text" id="contactValue" class="form-control" placeholder="Enter new contact info" name="NewContactValue" value="@Model.NewContactValue" />
                 <span asp-validation-for="NewContactValue" class="text-danger"></span>
+                <div class="alert alert-danger d-none" id="invalidEmailFormatAlert" role="alert">
+                    Email is not in a valid format
+                </div>
+                <div class="alert alert-danger d-none" id="invalidPhoneFormatAlert" role="alert">
+                    Invalid format for a phone
+                </div>
             </div>
             <div class="col-sm">
-                <button class="btn btn-primary" type="submit"
+                <button class="btn btn-primary" type="submit" id="submitButton"
                         asp-route-id="@Model.Person.Person_Id"
                         asp-page-handler="AddNewContact">
-                    <i class="fas fa-plus"></i>Add
+                    <i class="fas fa-plus"></i>&nbsp;Add
                 </button>
             </div>
         </div>       
     </div>
 </form>
+
+
+<script type="text/javascript">
+    window.onload = (event) => {
+        registerListeners();
+    };
+
+    function registerListeners() {
+        let i = document.getElementById('contactValue');
+        i.addEventListener('input', validateInput);
+        let s = document.getElementById('contactTypes');
+        s.addEventListener('change', validateInput);
+    }
+
+    function validateInput() {
+        let i = document.getElementById('contactValue');
+        let s = document.getElementById('contactTypes');
+        let b = document.getElementById('submitButton');
+        let selectedContactType = s.options[s.selectedIndex].text.toLowerCase();
+        let checkingEmail = false;
+        let checkingPhone = false;
+        let result = false;
+        if (selectedContactType.startsWith('email')) {
+            result = validateEmail(i.value);
+            checkingEmail = true;
+            console.log('checking email');
+        } else if (selectedContactType.startsWith('phone')) {
+            result = validatePhone(i.value);
+            checkingPhone = true;
+            console.log('checking phone');
+        }
+
+        b.classList.remove('d-none');
+
+        let phoneAlert = document.getElementById('invalidPhoneFormatAlert');
+        let emailAlert = document.getElementById('invalidEmailFormatAlert');
+
+        if (!phoneAlert.classList.contains('d-none')) {
+            phoneAlert.classList.add('d-none');
+        }
+
+        if (!emailAlert.classList.contains('d-none')) {
+            emailAlert.classList.add('d-none');
+        }
+        if (!result) {
+            b.classList.add('d-none');
+
+            if (checkingEmail) {
+                emailAlert.classList.remove('d-none');
+            }
+
+            if (checkingPhone) {
+                phoneAlert.classList.remove('d-none');
+            }
+        }
+    }
+
+    function validateEmail(email) {
+        var regex = /^\S+@@\S+$/;
+        return regex.test(email);
+    }
+
+    function validatePhone(phone) {
+        return phone.match(/\d/g) ? phone.match(/\d/g).length === 10 : false;
+    }
+</script>
