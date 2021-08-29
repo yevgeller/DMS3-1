@@ -14,8 +14,10 @@ namespace DMS.Pages.Person
 {
     public class DetailsModel : PageModel
     {
+        //TODO: Process method cleanup: improve model binding
+        //TODO: Compare phones only based on numeric info, case insensitive on e-mails
         private readonly DMS.Data.DMSDataContext _context;
-
+        https://localhost:44351/Student_Room/Assign fix bug with age display
         public DetailsModel(DMS.Data.DMSDataContext context)
         {
             _context = context;
@@ -25,24 +27,50 @@ namespace DMS.Pages.Person
         public List<PersonnelContact_List> Contacts { get; set; }
         public int SelectedContactTypeId { get; set; }
         public List<SelectListItem> Contact_Types { get; set; }
-        [BindProperty(SupportsGet =true)]
+        [BindProperty(SupportsGet = true)]
         public string NewContactValue { get; set; }
         public string NewEmailValue { get; set; }
         public string NewPhoneVoiceTextValue { get; set; }
         public string NewPhoneVoiceValue { get; set; }
         public string NewPhoneTextValue { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int selectedContactTypeId, string newContactValue, int? id)
+        public async Task<IActionResult> OnGetAsync(int selectedContactTypeId, string newContactValue, int id)
         {
-            return await ProcessPage(selectedContactTypeId, newContactValue, id);
+            var result = await ProcessPage(selectedContactTypeId, newContactValue, id);
+            if (result == "not found")
+            {
+                return NotFound();
+            }
+            return Page();
         }
 
-        public async Task<IActionResult> OnPostAddNewContactAsync(int selectedContactTypeId, string newContactValue, int? id)
+        public async Task<IActionResult> OnPostAddNewContactAsync(int selectedContactTypeId, string newContactValue, int id)
         {
-            return await ProcessPage(selectedContactTypeId, newContactValue, id);
+            var result = await ProcessPage(selectedContactTypeId, newContactValue, id);
+            if (result == "ok")
+            {
+                Models.Contact c = new Models.Contact
+                {
+                    Contact_Type_Id = selectedContactTypeId,
+                    Value = newContactValue,
+                    Person_Id = id
+                };
+
+                _context.Contact.Add(c);
+                await _context.SaveChangesAsync();
+                return Redirect($"./Details?id={id}");
+            }
+            else if (result == "not found")
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Page();
+            }
         }
 
-        public async Task<IActionResult> ProcessPage(int selectedContactTypeId, string newContactValue, int? id)
+        public async Task<string> ProcessPage(int selectedContactTypeId, string newContactValue, int id)
         {
 
             var contactType = await _context.Contact_Type.FirstOrDefaultAsync(x => x.Contact_Type_Id == selectedContactTypeId);
@@ -65,6 +93,11 @@ namespace DMS.Pages.Person
                 {
                     ModelState.AddModelError("NewContactValue", "Invalid phone");
                 }
+
+                if (_context.Contact.Any(x => x.Value.Trim().ToLower() == newContactValue))
+                {
+                    ModelState.AddModelError("NewContactValue", "This contact information already exists.");
+                }
             }
             if (!ModelState.IsValid) //TODO: Figure out model binding
             {
@@ -72,27 +105,26 @@ namespace DMS.Pages.Person
                     .Include(p => p.Person_Type).FirstOrDefaultAsync(m => m.Person_Id == id);
                 Contacts = await _context.PersonnelContact_List.Where(x => x.Person_Id == id).ToListAsync();
                 Contact_Types = await _context.Contact_Type.Select(i =>
-                           new SelectListItem
-                           {
-                               Value = i.Contact_Type_Id.ToString(),
-                               Text = i.Name
-                           }).ToListAsync();
-                return Page();
+                    new SelectListItem
+                    {
+                        Value = i.Contact_Type_Id.ToString(),
+                        Text = i.Name
+                    }).ToListAsync();
+
+                return "error";
             }
 
-
-            if (id == null)
+            if (id == 0)
             {
-                return NotFound();
+                return "not found";
             }
-            //test this, 
-            //    add front-end validation just like on Edit Contact
+
             Person = await _context.Person
                 .Include(p => p.Person_Type).FirstOrDefaultAsync(m => m.Person_Id == id);
 
             if (Person == null)
             {
-                return NotFound();
+                return "not found";
             }
 
             Contacts = await _context.PersonnelContact_List.Where(x => x.Person_Id == id).ToListAsync();
@@ -103,7 +135,7 @@ namespace DMS.Pages.Person
                            Text = i.Name
                        }).ToListAsync();
 
-            return Page();
+            return "ok";
         }
     }
 }
