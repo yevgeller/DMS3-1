@@ -14,6 +14,7 @@ namespace DMS.Models
         public string Student_Name { get; set; }
         public DateTime Birthdate { get; set; }
         public bool Is_Active { get; set; }
+        public int DaysOld { get; set; }
         public int BornDaysAfterJan12000 { get; set; }
         public string AssignedToRooms { get; set; }
         public string AssignedToParents { get; set; }
