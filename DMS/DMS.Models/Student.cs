@@ -23,7 +23,8 @@ namespace DMS.Models
         public int BornDaysAfterJan12000 { get; set; }
         public string Age()
         {
-            return BornDaysAfterJan12000.ToAgeString();
+            int daysOld = Convert.ToInt32((DateTime.Now - Birthdate).TotalDays);
+            return daysOld.ToAgeString();
         }
     }
 }
