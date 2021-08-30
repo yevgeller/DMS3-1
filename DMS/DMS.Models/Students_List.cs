@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DMS.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,5 +20,9 @@ namespace DMS.Models
         public string AssignedToRooms { get; set; }
         public string AssignedToParents { get; set; }
         public int AssignedGuardianCount { get; set; }
+        public string Age()
+        {
+            return DaysOld.ToAgeString();
+        }
     }
 }

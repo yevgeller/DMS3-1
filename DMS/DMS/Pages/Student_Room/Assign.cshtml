@@ -6,36 +6,43 @@
 
 <h1>Assign Students to Rooms</h1>
 
-<button class="btn btn-danger float-right" onclick="doAction()">Action</button>
+<button class="btn btn-danger float-right" id="saveChangesButton" onclick="saveToServer()">Save changes</button>
 
 @*<button class="btn btn-primary float-right" onclick="saveToServer()" id="saveChangesButton" disabled>Save changes</button>*@
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Students[0].Name)
+                Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Students[0].Birthdate)
+                Birthdate
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Students[0].Is_Active)
+                Active?
             </th>
             <th>Rooms</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Students)
+        @foreach (var item in Model.Students_List)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @item.Student_Name
                 </td>
                 <td>
                     @item.Birthdate.ToShortDateString() (@item.Age())
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Is_Active)
+                    @if (item.Is_Active)
+                    {
+                        <span>Yes</span>
+                    }
+                    else
+                    {
+                        <span>No</span>
+                    }
                 </td>
                 <td>
                     @foreach (var r in Model.Rooms.OrderBy(x => x.Name))

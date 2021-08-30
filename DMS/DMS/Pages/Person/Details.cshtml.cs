@@ -17,7 +17,7 @@ namespace DMS.Pages.Person
         //TODO: Process method cleanup: improve model binding
         //TODO: Compare phones only based on numeric info, case insensitive on e-mails
         private readonly DMS.Data.DMSDataContext _context;
-        https://localhost:44351/Student_Room/Assign fix bug with age display
+
         public DetailsModel(DMS.Data.DMSDataContext context)
         {
             _context = context;
