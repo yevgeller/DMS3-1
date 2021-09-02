@@ -13,33 +13,47 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">DMS</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index"><i class="fas fa-school"></i>&nbsp;DMS</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Student_Parent/Assign">Parent-Students</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Person/Index">Person</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Room/Index">Room</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Student/Index">Student</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Contact/Index">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Student_Room/Assign">Assign Students to Rooms</a>
-                        </li>
-                        <li class="nav-item">
+                    <ul class="navbar-nav flex-grow-1">                        
+                        @*<li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Person_Room/Assign">Assign Teachers to Rooms</a>
+                        </li>*@
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-list"></i>&nbsp;Lists
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item nav-link text-dark" asp-area="" asp-page="/Person/Index"><i class="fas fa-user-friends"></i>&nbsp;Personnel</a>
+                                <a class="dropdown-item nav-link text-dark" asp-area="" asp-page="/Room/Index"><i class="fas fa-home"></i>&nbsp;Rooms</a>
+                                <a class="dropdown-item nav-link text-dark" asp-area="" asp-page="/Student/Index"><i class="fas fa-child"></i>&nbsp;Students</a>
+                                <a class="dropdown-item nav-link text-dark" asp-area="" asp-page="/Contact/Index"><i class="far fa-address-book"></i>&nbsp;Contacts</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-bolt"></i>&nbsp;Actions
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item nav-link text-dark" asp-area="" asp-page="/Student_Parent/Assign"><i class="fas fa-users"></i>&nbsp;Assign students to guardians</a>
+                                <a class="dropdown-item nav-link text-dark" asp-area="" asp-page="/Student_Room/Assign"><i class="fas fa-house-user"></i>&nbsp;Assign Students to Rooms</a>
+                                <a class="dropdown-item nav-link text-dark" asp-area="" asp-page="/Person_Room/Assign"><i class="fas fa-chalkboard-teacher"></i>&nbsp;Assign Teachers to Rooms</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search"></i>&nbsp;Lookups
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-page="/Lookups/Person_Type/Index"><i class="fas fa-user-tag"></i>&nbsp;Role lookups</a>
+                                <a class="dropdown-item" asp-page="/Lookups/Activity_Type/Index"><i class="fas fa-bullhorn"></i>&nbsp;Activity type lookups</a>
+                                <a class="dropdown-item" asp-page="/Lookups/Age_Bracket/Index"><i class="fas fa-ruler-combined"></i>&nbsp;Age bracket lookups</a>
+                                <a class="dropdown-item" asp-page="/Lookups/Contact_Type/Index"><i class="far fa-address-card"></i>&nbsp;Contact type lookups</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
