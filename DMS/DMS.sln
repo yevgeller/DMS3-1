@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMS.Data", "DMS.Data\DMS.Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMS.Models", "DMS.Models\DMS.Models.csproj", "{2B7348C8-B904-40C0-9282-AE7147EB5635}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DMS.Utils", "DMS.Utils\DMS.Utils.csproj", "{750E566E-E82F-4299-915B-056CA3CE27AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMS.Utils", "DMS.Utils\DMS.Utils.csproj", "{750E566E-E82F-4299-915B-056CA3CE27AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DMS.TeacherPortal", "DMS.TeacherPortal\DMS.TeacherPortal.csproj", "{82CEBAEA-83E4-4B83-A753-A346D7F51CED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{750E566E-E82F-4299-915B-056CA3CE27AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{750E566E-E82F-4299-915B-056CA3CE27AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{750E566E-E82F-4299-915B-056CA3CE27AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82CEBAEA-83E4-4B83-A753-A346D7F51CED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82CEBAEA-83E4-4B83-A753-A346D7F51CED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82CEBAEA-83E4-4B83-A753-A346D7F51CED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82CEBAEA-83E4-4B83-A753-A346D7F51CED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
