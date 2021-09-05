@@ -1,0 +1,33 @@
+﻿@page
+@model DMS.Pages.Activity.CreateModel
+@{
+}
+
+<h1>@Model.Student.Name</h1>
+
+<h4>Record new activity</h4>
+<hr />
+<form method="post">
+    <button>&lt;&lt;</button>
+    <button>&lt;</button>
+    <input type="text" class="form-control" value="@Model.Date" asp-for="Date" />
+    <button>&gt;</button>
+    <button>&gt;&gt;</button>
+
+
+
+    <button>&lt;&lt;</button>
+    <button>&lt;</button>
+    <input type="text" class="form-control" value="@Model.Time" asp-for="Time" />
+    <button>&gt;</button>
+    <button>&gt;&gt;</button>
+
+    <button type="submit" class="form-control">Submit</button>
+
+
+    <input type="hidden" asp-for="Student" />
+    <input type="hidden" asp-for="Student.Name" />
+    <input type="hidden" asp-for="Student.Birthdate" />
+    <input type="hidden" asp-for="Student.Student_Id" />
+    <input type="hidden" asp-for="Student.BornDaysAfterJan12000" />
+</form>

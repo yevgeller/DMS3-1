@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMS.Models", "DMS.Models\DM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMS.Utils", "DMS.Utils\DMS.Utils.csproj", "{750E566E-E82F-4299-915B-056CA3CE27AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DMS.TeacherPortal", "DMS.TeacherPortal\DMS.TeacherPortal.csproj", "{82CEBAEA-83E4-4B83-A753-A346D7F51CED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMS.TeacherPortal", "DMS.TeacherPortal\DMS.TeacherPortal.csproj", "{82CEBAEA-83E4-4B83-A753-A346D7F51CED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
