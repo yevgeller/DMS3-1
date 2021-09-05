@@ -3,55 +3,20 @@ using System;
 using DMS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DMS.Migrations
 {
     [DbContext(typeof(DMSDataContext))]
-    partial class DMSDataContextModelSnapshot : ModelSnapshot
+    [Migration("20210905115024_Testing123")]
+    partial class Testing123
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.8");
-
-            modelBuilder.Entity("DMS.Models.Activity", b =>
-                {
-                    b.Property<int>("Activity_Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Activity_Type_Id")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("Created_ByPerson_Id")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Created_By_Id")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("Created_On")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .HasMaxLength(2500)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Student_Id")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Activity_Id");
-
-                    b.HasIndex("Activity_Type_Id");
-
-                    b.HasIndex("Created_ByPerson_Id");
-
-                    b.HasIndex("Student_Id");
-
-                    b.ToTable("Activity");
-                });
 
             modelBuilder.Entity("DMS.Models.Activity_Type", b =>
                 {
@@ -535,31 +500,6 @@ namespace DMS.Migrations
                     b.HasKey("Room_Id");
 
                     b.ToView("Students_OutOfRoomAgeBracket_List");
-                });
-
-            modelBuilder.Entity("DMS.Models.Activity", b =>
-                {
-                    b.HasOne("DMS.Models.Activity_Type", "Activity_Type")
-                        .WithMany()
-                        .HasForeignKey("Activity_Type_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DMS.Models.Person", "Created_By")
-                        .WithMany()
-                        .HasForeignKey("Created_ByPerson_Id");
-
-                    b.HasOne("DMS.Models.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("Student_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Activity_Type");
-
-                    b.Navigation("Created_By");
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("DMS.Models.Contact", b =>

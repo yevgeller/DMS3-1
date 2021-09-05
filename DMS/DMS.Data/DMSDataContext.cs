@@ -8,6 +8,7 @@ namespace DMS.Data
 {
     public class DMSDataContext : DbContext
     {
+        public DbSet<Activity> Activity { get; set; }
         public DbSet<Age_Bracket> Age_Bracket { get; set; }
         public DbSet<Activity_Type> Activity_Type { get; set; }
         public DbSet<Contact_Type> Contact_Type { get; set; }
