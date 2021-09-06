@@ -8,26 +8,32 @@
 <h4>Record new activity</h4>
 <hr />
 <form method="post">
-    <button>&lt;&lt;</button>
-    <button>&lt;</button>
-    <input type="text" class="form-control" value="@Model.Date" asp-for="Date" />
-    <button>&gt;</button>
-    <button>&gt;&gt;</button>
+    <div class="form-inline">
+        <div class="form-group row">
+            <label for="date1" class="col-sm-1 col-form-label">Date:</label>
+            <button class="btn btn-light"><i class="fas fa-fast-backward"></i></button>
+            <button class="btn btn-light"><i class="fas fa-step-backward"></i></button>
+            <input id="date1" type="text" class="form-control" value="@Model.Date" asp-for="Date" style="width:100px;" />
+            <button class="btn btn-light"><i class="fas fa-step-forward"></i></button>
+            <button class="btn btn-light"><i class="fas fa-fast-forward"></i></button>
+        </div>
 
-
-
-    <button>&lt;&lt;</button>
-    <button>&lt;</button>
-    <input type="text" class="form-control" value="@Model.Time" asp-for="Time" />
-    <button>&gt;</button>
-    <button>&gt;&gt;</button>
-
-    <button type="submit" class="form-control">Submit</button>
-
-
+        <div class="form-group row">
+            <label for="time1" class="col-form-label">Time:</label>
+            <button class="btn btn-light"><i class="fas fa-fast-backward"></i></button>
+            <button class="btn btn-light"><i class="fas fa-step-backward"></i></button>
+            <input id="time1" type="text" class="form-control w-25" value="@Model.Time" asp-for="Time" />
+            <button class="btn btn-light"><i class="fas fa-step-forward"></i></button>
+            <button class="btn btn-light"><i class="fas fa-fast-forward"></i></button>
+        </div>
+    </div>
+        <div class="form-group row">
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+        </div>
+    
     <input type="hidden" asp-for="Student" />
     <input type="hidden" asp-for="Student.Name" />
     <input type="hidden" asp-for="Student.Birthdate" />
-    <input type="hidden" asp-for="Student.Student_Id" />
+    @*<input type="hidden" asp-for="Student.Student_Id" />*@
     <input type="hidden" asp-for="Student.BornDaysAfterJan12000" />
 </form>

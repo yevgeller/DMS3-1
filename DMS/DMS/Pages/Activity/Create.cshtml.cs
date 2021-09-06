@@ -24,6 +24,8 @@ namespace DMS.Pages.Activity
         [BindProperty]
         public string Time { get; set; }
 
+        public List<Models.Activity_Type> Activity_Types { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int id)
         {
             if(id <= 0)
@@ -33,10 +35,14 @@ namespace DMS.Pages.Activity
             Student = await db.Student.Where(x => x.Student_Id == id).FirstOrDefaultAsync();
             Date = DateTime.Now.ToShortDateString();
             Time = DateTime.Now.ToShortTimeString();
+            Activity_Types = await db.Activity_Type
+                .OrderBy(x=>x.SortOrder)
+                .ThenBy(x=>x.Name)
+                .ToListAsync();
             return Page();
         }
 
-        public async Task OnPostAsync()
+        public void OnPost()
         {
             var a = this.Date;
             var b = this.Student;
