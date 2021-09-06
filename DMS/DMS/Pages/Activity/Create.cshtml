@@ -32,8 +32,13 @@
     </div>
     @foreach (Models.Activity_Type at in Model.Activity_Types)
     {
-        <span>@at.Name (@at.SortOrder) </span>
-        <br />
+        <div class="form-check form-control-lg">
+            <input type="checkbox" class="form-check-input" id="activity-@at.Activity_Type_Id" />
+            <label class="form-check-label" for="activity-@at.Activity_Type_Id">@at.Name</label>
+        </div>
+
+        @*<span>@at.Name (@at.SortOrder) </span>
+        <br />*@
     }
     <input type="hidden" asp-for="Student" />
     <input type="hidden" asp-for="Student.Name" />
