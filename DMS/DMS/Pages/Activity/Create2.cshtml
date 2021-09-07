@@ -1,0 +1,75 @@
+﻿@page
+@model DMS.Pages.Activity.Create2Model
+@{
+}
+
+
+
+<h1>@Model.Student.Name</h1>
+
+<h4>Record new activity</h4>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col"><i class="fas fa-bullhorn fa-5x"></i></div>
+        <div class="col-sm-5">
+            <div class="row">
+                <label for="date1" class="col-form-label">Date:</label>
+                <button class="btn btn-light mx-1 border"><i class="fas fa-fast-backward"></i></button>
+                <button class="btn btn-light mx-1 border"><i class="fas fa-step-backward"></i></button>
+                <input id="date1" type="text" class="form-control" value="@Model.Date" asp-for="Date" style="width:100px;" />
+                <button class="btn btn-light mx-1 border"><i class="fas fa-step-forward"></i></button>
+                <button class="btn btn-light mx-1 border"><i class="fas fa-fast-forward"></i></button>
+                <button class="btn btn-light mx-1 border"><i class="fas fa-history"></i></button>
+            </div>
+        </div>
+
+        <div class="col-sm-5">
+            <div class="row">
+                <label for="time1" class="col-form-label">Time:</label>
+                <button class="btn btn-light mx-1 border"><i class="fas fa-fast-backward"></i></button>
+                <button class="btn btn-light mx-1 border"><i class="fas fa-step-backward"></i></button>
+                <input id="time1" type="text" class="form-control w-25" value="@Model.Time" asp-for="Time" />
+                <button class="btn btn-light mx-1 border"><i class="fas fa-step-forward"></i></button>
+                <button class="btn btn-light mx-1 border"><i class="fas fa-fast-forward"></i></button>
+                <button class="btn btn-light mx-1 border"><i class="fas fa-history"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-flex flex-wrap">
+    @foreach (Models.Activity_Type at in Model.Activity_Types)
+    {
+        <button class="btn btn-primary p-2 m-3 js-hook-activity-selector" id="activitySelector-@at.Activity_Type_Id" data-attribute="@at.Activity_Type_Id" onclick="toggleClass()">@at.Name</button>       
+    }
+    </div>
+
+<script type="text/javascript">
+    window.onload = (event) => {
+        registerListeners();
+    };
+
+    function registerListeners() {
+        let activityButtons = document.querySelectorAll(".js-hook-activity-selector");
+        if (activityButtons) {
+            
+            activityButtons.forEach((b) => {
+                let c = b.dataset.attribute;
+                debugger;
+            });
+        }
+        debugger;
+        //let i = document.getElementById('contactValue');
+        //i.addEventListener('input', validateInput);
+        //let s = document.getElementById('contactTypes');
+        //s.addEventListener('change', validateInput);
+    }
+
+    function toggleClass() {
+
+        debugger;
+        let caller = e.target || e.srcElement;
+        console.log(caller);
+    }
+</script>
