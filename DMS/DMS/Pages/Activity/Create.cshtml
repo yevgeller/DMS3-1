@@ -9,40 +9,72 @@
 <hr />
 <form method="post">
     <div class="form-inline">
-        <div class="form-group row">
-            <label for="date1" class="col-sm-1 col-form-label">Date:</label>
-            <button class="btn btn-light"><i class="fas fa-fast-backward"></i></button>
-            <button class="btn btn-light"><i class="fas fa-step-backward"></i></button>
-            <input id="date1" type="text" class="form-control" value="@Model.Date" asp-for="Date" style="width:100px;" />
-            <button class="btn btn-light"><i class="fas fa-step-forward"></i></button>
-            <button class="btn btn-light"><i class="fas fa-fast-forward"></i></button>
-        </div>
+        @*<div class="form-group row">
+                <label for="date1" class="col-form-label">Date:</label>
+                <button class="btn btn-light mx-1 border"><i class="fas fa-fast-backward"></i></button>
+                <button class="btn btn-light mx-1 border"><i class="fas fa-step-backward"></i></button>
+                <input id="date1" type="text" class="form-control" value="@Model.Date" asp-for="Date" style="width:100px;" />
+                <button class="btn btn-light mx-1 border"><i class="fas fa-step-forward"></i></button>
+                <button class="btn btn-light mx-1 border"><i class="fas fa-fast-forward"></i></button>
+            </div>
 
-        <div class="form-group row">
-            <label for="time1" class="col-form-label">Time:</label>
-            <button class="btn btn-light"><i class="fas fa-fast-backward"></i></button>
-            <button class="btn btn-light"><i class="fas fa-step-backward"></i></button>
-            <input id="time1" type="text" class="form-control w-25" value="@Model.Time" asp-for="Time" />
-            <button class="btn btn-light"><i class="fas fa-step-forward"></i></button>
-            <button class="btn btn-light"><i class="fas fa-fast-forward"></i></button>
-        </div>
+            <div class="form-group row">
+                <label for="time1" class="col-form-label">Time:</label>
+                <button class="btn btn-light mx-1 border"><i class="fas fa-fast-backward"></i></button>
+                <button class="btn btn-light mx-1 border"><i class="fas fa-step-backward"></i></button>
+                <input id="time1" type="text" class="form-control w-25" value="@Model.Time" asp-for="Time" />
+                <button class="btn btn-light mx-1 border"><i class="fas fa-step-forward"></i></button>
+                <button class="btn btn-light mx-1 border"><i class="fas fa-fast-forward"></i></button>
+            </div>*@
     </div>
     <div class="form-group row">
         <button type="submit" class="btn btn-primary mb-2">Submit</button>
     </div>
-    @foreach (Models.Activity_Type at in Model.Activity_Types)
-    {
-        <div class="form-check form-control-lg">
-            <input type="checkbox" class="form-check-input" id="activity-@at.Activity_Type_Id" />
-            <label class="form-check-label" for="activity-@at.Activity_Type_Id">@at.Name</label>
-        </div>
 
-        @*<span>@at.Name (@at.SortOrder) </span>
-        <br />*@
-    }
     <input type="hidden" asp-for="Student" />
     <input type="hidden" asp-for="Student.Name" />
     <input type="hidden" asp-for="Student.Birthdate" />
     @*<input type="hidden" asp-for="Student.Student_Id" />*@
     <input type="hidden" asp-for="Student.BornDaysAfterJan12000" />
 </form>
+
+<div class="container">
+    <div class="row">
+        <div class="form-group col-md-3">Activity</div>
+        <div class="form-group col-md-5">Date</div>
+        <div class="form-group col-md-4">Time</div>
+    </div>
+    @foreach (Models.Activity_Type at in Model.Activity_Types)
+    {
+        <div class="row">
+            
+                <div class="form-group col-md-3">
+                    <input type="checkbox" class="form-check-input" id="activity-@at.Activity_Type_Id" />
+                    <label class="form-check-label" for="activity-@at.Activity_Type_Id">@at.Name</label>
+                </div>
+                <div class="form-group col-md-5 row">
+                    @*<label for="date1" class="col-form-label">Date:</label>*@
+                    <button class="btn btn-light mx-1 border"><i class="fas fa-fast-backward"></i></button>
+                    <button class="btn btn-light mx-1 border"><i class="fas fa-step-backward"></i></button>
+                    <input id="date1" type="text" class="form-control" value="@Model.Date" asp-for="Date" style="width:100px;" />
+                    <button class="btn btn-light mx-1 border"><i class="fas fa-step-forward"></i></button>
+                    <button class="btn btn-light mx-1 border"><i class="fas fa-fast-forward"></i></button>
+                    <button class="btn btn-light mx-1 border"><i class="fas fa-history"></i></button>
+                </div>
+
+                <div class="form-group col-md-4 row">
+                    @*<label for="time1" class="col-form-label">Time:</label>*@
+                    <button class="btn btn-light mx-1 border"><i class="fas fa-fast-backward"></i></button>
+                    <button class="btn btn-light mx-1 border"><i class="fas fa-step-backward"></i></button>
+                    <input id="time1" type="text" class="form-control w-25" value="@Model.Time" asp-for="Time" />
+                    <button class="btn btn-light mx-1 border"><i class="fas fa-step-forward"></i></button>
+                    <button class="btn btn-light mx-1 border"><i class="fas fa-fast-forward"></i></button>
+                    <button class="btn btn-light mx-1 border"><i class="fas fa-history"></i></button>
+
+                </div>
+            </div>
+        
+        @*<span>@at.Name (@at.SortOrder) </span>
+            <br />*@
+    }
+</div>
