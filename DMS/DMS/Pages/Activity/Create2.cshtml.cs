@@ -23,6 +23,8 @@ namespace DMS.Pages.Activity
         public string Date { get; set; }
         [BindProperty]
         public string Time { get; set; }
+        [BindProperty]
+        public List<int> Activity_Groups { get; private set; }
 
         public List<Models.Activity_Type> Activity_Types { get; set; }
 
@@ -39,6 +41,12 @@ namespace DMS.Pages.Activity
                 .OrderBy(x => x.SortOrder)
                 .ThenBy(x => x.Name)
                 .ToListAsync();
+
+            Activity_Groups = Activity_Types
+                .Select(x => x.Group100)
+                .Distinct()
+                .OrderBy(x => x)
+                .ToList();
             return Page();
         }
 

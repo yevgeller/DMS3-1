@@ -25,7 +25,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(modelItem => item.Name) (Sort Order: @item.SortOrder)
                 </td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.Activity_Type_Id">Edit</a> |

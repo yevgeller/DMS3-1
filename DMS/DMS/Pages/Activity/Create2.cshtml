@@ -38,12 +38,18 @@
         </div>
     </div>
 </div>
-<div class="d-flex flex-wrap">
-    @foreach (Models.Activity_Type at in Model.Activity_Types)
-    {
-        <button class="btn btn-primary p-2 m-3 js-hook-activity-selector" id="activitySelector-@at.Activity_Type_Id" data-attribute="@at.Activity_Type_Id">@at.Name</button>       
-    }
+
+@foreach (int group in Model.Activity_Groups)
+{<div class="d-flex flex-wrap">
+        @foreach (Models.Activity_Type at in Model.Activity_Types.Where(x => x.Group100 == group))
+        {
+            <button class="btn btn-primary p-2 m-3 js-hook-activity-selector" 
+                    id="activitySelector-@at.Activity_Type_Id" 
+                    data-attribute="@at.Activity_Type_Id">@at.Name</button>
+        }
     </div>
+}
+
 
 <script type="text/javascript">
     window.onload = (event) => {
