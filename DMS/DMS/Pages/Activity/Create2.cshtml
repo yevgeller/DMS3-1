@@ -41,7 +41,7 @@
 <div class="d-flex flex-wrap">
     @foreach (Models.Activity_Type at in Model.Activity_Types)
     {
-        <button class="btn btn-primary p-2 m-3 js-hook-activity-selector" id="activitySelector-@at.Activity_Type_Id" data-attribute="@at.Activity_Type_Id" onclick="toggleClass()">@at.Name</button>       
+        <button class="btn btn-primary p-2 m-3 js-hook-activity-selector" id="activitySelector-@at.Activity_Type_Id" data-attribute="@at.Activity_Type_Id">@at.Name</button>       
     }
     </div>
 
@@ -53,10 +53,20 @@
     function registerListeners() {
         let activityButtons = document.querySelectorAll(".js-hook-activity-selector");
         if (activityButtons) {
-            
+
             activityButtons.forEach((b) => {
                 let c = b.dataset.attribute;
-                debugger;
+                b.addEventListener("click", (e) => {
+                    let caller = e.target || e.srcElement;
+                    if (caller) {
+                        let id = caller.id;
+
+                        caller.classList.toggle('btn-primary');
+                        caller.classList.toggle('btn-warning');
+
+                    }
+                });
+                //debugger;
             });
         }
         debugger;
@@ -66,10 +76,10 @@
         //s.addEventListener('change', validateInput);
     }
 
-    function toggleClass() {
+    //function toggleClass() {
 
-        debugger;
-        let caller = e.target || e.srcElement;
-        console.log(caller);
-    }
+    //    debugger;
+    //    let caller = e.target || e.srcElement;
+    //    console.log(caller);
+    //}
 </script>
