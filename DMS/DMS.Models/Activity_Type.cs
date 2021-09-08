@@ -18,7 +18,8 @@ namespace DMS.Models
         public string Name { get; set; }
         [Required, Display(Name = "Sort Order"), Range(1, 1000)]
         public int SortOrder { get; set; }
-        public int Group10 => SortOrder / 10;
-        public int Group100 => SortOrder / 100;
+        [Display(Name="Grouping, used to keep similar activities together"), MaxLength(250)]
+        public string GroupingString { get; set; }
+
     }
 }

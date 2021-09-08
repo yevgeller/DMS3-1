@@ -17,6 +17,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Activity_Type[0].Name)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Activity_Type[0].SortOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Activity_Type[0].GroupingString)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -25,7 +31,13 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name) (Sort Order: @item.SortOrder)
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SortOrder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GroupingString)
                 </td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.Activity_Type_Id">Edit</a> |

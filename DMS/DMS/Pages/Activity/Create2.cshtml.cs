@@ -24,7 +24,7 @@ namespace DMS.Pages.Activity
         [BindProperty]
         public string Time { get; set; }
         [BindProperty]
-        public List<int> Activity_Groups { get; private set; }
+        public List<string> Activity_Groups { get; private set; }
 
         public List<Models.Activity_Type> Activity_Types { get; set; }
 
@@ -43,7 +43,7 @@ namespace DMS.Pages.Activity
                 .ToListAsync();
 
             Activity_Groups = Activity_Types
-                .Select(x => x.Group100)
+                .Select(x => x.GroupingString)
                 .Distinct()
                 .OrderBy(x => x)
                 .ToList();

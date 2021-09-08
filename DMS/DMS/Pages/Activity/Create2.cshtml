@@ -3,7 +3,19 @@
 @{
 }
 
-
+@*
+TODO: Fix time/date (a week back/forward)
+    Add date of week
+    Exclude weekends
+    Add increments 
+      15 mins for time
+      1 day for days
+    Determine lower/upper bounds for date and time
+    Form the Activity message based on selected buttons
+    Figure out how to not allow ambiguous buttons 
+    (can't have full breakfast and no breakfast at the same time)
+    Add ability to order groups
+*@
 
 <h1>@Model.Student.Name</h1>
 
@@ -39,9 +51,11 @@
     </div>
 </div>
 
-@foreach (int group in Model.Activity_Groups)
+@foreach (string group in Model.Activity_Groups)
 {<div class="d-flex flex-wrap">
-        @foreach (Models.Activity_Type at in Model.Activity_Types.Where(x => x.Group100 == group))
+        @foreach (Models.Activity_Type at in Model.Activity_Types
+            .Where(x => x.GroupingString == group)
+            .OrderBy(x=>x.SortOrder))
         {
             <button class="btn btn-primary p-2 m-3 js-hook-activity-selector" 
                     id="activitySelector-@at.Activity_Type_Id" 
