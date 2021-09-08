@@ -4,23 +4,23 @@
 }
 
 @*
-TODO: Fix time/date (a week back/forward)
-    Add date of week
-    Exclude weekends
-    Add increments 
-      15 mins for time
-      1 day for days
-    Determine lower/upper bounds for date and time
-    Form the Activity message based on selected buttons
-    Figure out how to not allow ambiguous buttons 
-    (can't have full breakfast and no breakfast at the same time)
-    Add ability to order groups
+    TODO: Fix time/date (a week back/forward)
+        Add date of week
+        Exclude weekends
+        Add increments
+          15 mins for time
+          1 day for days
+        Determine lower/upper bounds for date and time
+        Form the Activity message based on selected buttons
+        Figure out how to not allow ambiguous buttons
+        (can't have full breakfast and no breakfast at the same time)
+        Add ability to order groups
 *@
 
 <h1>@Model.Student.Name</h1>
 
 <h4>Record new activity</h4>
-
+<span id="finalMessage"></span>
 <div class="container">
     <div class="row">
 
@@ -51,50 +51,79 @@ TODO: Fix time/date (a week back/forward)
     </div>
 </div>
 
-@foreach (string group in Model.Activity_Groups)
-{<div class="d-flex flex-wrap">
-        @foreach (Models.Activity_Type at in Model.Activity_Types
-            .Where(x => x.GroupingString == group)
-            .OrderBy(x=>x.SortOrder))
-        {
-            <button class="btn btn-primary p-2 m-3 js-hook-activity-selector" 
-                    id="activitySelector-@at.Activity_Type_Id" 
-                    data-attribute="@at.Activity_Type_Id">@at.Name</button>
-        }
-    </div>
-}
-
+<div id="activitiesContainer">
+    @foreach (string group in Model.Activity_Groups)
+    {<div class="d-flex flex-wrap">
+            @foreach (Models.Activity_Type at in Model.Activity_Types
+              .Where(x => x.GroupingString == group)
+              .OrderBy(x => x.SortOrder))
+            {
+                <button class="btn btn-primary p-2 m-3 js-hook-activity-selector"
+                        id="activitySelector-@at.Activity_Type_Id"
+                        data-attribute="@at.Activity_Type_Id">
+                    @at.Name
+                </button>
+            }
+        </div>
+    }
+</div>
 
 <script type="text/javascript">
+    let toSave = [];
+
+
     window.onload = (event) => {
         registerListeners();
     };
 
     function registerListeners() {
-        let activityButtons = document.querySelectorAll(".js-hook-activity-selector");
-        if (activityButtons) {
-
-            activityButtons.forEach((b) => {
-                let c = b.dataset.attribute;
-                b.addEventListener("click", (e) => {
-                    let caller = e.target || e.srcElement;
-                    if (caller) {
-                        let id = caller.id;
-
-                        caller.classList.toggle('btn-primary');
-                        caller.classList.toggle('btn-warning');
-
-                    }
-                });
+        document.getElementById('activitiesContainer')
+            .addEventListener('click', event => {
+                let caller = event.target || event.srcElement;
+                if (caller && caller.classList.contains('js-hook-activity-selector')) {
+                    caller.classList.toggle('btn-primary');
+                    caller.classList.toggle('btn-warning');
+                    processActivityId(caller.dataset.attribute);
+                }
                 //debugger;
             });
-        }
+
+    }
+
+    function processActivityId(id) {
         debugger;
+        let i = toSave.indexOf(id);
+        if (i >= 0) {
+            toSave.splice(i, 1);
+        } else {
+            toSave.push(id);
+        }
+        document.getElementById('finalMessage').textContent = toSave.join(', ');
+    }
+        //let activityButtons = document.querySelectorAll(".js-hook-activity-selector");
+        //if (activityButtons) {
+
+        //    activityButtons.forEach((b) => {
+        //        let c = b.dataset.attribute;
+        //        b.addEventListener("click", (e) => {
+        //            let caller = e.target || e.srcElement;
+        //            if (caller) {
+        //                let id = caller.id;
+
+        //                caller.classList.toggle('btn-primary');
+        //                caller.classList.toggle('btn-warning');
+
+        //            }
+        //        });
+        //        //debugger;
+        //    });
+        //}
+        //debugger;
         //let i = document.getElementById('contactValue');
         //i.addEventListener('input', validateInput);
         //let s = document.getElementById('contactTypes');
         //s.addEventListener('change', validateInput);
-    }
+
 
     //function toggleClass() {
 
