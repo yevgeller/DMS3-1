@@ -16,36 +16,38 @@
         (can't have full breakfast and no breakfast at the same time)
         Add ability to order groups
 *@
+<div>
+    <div class="col"><i class="fas fa-bullhorn fa-5x"></i></div>
+    <h1>@Model.Student.Name</h1>
 
-<h1>@Model.Student.Name</h1>
-
-<h4>Record new activity</h4>
+    <h4>Record new activity</h4>
+</div>
 <span id="finalMessage"></span>
 <div class="container">
     <div class="row">
 
-        <div class="col"><i class="fas fa-bullhorn fa-5x"></i></div>
-        <div class="col-sm-5">
+        
+        <div class="col">
             <div class="row">
                 <label for="date1" class="col-form-label">Date:</label>
-                <button class="btn btn-light mx-1 border"><i class="fas fa-fast-backward"></i></button>
-                <button class="btn btn-light mx-1 border"><i class="fas fa-step-backward"></i></button>
-                <input id="date1" type="text" class="form-control" value="@Model.Date" asp-for="Date" style="width:100px;" />
-                <button class="btn btn-light mx-1 border"><i class="fas fa-step-forward"></i></button>
-                <button class="btn btn-light mx-1 border"><i class="fas fa-fast-forward"></i></button>
-                <button class="btn btn-light mx-1 border"><i class="fas fa-history"></i></button>
+                <button class="btn btn-light mx-1 border" id="backAllDays"><i class="fas fa-fast-backward"></i></button>
+                <button class="btn btn-light mx-1 border" id="backOneDay"><i class="fas fa-step-backward"></i></button>
+                <input id="date1" type="text" class="form-control" value="@Model.Date" asp-for="Date" style="width:125px;" />
+                <button class="btn btn-light mx-1 border" id="fwdOneDay"><i class="fas fa-step-forward"></i></button>
+                <button class="btn btn-light mx-1 border" id="fwdAllDays"><i class="fas fa-fast-forward"></i></button>
+                <button class="btn btn-light mx-1 border" id="dayReset"><i class="fas fa-history"></i></button>
             </div>
         </div>
 
-        <div class="col-sm-5">
+        <div class="col">
             <div class="row">
                 <label for="time1" class="col-form-label">Time:</label>
-                <button class="btn btn-light mx-1 border"><i class="fas fa-fast-backward"></i></button>
-                <button class="btn btn-light mx-1 border"><i class="fas fa-step-backward"></i></button>
+                <button class="btn btn-light mx-1 border" id="timeStart"><i class="fas fa-fast-backward"></i></button>
+                <button class="btn btn-light mx-1 border" id="backTime"><i class="fas fa-step-backward"></i></button>
                 <input id="time1" type="text" class="form-control w-25" value="@Model.Time" asp-for="Time" />
-                <button class="btn btn-light mx-1 border"><i class="fas fa-step-forward"></i></button>
-                <button class="btn btn-light mx-1 border"><i class="fas fa-fast-forward"></i></button>
-                <button class="btn btn-light mx-1 border"><i class="fas fa-history"></i></button>
+                <button class="btn btn-light mx-1 border" id="fwdTime"><i class="fas fa-step-forward"></i></button>
+                <button class="btn btn-light mx-1 border" id="fwdEndOfDay"><i class="fas fa-fast-forward"></i></button>
+                <button class="btn btn-light mx-1 border" id="timeReset"><i class="fas fa-history"></i></button>
             </div>
         </div>
     </div>
@@ -55,8 +57,8 @@
     @foreach (string group in Model.Activity_Groups)
     {<div class="d-flex flex-wrap">
             @foreach (Models.Activity_Type at in Model.Activity_Types
-              .Where(x => x.GroupingString == group)
-              .OrderBy(x => x.SortOrder))
+            .Where(x => x.GroupingString == group)
+            .OrderBy(x => x.SortOrder))
             {
                 <button class="btn btn-primary p-2 m-3 js-hook-activity-selector"
                         id="activitySelector-@at.Activity_Type_Id"
@@ -88,6 +90,56 @@
                 //debugger;
             });
 
+        document.getElementById('backAllDays').addEventListener('click', event => {
+            alert('backAllDays');
+        });
+
+        document.getElementById('backOneDay').addEventListener('click', event => {
+            alert('backOneDay');
+
+        });
+        document.getElementById('fwdOneDay').addEventListener('click', event => {
+            alert('fwdOneDay');
+
+        });
+        document.getElementById('fwdAllDays').addEventListener('click', event => {
+            alert('fwdAllDays');
+
+        });
+        document.getElementById('dayReset').addEventListener('click', event => {
+            debugger;
+            document.getElementById('date1').value = moment().format('M/D/YYYY');
+        });
+        document.getElementById('timeStart').addEventListener('click', event => {
+            let t = moment();
+            t.hour(7);
+            t.minute(0);
+
+            document.getElementById('time1').value = t.format('h:mm A');
+
+        });
+        document.getElementById('backTime').addEventListener('click', event => {
+            alert('backTime');
+
+        });
+        document.getElementById('fwdTime').addEventListener('click', event => {
+            alert('fwdTime');
+
+        });
+        document.getElementById('fwdEndOfDay').addEventListener('click', event => {
+            let t = moment();
+            t.hour(18);
+            t.minute(0);
+
+            document.getElementById('time1').value = t.format('h:mm A');
+
+        });
+        document.getElementById('timeReset').addEventListener('click', event => {
+            debugger;
+            document.getElementById('time1').value = moment().format('h:m A');
+
+        });
+
     }
 
     function processActivityId(id) {
@@ -100,7 +152,8 @@
         }
         document.getElementById('finalMessage').textContent = toSave.join(', ');
     }
-        //let activityButtons = document.querySelectorAll(".js-hook-activity-selector");
+</script>
+@*//let activityButtons = document.querySelectorAll(".js-hook-activity-selector");
         //if (activityButtons) {
 
         //    activityButtons.forEach((b) => {
@@ -130,5 +183,4 @@
     //    debugger;
     //    let caller = e.target || e.srcElement;
     //    console.log(caller);
-    //}
-</script>
+    //}*@
