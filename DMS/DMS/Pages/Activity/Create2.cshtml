@@ -90,59 +90,56 @@
     }
 
     function ensureDaysWithinAllowedRange() {
-        if (timeStamp.diff(moment(), 'days') > 7) {
-            let clone = timeStamp().clone();
+        let clone = timeStamp.clone();
+        debugger;
+        if (timeStamp.diff(moment(), 'days') >= 7) {            
             timeStamp = moment();
+            timeStamp.add(7, 'days');
             timeStamp.set('hour', clone.hour());
             timeStamp.set('minute', clone.minute());
-        } else if (moment().diff(timeStamp, 'days') > 7) {
-
+            while (timeStamp.isoWeekday() > 5) {
+                console.log('subtracting 1 day from ' + timeStamp);
+                timeStamp.subtract(1, 'days');
+            }
+        } else if (moment().diff(timeStamp, 'days') >= 7) {
+            timeStamp = moment();
+            timeStamp.subtract(7, 'days');
+            timeStamp.set('hour', clone.hour());
+            timeStamp.set('minute', clone.minute());
+            while (timeStamp.isoWeekday() > 5) {
+                console.log('adding 1 day to ' + timeStamp);
+                timeStamp.add(1, 'days');
+            }
         }
+    }
+
+    function setTimeStampToToday() {
+        //and keep the selected time
+        let m = moment();
+        timeStamp.day(m.day());
+        timeStamp.month(m.month());
+        timeStamp.year(m.year());
     }
 
     function processTimeStampAdjustment(adjustmentRequest) {
         switch (adjustmentRequest) {
             case 'backAllDays':
-                let clone = timeStamp.clone();
-                let mondayOfThisWeek = moment().subtract(moment().isoWeekday() - 1, 'days');
-                timeStamp = mondayOfThisWeek;
-                timeStamp.set('hour', clone.hour());
-                timeStamp.set('minute', clone.minute());
+                setTimeStampToToday();
+                timeStamp.subtract(7, 'days');
                 break;
             case 'backOneDay':
-                if (moment().diff(timeStamp, 'days') < 7) {
-                    if (timeStamp.isoWeekday() === 1) {
-                        timeStamp.subtract(3, 'days');
-                    } else {
-                        timeStamp.subtract(1, 'days');
-                    }
-                } else {
-                    console.log('Activity time stamp may not be over a week old');
-                }
+                timeStamp.subtract(1, 'days');
                 break;
             case 'fwdOneDay':
-                if (timeStamp.diff(moment(), 'days') < 2) {
-                    if (timeStamp.isoWeekday() >= 5) {
-                        timeStamp.add(8 - timeStamp.isoWeekday(), 'days');
-                    } else {
-                        timeStamp.add(1, 'days');
-                    }
-                } else {
-                    console.log('Activity time stamp may not be more than 2 days in the future');
-                }
+                timeStamp.add(1, 'days');
                 break;
             case 'fwdAllDays':
                 debugger;
-                if (timeStamp.diff(moment(), 'days') < 7) {
-                    let dofw = moment().isoWeekday();
-                    timeStamp.add((dofw > 3 ? (9 - dofw) : 2), 'days');
-                }
+                setTimeStampToToday();
+                timeStamp.add(7, 'days');
                 break;
             case 'dayReset':
-                let m = moment();
-                timeStamp.day(m.day());
-                timeStamp.month(m.month());
-                timeStamp.year(m.year());
+                setTimeStampToToday();
                 break;
             case 'timeStart':
                 timeStamp.hour(hourStart);
@@ -167,6 +164,7 @@
         }
 
         ensureTimeWithinWorkDay();
+        ensureDaysWithinAllowedRange();
         refreshTimeStampDisplay();
     }
 
