@@ -50,8 +50,8 @@
     @foreach (string group in Model.Activity_Groups)
     {<div class="d-flex flex-wrap">
             @foreach (Models.Activity_Type at in Model.Activity_Types
-           .Where(x => x.GroupingString == group)
-           .OrderBy(x => x.SortOrder))
+          .Where(x => x.GroupingString == group)
+          .OrderBy(x => x.SortOrder))
             {
                 <button class="btn btn-primary p-2 m-3 js-hook-activity-selector"
                         id="activitySelector-@at.Activity_Type_Id"
@@ -89,11 +89,25 @@
         }
     }
 
+    function ensureDaysWithinAllowedRange() {
+        if (timeStamp.diff(moment(), 'days') > 7) {
+            let clone = timeStamp().clone();
+            timeStamp = moment();
+            timeStamp.set('hour', clone.hour());
+            timeStamp.set('minute', clone.minute());
+        } else if (moment().diff(timeStamp, 'days') > 7) {
+
+        }
+    }
+
     function processTimeStampAdjustment(adjustmentRequest) {
         switch (adjustmentRequest) {
             case 'backAllDays':
-                let a = moment().isoWeekday();
-
+                let clone = timeStamp.clone();
+                let mondayOfThisWeek = moment().subtract(moment().isoWeekday() - 1, 'days');
+                timeStamp = mondayOfThisWeek;
+                timeStamp.set('hour', clone.hour());
+                timeStamp.set('minute', clone.minute());
                 break;
             case 'backOneDay':
                 if (moment().diff(timeStamp, 'days') < 7) {
@@ -119,8 +133,10 @@
                 break;
             case 'fwdAllDays':
                 debugger;
-                let dofw = moment().isoWeekday();
-                timeStamp.add((dofw > 3 ? (9 - dofw) : 2), 'days');
+                if (timeStamp.diff(moment(), 'days') < 7) {
+                    let dofw = moment().isoWeekday();
+                    timeStamp.add((dofw > 3 ? (9 - dofw) : 2), 'days');
+                }
                 break;
             case 'dayReset':
                 let m = moment();
