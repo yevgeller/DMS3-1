@@ -24,12 +24,12 @@
 </div>
 <span id="finalMessage"></span>
 <div class="container">
-    <div class="row">        
+    <div class="row">
         <div class="col">
             <div class="row">
                 <label class="col-form-label">Adjust Date:</label>
                 <button class="btn btn-light mx-1 border" id="backAllDays"><i class="fas fa-fast-backward"></i></button>
-                <button class="btn btn-light mx-1 border" id="backOneDay"><i class="fas fa-step-backward"></i></button>                
+                <button class="btn btn-light mx-1 border" id="backOneDay"><i class="fas fa-step-backward"></i></button>
                 <button class="btn btn-light mx-1 border" id="fwdOneDay"><i class="fas fa-step-forward"></i></button>
                 <button class="btn btn-light mx-1 border" id="fwdAllDays"><i class="fas fa-fast-forward"></i></button>
                 <button class="btn btn-light mx-1 border" id="dayReset"><i class="fas fa-history"></i></button>
@@ -50,8 +50,8 @@
     @foreach (string group in Model.Activity_Groups)
     {<div class="d-flex flex-wrap">
             @foreach (Models.Activity_Type at in Model.Activity_Types
-            .Where(x => x.GroupingString == group)
-            .OrderBy(x => x.SortOrder))
+           .Where(x => x.GroupingString == group)
+           .OrderBy(x => x.SortOrder))
             {
                 <button class="btn btn-primary p-2 m-3 js-hook-activity-selector"
                         id="activitySelector-@at.Activity_Type_Id"
@@ -80,7 +80,6 @@
     }
 
     function ensureTimeWithinWorkDay() {
-
         if (timeStamp.hour() < hourStart) {
             timeStamp.hour(hourStart);
             timeStamp.minute(0);
@@ -88,6 +87,48 @@
             timeStamp.hour(hourEnd);
             timeStamp.minute(0);
         }
+    }
+
+    function processTimeStampAdjustment(adjustmentRequest) {
+        switch (adjustmentRequest) {
+            case 'backAllDays':
+                break;
+            case 'backOneday':
+                break;
+            case 'fwdOneDay':
+                break;
+            case 'fwdAllDays':
+                break;
+            case 'dayReset':
+                let m = moment();
+                timeStamp.day(m.day());
+                timeStamp.month(m.month());
+                timeStamp.year(m.year());
+                break;
+            case 'timeStart':
+                timeStamp.hour(hourStart);
+                timeStamp.minute(0);
+                break;
+            case 'backTime':
+                timeStamp.minute(timeStamp.minute() - 15);
+                break;
+            case 'fwdTime':
+                timeStamp.minute(timeStamp.minute() + 15);
+                break;
+            case 'fwdEndOfDay':
+                timeStamp.hour(hourEnd);
+                timeStamp.minute(0);
+                break;
+            case 'timeReset':
+                timeStamp = moment();
+                break;
+            default:
+                console.log('unknown case, time adjustment has not been processed');
+                break;
+        }
+
+        ensureTimeWithinWorkDay();
+        refreshTimeStampDisplay();
     }
 
     function registerListeners() {
@@ -103,54 +144,35 @@
             });
 
         document.getElementById('backAllDays').addEventListener('click', event => {
-            alert('backAllDays');
+            processTimeStampAdjustment('backAllDays');
         });
-
         document.getElementById('backOneDay').addEventListener('click', event => {
-            alert('backOneDay');
-
+            processTimeStampAdjustment('backOneDay');
         });
         document.getElementById('fwdOneDay').addEventListener('click', event => {
-            alert('fwdOneDay');
-
+            processTimeStampAdjustment('fwdOneDay');
         });
         document.getElementById('fwdAllDays').addEventListener('click', event => {
-            alert('fwdAllDays');
-
+            processTimeStampAdjustment('fwdAllDays');
         });
         document.getElementById('dayReset').addEventListener('click', event => {
-            debugger;
-            document.getElementById('timeStamp').value = moment().format('M/D/YYYY');
+            processTimeStampAdjustment('dayReset');
         });
         document.getElementById('timeStart').addEventListener('click', event => {
-            debugger;
-            timeStamp.hour(hourStart);
-            timeStamp.minute(0);
-            refreshTimeStampDisplay();
+            processTimeStampAdjustment('timeStart');
         });
         document.getElementById('backTime').addEventListener('click', event => {
-            timeStamp.minute(timeStamp.minute() - 15);
-            ensureTimeWithinWorkDay();
-            refreshTimeStampDisplay();
+            processTimeStampAdjustment('backTime');
         });
-
         document.getElementById('fwdTime').addEventListener('click', event => {
-            timeStamp.minute(timeStamp.minute() + 15);
-            ensureTimeWithinWorkDay();
-            refreshTimeStampDisplay();
+            processTimeStampAdjustment('fwdTime');
         });
-
         document.getElementById('fwdEndOfDay').addEventListener('click', event => {
-            timeStamp.hour(hourEnd);
-            timeStamp.minute(0);
-            refreshTimeStampDisplay();
+            processTimeStampAdjustment('fwdEndOfDay');
         });
         document.getElementById('timeReset').addEventListener('click', event => {
-            timeStamp = moment();
-            ensureTimeWithinWorkDay();
-            refreshTimeStampDisplay();
+            processTimeStampAdjustment('timeReset');
         });
-
     }
 
     function processActivityId(id) {
