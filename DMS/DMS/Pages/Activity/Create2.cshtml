@@ -24,27 +24,20 @@
 </div>
 <span id="finalMessage"></span>
 <div class="container">
-    <div class="row">
-
-        
+    <div class="row">        
         <div class="col">
             <div class="row">
-                <label for="date1" class="col-form-label">Date:</label>
+                <label class="col-form-label">Adjust Date:</label>
                 <button class="btn btn-light mx-1 border" id="backAllDays"><i class="fas fa-fast-backward"></i></button>
-                <button class="btn btn-light mx-1 border" id="backOneDay"><i class="fas fa-step-backward"></i></button>
-                <input id="date1" type="text" class="form-control" value="@Model.Date" asp-for="Date" style="width:125px;" />
+                <button class="btn btn-light mx-1 border" id="backOneDay"><i class="fas fa-step-backward"></i></button>                
                 <button class="btn btn-light mx-1 border" id="fwdOneDay"><i class="fas fa-step-forward"></i></button>
                 <button class="btn btn-light mx-1 border" id="fwdAllDays"><i class="fas fa-fast-forward"></i></button>
                 <button class="btn btn-light mx-1 border" id="dayReset"><i class="fas fa-history"></i></button>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="row">
-                <label for="time1" class="col-form-label">Time:</label>
+                @*<input id="timeStamp" type="text" class="form-control" value="@Model.Activity_TimeStamp" asp-for="Activity_TimeStamp" style="width:200px;" />*@
+                <input id="timeStamp" type="text" class="form-control" style="width:250px;" />
+                <label class="col-form-label">Adjust Time:</label>
                 <button class="btn btn-light mx-1 border" id="timeStart"><i class="fas fa-fast-backward"></i></button>
                 <button class="btn btn-light mx-1 border" id="backTime"><i class="fas fa-step-backward"></i></button>
-                <input id="time1" type="text" class="form-control w-25" value="@Model.Time" asp-for="Time" />
                 <button class="btn btn-light mx-1 border" id="fwdTime"><i class="fas fa-step-forward"></i></button>
                 <button class="btn btn-light mx-1 border" id="fwdEndOfDay"><i class="fas fa-fast-forward"></i></button>
                 <button class="btn btn-light mx-1 border" id="timeReset"><i class="fas fa-history"></i></button>
@@ -72,11 +65,30 @@
 
 <script type="text/javascript">
     let toSave = [];
-
+    let timeStamp = "";
+    let hourStart = 7;
+    let hourEnd = 18;
 
     window.onload = (event) => {
         registerListeners();
+        timeStamp = moment();
+        refreshTimeStampDisplay();
     };
+
+    function refreshTimeStampDisplay() {
+        document.getElementById('timeStamp').value = timeStamp.format('ddd, MMM D h:mm A, YYYY');
+    }
+
+    function ensureTimeWithinWorkDay() {
+
+        if (timeStamp.hour() < hourStart) {
+            timeStamp.hour(hourStart);
+            timeStamp.minute(0);
+        } else if (timeStamp.hour() > hourEnd) {
+            timeStamp.hour(hourEnd);
+            timeStamp.minute(0);
+        }
+    }
 
     function registerListeners() {
         document.getElementById('activitiesContainer')
@@ -108,36 +120,35 @@
         });
         document.getElementById('dayReset').addEventListener('click', event => {
             debugger;
-            document.getElementById('date1').value = moment().format('M/D/YYYY');
+            document.getElementById('timeStamp').value = moment().format('M/D/YYYY');
         });
         document.getElementById('timeStart').addEventListener('click', event => {
-            let t = moment();
-            t.hour(7);
-            t.minute(0);
-
-            document.getElementById('time1').value = t.format('h:mm A');
-
+            debugger;
+            timeStamp.hour(hourStart);
+            timeStamp.minute(0);
+            refreshTimeStampDisplay();
         });
         document.getElementById('backTime').addEventListener('click', event => {
-            alert('backTime');
-
+            timeStamp.minute(timeStamp.minute() - 15);
+            ensureTimeWithinWorkDay();
+            refreshTimeStampDisplay();
         });
+
         document.getElementById('fwdTime').addEventListener('click', event => {
-            alert('fwdTime');
-
+            timeStamp.minute(timeStamp.minute() + 15);
+            ensureTimeWithinWorkDay();
+            refreshTimeStampDisplay();
         });
+
         document.getElementById('fwdEndOfDay').addEventListener('click', event => {
-            let t = moment();
-            t.hour(18);
-            t.minute(0);
-
-            document.getElementById('time1').value = t.format('h:mm A');
-
+            timeStamp.hour(hourEnd);
+            timeStamp.minute(0);
+            refreshTimeStampDisplay();
         });
         document.getElementById('timeReset').addEventListener('click', event => {
-            debugger;
-            document.getElementById('time1').value = moment().format('h:m A');
-
+            timeStamp = moment();
+            ensureTimeWithinWorkDay();
+            refreshTimeStampDisplay();
         });
 
     }

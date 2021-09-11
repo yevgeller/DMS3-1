@@ -26,6 +26,9 @@ namespace DMS.Pages.Activity
         [BindProperty]
         public List<string> Activity_Groups { get; private set; }
 
+        [BindProperty]
+        public string Activity_TimeStamp { get; set; }
+
         public List<Models.Activity_Type> Activity_Types { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
@@ -35,8 +38,9 @@ namespace DMS.Pages.Activity
                 return NotFound();
             }
             Student = await db.Student.Where(x => x.Student_Id == id).FirstOrDefaultAsync();
-            Date = DateTime.Now.ToShortDateString();
-            Time = DateTime.Now.ToShortTimeString();
+            Activity_TimeStamp = DateTime.Now.ToString("ddd, MMMM dd, yyyy");
+            //Date = DateTime.Now.ToShortDateString();
+            //Time = DateTime.Now.ToShortTimeString();
             Activity_Types = await db.Activity_Type
                 .OrderBy(x => x.SortOrder)
                 .ThenBy(x => x.Name)
