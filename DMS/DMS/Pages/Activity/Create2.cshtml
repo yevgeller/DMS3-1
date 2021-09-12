@@ -50,8 +50,8 @@
     @foreach (string group in Model.Activity_Groups)
     {<div class="d-flex flex-wrap">
             @foreach (Models.Activity_Type at in Model.Activity_Types
-          .Where(x => x.GroupingString == group)
-          .OrderBy(x => x.SortOrder))
+         .Where(x => x.GroupingString == group)
+         .OrderBy(x => x.SortOrder))
             {
                 <button class="btn btn-primary p-2 m-3 js-hook-activity-selector"
                         id="activitySelector-@at.Activity_Type_Id"
@@ -89,15 +89,25 @@
             timeStamp.hour(hourEnd);
             timeStamp.minute(0);
         }
+        debugger;
+        toggleDisableTimeStart(timeStamp.hour() === hourStart && timeStamp.minute() === 0);
+        toggleDisableBackTime(timeStamp.hour() === hourStart && timeStamp.minute() === 0);
+        toggleDisabledFwdEndOfDay(timeStamp.hour() === hourEnd);
+        toggleDisableFwdTime(timeStamp.hour() === hourEnd);
     }
 
     function ensureDaysWithinAllowedRange() {
         let clone = timeStamp.clone();
-
-        if (Math.abs(timeStamp.diff(moment(), 'days')) < 7)
+        debugger;
+        if (Math.abs(timeStamp.diff(moment(), 'days')) < 6) {
+            toggleDisableBackAllDays(false);
+            toggleDisabledBackOneDay(false);
+            toggleDisableFwdAllDays(false);
+            toggleDisableFwdOneDay(false);
             return;
+        }
 
-        if (timeStamp.diff(moment(), 'days') >= 7) {            
+        if (timeStamp.diff(moment(), 'days') >= 7) {
             timeStamp = moment();
             timeStamp.add(7, 'days');
             timeStamp.set('hour', clone.hour());
@@ -116,14 +126,23 @@
                 timeStamp.add(1, 'days');
             }
         }
+        debugger;
+        toggleDisableBackAllDays(timeStamp.isBefore(moment()));
+        toggleDisabledBackOneDay(timeStamp.isBefore(moment()));
+        toggleDisableFwdAllDays(moment().isBefore(timeStamp));
+        toggleDisableFwdOneDay(moment().isBefore(timeStamp));
     }
 
     function setTimeStampToToday() {
-        //and keep the selected time
-        let m = moment();
-        timeStamp.day(m.day());
-        timeStamp.month(m.month());
-        timeStamp.year(m.year());
+        let clone = timeStamp.clone();
+        timeStamp = moment();
+        timeStamp.hour(clone.hour()).minute(clone.minute());
+    }
+
+    function setTimeStampToNow() {
+        let clone = timeStamp.clone();
+        timeStamp = moment();
+        timeStamp.year(clone.year()).month(clone.month()).date(clone.date());
     }
 
     function processTimeStampAdjustment(adjustmentRequest) {
@@ -139,7 +158,6 @@
                 timeStamp.add(1, 'days');
                 break;
             case 'fwdAllDays':
-                debugger;
                 setTimeStampToToday();
                 timeStamp.add(7, 'days');
                 break;
@@ -161,12 +179,12 @@
                 timeStamp.minute(0);
                 break;
             case 'timeReset':
-                timeStamp = moment();
+                setTimeStampToNow();
                 break;
             default:
                 console.log('unknown case, time adjustment has not been processed');
                 break;
-        }       
+        }
         refreshTimeStampDisplay();
     }
 
@@ -211,6 +229,32 @@
         document.getElementById('timeReset').addEventListener('click', event => {
             processTimeStampAdjustment('timeReset');
         });
+    }
+
+    function toggleDisabledBackOneDay(disabled) {
+        document.getElementById('backOneDay').disabled = disabled;
+    }
+    function toggleDisableBackAllDays(disabled) {
+        document.getElementById('backAllDays').disabled = disabled;
+    }
+    function toggleDisableFwdOneDay(disabled) {
+        document.getElementById('fwdOneDay').disabled = disabled;
+    }
+    function toggleDisableFwdAllDays(disabled) {
+        document.getElementById('fwdAllDays').disabled = disabled;
+    }
+
+    function toggleDisableTimeStart(disabled) {
+        document.getElementById('timeStart').disabled = disabled;
+    }
+    function toggleDisableBackTime(disabled) {
+        document.getElementById('backTime').disabled = disabled;
+    }
+    function toggleDisableFwdTime(disabled) {
+        document.getElementById('fwdTime').disabled = disabled;
+    }
+    function toggleDisabledFwdEndOfDay(disabled) {
+        document.getElementById('fwdEndOfDay').disabled = disabled;
     }
 
     function processActivityId(id) {
