@@ -76,6 +76,8 @@
     };
 
     function refreshTimeStampDisplay() {
+        ensureTimeWithinWorkDay();
+        ensureDaysWithinAllowedRange();
         document.getElementById('timeStamp').value = timeStamp.format('ddd, MMM D h:mm A, YYYY');
     }
 
@@ -91,7 +93,10 @@
 
     function ensureDaysWithinAllowedRange() {
         let clone = timeStamp.clone();
-        debugger;
+
+        if (Math.abs(timeStamp.diff(moment(), 'days')) < 7)
+            return;
+
         if (timeStamp.diff(moment(), 'days') >= 7) {            
             timeStamp = moment();
             timeStamp.add(7, 'days');
@@ -161,10 +166,7 @@
             default:
                 console.log('unknown case, time adjustment has not been processed');
                 break;
-        }
-
-        ensureTimeWithinWorkDay();
-        ensureDaysWithinAllowedRange();
+        }       
         refreshTimeStampDisplay();
     }
 
@@ -177,7 +179,6 @@
                     caller.classList.toggle('btn-warning');
                     processActivityId(caller.dataset.attribute);
                 }
-                //debugger;
             });
 
         document.getElementById('backAllDays').addEventListener('click', event => {
@@ -223,34 +224,3 @@
         document.getElementById('finalMessage').textContent = toSave.join(', ');
     }
 </script>
-@*//let activityButtons = document.querySelectorAll(".js-hook-activity-selector");
-        //if (activityButtons) {
-
-        //    activityButtons.forEach((b) => {
-        //        let c = b.dataset.attribute;
-        //        b.addEventListener("click", (e) => {
-        //            let caller = e.target || e.srcElement;
-        //            if (caller) {
-        //                let id = caller.id;
-
-        //                caller.classList.toggle('btn-primary');
-        //                caller.classList.toggle('btn-warning');
-
-        //            }
-        //        });
-        //        //debugger;
-        //    });
-        //}
-        //debugger;
-        //let i = document.getElementById('contactValue');
-        //i.addEventListener('input', validateInput);
-        //let s = document.getElementById('contactTypes');
-        //s.addEventListener('change', validateInput);
-
-
-    //function toggleClass() {
-
-    //    debugger;
-    //    let caller = e.target || e.srcElement;
-    //    console.log(caller);
-    //}*@
