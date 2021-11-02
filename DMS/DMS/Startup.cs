@@ -35,6 +35,8 @@ namespace DMS
             services.AddScoped<IStudentData, StudentService>();
             services.AddEntityFrameworkSqlite().AddDbContext<DMSDataContext>();
             services.AddControllers();
+
+            services.AddAuthentication().AddCookie();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +58,7 @@ namespace DMS
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
