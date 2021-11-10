@@ -31,7 +31,7 @@ namespace DMS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddRazorPages(o => { o.Conventions.AuthorizeFolder("/Pages"); }).AddRazorRuntimeCompilation();
             services.AddScoped<IStudentData, StudentService>();
             services.AddEntityFrameworkSqlite().AddDbContext<DMSDataContext>();
             services.AddControllers();
