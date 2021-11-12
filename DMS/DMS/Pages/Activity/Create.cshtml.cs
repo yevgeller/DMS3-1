@@ -47,7 +47,7 @@ namespace DMS.Pages.Activity
             var a = this.Date;
             var b = this.Student;
             var c = Time;
-            int i = 0;
+            //int i = 0;
         }
     }
 }

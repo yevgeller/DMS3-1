@@ -37,7 +37,7 @@ namespace DMS.Pages.Student_Parent
                 return $"Page {Students_List.PageIndex} of {Students_List.TotalPages} ({Students_List.TotalRecordsCount} record{(Students_List.TotalRecordsCount == 1 ? "" : "s")})";
             }
         }
-        public async Task<IActionResult> OnGetAsync(string currentFilter, string searchString, int? selectedStudent, int? pageIndex, string? parentFilter, int? id = 1)
+        public async Task<IActionResult> OnGetAsync(string currentFilter, string searchString, int selectedStudent, int pageIndex, string parentFilter, int id = 1)
         {
             await ResetPagePropertiesAsync(currentFilter, searchString, selectedStudent,
                 pageIndex, parentFilter, id);
@@ -45,7 +45,7 @@ namespace DMS.Pages.Student_Parent
         }
 
         public async Task ResetPagePropertiesAsync(string currentFilter, string searchString,
-            int? selectedStudent, int? pageIndex, string? parentFilter, int? id = 1)
+            int? selectedStudent, int? pageIndex, string parentFilter, int? id = 1)
         {
             if (searchString != null)
             {
@@ -104,7 +104,7 @@ namespace DMS.Pages.Student_Parent
             ViewData["Student_Id"] = new SelectList(_context.Student, "Student_Id", "Name");
         }
 
-        public async Task<IActionResult> OnPostChangedParentFilterAsync(string currentFilter, string searchString, int? selectedStudent, int? pageIndex, string? parentFilter, int? id = 1)
+        public async Task<IActionResult> OnPostChangedParentFilterAsync(string currentFilter, string searchString, int? selectedStudent, int? pageIndex, string parentFilter, int? id = 1)
         {
             await ResetPagePropertiesAsync(currentFilter, searchString, selectedStudent,
                 pageIndex, parentFilter, id);
