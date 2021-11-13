@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using DMS.Data;
 using DMS.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DMS.Pages.Person
 {
+    
     public class IndexModel : PageModel
     {
         private readonly DMS.Data.DMSDataContext _context;
@@ -50,6 +52,7 @@ namespace DMS.Pages.Person
             await ProcessPageAsync(sortOrder, currentFilter, searchString, selectedFilterPersonTypeId,
                 selectedFilterCheckedInactive, selectedFilterPersonnelActiveStatus, pageIndex);
         }
+
         public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, 
             int selectedFilterPersonTypeId, bool selectedFilterCheckedInactive, int selectedFilterPersonnelActiveStatus,
             int pageIndex)

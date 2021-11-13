@@ -1,6 +1,8 @@
 using DMS.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -31,12 +33,24 @@ namespace DMS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages(o => { o.Conventions.AuthorizeFolder("/Pages"); }).AddRazorRuntimeCompilation();
+
             services.AddScoped<IStudentData, StudentService>();
             services.AddEntityFrameworkSqlite().AddDbContext<DMSDataContext>();
             services.AddControllers();
 
-            services.AddAuthentication().AddCookie();
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();            
+            services.AddAuthentication().AddCookie(o => { o.LoginPath = "/"; });
+
+            services.AddRazorPages(o => { o.Conventions.AuthorizeFolder("/Person"); })
+    .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Latest)
+    .AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +74,7 @@ namespace DMS
 
             app.UseAuthentication();
             app.UseAuthorization();
+            //app.UseMvc();
 
             app.UseEndpoints(endpoints =>
             {
